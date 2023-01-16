@@ -25,7 +25,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="frontend/public/LogoSample_ByTailorBrands.jpg" alt="Logo" width="80" height="80">
+    <img src="https://github.com/Trakeregy/Trakergy-app/blob/master/54e721c9c8e649dfb30fb0ff9c2135cf.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Trakergy</h3>
