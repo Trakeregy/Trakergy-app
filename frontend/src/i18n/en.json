@@ -12,5 +12,20 @@
     "email": "Email",
     "username": "Username",
     "confirm-password": "Confirm password",
-    "already-have-account": "Already have an account?"
+    "already-have-account": "Already have an account?",
+    "error-first-name-required": "First name is required",
+    "error-first-name-length-min": "First name must have at least 3 characters",
+    "error-first-name-length-max": "First name must have at most 20 characters",
+    "error-email-required": "Email is required",
+    "error-email-invalid-format": "Email is invalid",
+    "error-username-required": "Username is required",
+    "error-username-length-min": "Username must have at least 3 characters",
+    "error-username-length-max": "Username must have at most 20 characters",
+    "error-username-no-whitespace": "Username must not contain whitespace",
+    "error-password-required": "Password is required",
+    "error-password-length-min": "Password must have at least 6 characters",
+    "error-password-length-max": "Password must have at most 20 characters",
+    "error-password-missing-letter": "Password must contain at least one letter",
+    "error-password-missing-number": "Password must contain at least one digit",
+    "error-passwords-dont-match": "Passwords do not match"
 }

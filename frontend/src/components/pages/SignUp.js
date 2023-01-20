@@ -17,27 +17,99 @@ import { CustomInput, CustomButton } from '../atoms/CustomBasicComponents';
 import { signUp as signUpAction } from '../../state/actions/auth.js';
 import { logIn as logInAction } from '../../state/actions/auth.js';
 import { useNavigate } from 'react-router-dom';
+import {
+    emailValidator,
+    firstNameAndUsernameValidator,
+    passwordValidator,
+} from '../../utils/validators';
 
 function SignUp({ signUp, logIn }) {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [canSubmit, setCanSubmit] = useState(false);
+    const [errors, setErrors] = useState({});
     const [newUser, setNewUser] = useState({
         first_name: '',
         last_name: '',
         email: '',
         password: '',
-        checkedPassword: '',
+        checked_password: '',
         username: '',
     });
 
-    const canSubmit =
-        newUser.password === newUser.checkedPassword &&
-        newUser.password !== '' &&
-        newUser.checkedPassword !== '';
+    const checkNoErrors = (newErrors) => {
+        const isOk =
+            newErrors.first_name === '' &&
+            newErrors.email === '' &&
+            newErrors.username === '' &&
+            newErrors.password === '' &&
+            newErrors.confirm_password === '';
+        setCanSubmit(isOk);
+    };
+
+    const showErrorLabels = (valid) => {
+        const newErrors = {
+            ...errors,
+            ...valid.errors,
+        };
+        setErrors(newErrors);
+        checkNoErrors(newErrors);
+    };
+
+    const verifyField = (e, fieldName) => {
+        const newVal = e.target.value;
+        setNewUser({
+            ...newUser,
+            [fieldName]: newVal,
+        });
+        let valid = {};
+        switch (fieldName) {
+            case 'first_name':
+            case 'username':
+                valid = firstNameAndUsernameValidator({
+                    field: fieldName,
+                    newVal,
+                    t,
+                });
+                break;
+            case 'email':
+                valid = emailValidator({
+                    newVal,
+                    t,
+                });
+                break;
+            case 'password':
+            case 'checked_password':
+                valid = passwordValidator({ newVal, t });
+                showErrorLabels(valid);
+                valid = {
+                    canSubmit: true,
+                    errors: { confirm_password: '', password: '' },
+                };
+                if (
+                    (fieldName === 'checked_password' &&
+                        newVal !== newUser.password) ||
+                    (fieldName === 'password' &&
+                        newVal !== newUser.checked_password)
+                ) {
+                    valid = {
+                        canSubmit: false,
+                        errors: {
+                            confirm_password: t('error-passwords-dont-match'),
+                        },
+                    };
+                }
+                break;
+            default:
+                break;
+        }
+
+        showErrorLabels(valid);
+    };
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        const { checkedPassword, ..._user } = newUser;
+        const { checked_password, ..._user } = newUser;
         await signUp(_user);
         await logIn({ username: _user.username, password: _user.password });
         setTimeout(navigate(ROUTES.HOME), 0);
@@ -81,12 +153,10 @@ function SignUp({ signUp, logIn }) {
                                 isRequired
                                 placeholder={t('first-name') + ' *'}
                                 value={newUser.first_name}
-                                onChange={(e) =>
-                                    setNewUser({
-                                        ...newUser,
-                                        first_name: e.target.value,
-                                    })
-                                }
+                                onChange={(e) => {
+                                    verifyField(e, 'first_name');
+                                }}
+                                errorLabelText={errors.first_name}
                             />
                             <CustomInput
                                 id='lastName'
@@ -105,50 +175,34 @@ function SignUp({ signUp, logIn }) {
                             isRequired
                             placeholder={t('email') + ' *'}
                             value={newUser.email}
-                            onChange={(e) =>
-                                setNewUser({
-                                    ...newUser,
-                                    email: e.target.value,
-                                })
-                            }
+                            onChange={(e) => verifyField(e, 'email')}
+                            errorLabelText={errors.email}
                         />
                         <CustomInput
                             id='username'
                             isRequired
                             placeholder={t('username') + ' *'}
                             value={newUser.username}
-                            onChange={(e) =>
-                                setNewUser({
-                                    ...newUser,
-                                    username: e.target.value,
-                                })
-                            }
+                            onChange={(e) => verifyField(e, 'username')}
+                            errorLabelText={errors.username}
                         />
                         <CustomInput
                             id='password'
                             isRequired
                             placeholder={t('password') + ' *'}
                             value={newUser.password}
-                            onChange={(e) =>
-                                setNewUser({
-                                    ...newUser,
-                                    password: e.target.value,
-                                })
-                            }
+                            onChange={(e) => verifyField(e, 'password')}
                             type='password'
+                            errorLabelText={errors.password}
                         />
                         <CustomInput
                             id='confirmPassword'
                             isRequired
                             placeholder={t('confirm-password') + ' *'}
-                            value={newUser.checkedPassword}
-                            onChange={(e) =>
-                                setNewUser({
-                                    ...newUser,
-                                    checkedPassword: e.target.value,
-                                })
-                            }
+                            value={newUser.checked_password}
+                            onChange={(e) => verifyField(e, 'checked_password')}
                             type='password'
+                            errorLabelText={errors.confirm_password}
                         />
                         <CustomButton
                             text={t('sign-up')}
