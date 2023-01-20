@@ -1,20 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+// UI
+import { ChakraProvider } from '@chakra-ui/react';
 import theme from './theme';
+import './index.css';
+// redux
+import { Provider } from 'react-redux';
+import { store, persistor } from './state/index.js';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
     <React.StrictMode>
         <ChakraProvider theme={theme}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
+                </PersistGate>
+            </Provider>
         </ChakraProvider>
     </React.StrictMode>
 );

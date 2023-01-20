@@ -10,6 +10,7 @@
     "first-name": "First name",
     "last-name": "Last name",
     "email": "Email",
+    "username": "Username",
     "confirm-password": "Confirm password",
     "already-have-account": "Already have an account?"
 }

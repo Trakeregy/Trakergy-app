@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@chakra-ui/react';
 
-function CustomButton({ text, onClick }) {
+function CustomButton({ text, onClick, ...otherProps }) {
     return (
         <Button
             loadingText='Loading'
@@ -15,6 +15,7 @@ function CustomButton({ text, onClick }) {
                 bg: 'secondary.300',
             }}
             onClick={onClick}
+            {...otherProps}
         >
             {text}
         </Button>

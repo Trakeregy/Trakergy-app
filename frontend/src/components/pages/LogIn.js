@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Flex,
     Box,
@@ -10,12 +10,28 @@ import {
     Link,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import ROUTES from '../../utils/routes';
 import cover from '../../assets/cover.png';
 import { CustomInput, CustomButton } from '../atoms/CustomBasicComponents';
+import { logIn as logInAction } from '../../state/actions/auth';
+import { useNavigate } from 'react-router-dom';
 
-function LogIn() {
+function LogIn({ logIn }) {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+
+    const [newUser, setNewUser] = useState({
+        username: '',
+        password: '',
+    });
+
+    const submitHandler = async (e) => {
+        e.preventDefault();
+        await logIn(newUser);
+        setTimeout(navigate(ROUTES.HOME), 0);
+    };
+
     return (
         <Flex
             h={'100vh'}
@@ -49,16 +65,34 @@ function LogIn() {
                 <Box>
                     <Stack gap='1'>
                         <CustomInput
-                            id='email'
+                            id='username'
                             isRequired
-                            placeholder={t('email')}
+                            placeholder={t('username')}
+                            value={newUser.username}
+                            onChange={(e) =>
+                                setNewUser({
+                                    ...newUser,
+                                    username: e.target.value,
+                                })
+                            }
                         />
                         <CustomInput
                             id='password'
                             isRequired
                             placeholder={t('password')}
+                            value={newUser.password}
+                            onChange={(e) =>
+                                setNewUser({
+                                    ...newUser,
+                                    password: e.target.value,
+                                })
+                            }
+                            type='password'
                         />
-                        <CustomButton text={t('log-in')} />
+                        <CustomButton
+                            text={t('log-in')}
+                            onClick={submitHandler}
+                        />
                         <Stack>
                             <Text
                                 fontSize={'md'}
@@ -83,4 +117,17 @@ function LogIn() {
     );
 }
 
-export default LogIn;
+const mapStateToProps = (state) => {
+    return {
+        authenticated: state.auth.authenticated,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        dispatch,
+        logIn: (user) => dispatch(logInAction(user)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

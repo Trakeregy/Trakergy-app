@@ -1,7 +1,14 @@
 import React from 'react';
 import { FormControl, Input } from '@chakra-ui/react';
 
-function CustomInput({ id, isRequired, placeholder, value, onChange }) {
+function CustomInput({
+    id,
+    isRequired,
+    placeholder,
+    type = 'text',
+    value,
+    onChange,
+}) {
     return (
         <FormControl id={id} isRequired={isRequired}>
             <Input
@@ -15,6 +22,7 @@ function CustomInput({ id, isRequired, placeholder, value, onChange }) {
                 focusBorderColor='grey.500'
                 value={value}
                 onChange={onChange}
+                type={type}
             />
         </FormControl>
     );
