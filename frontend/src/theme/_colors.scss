@@ -1,0 +1,21 @@
+$primary: #ef8354;
+$primaryDark: #df5b23;
+$secondary: #4f5d75;
+$secondaryDark: #2d3142;
+$white: #ffffff;
+$black: #171717;
+$grey: #f4f4f4;
+$greyMedium: #979797;
+$greyDark: #404040;
+
+:export {
+    primary: $primary;
+    primaryDark: $primaryDark;
+    secondary: $secondary;
+    secondaryDark: $secondaryDark;
+    white: $white;
+    black: $black;
+    grey: $grey;
+    greyMedium: $greyMedium;
+    greyDark: $greyDark;
+}
