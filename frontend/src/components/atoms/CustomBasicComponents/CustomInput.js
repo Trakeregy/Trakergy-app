@@ -16,7 +16,7 @@ function CustomInput({
                 <Input
                     size='md'
                     borderRadius='full'
-                    placeholder={placeholder}
+                    placeholder={placeholder + (isRequired ? ' *' : '')}
                     bgColor='grey.100'
                     border='none'
                     fontSize='md'

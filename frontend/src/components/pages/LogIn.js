@@ -16,10 +16,14 @@ import cover from '../../assets/cover.png';
 import { CustomInput, CustomButton } from '../atoms/CustomBasicComponents';
 import { logIn as logInAction } from '../../state/actions/auth';
 import { useNavigate } from 'react-router-dom';
+import LoadingIndicator from '../atoms/LoadingIndicator';
 
 function LogIn({ logIn }) {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [error, setError] = useState();
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const [newUser, setNewUser] = useState({
         username: '',
@@ -28,8 +32,36 @@ function LogIn({ logIn }) {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        await logIn(newUser);
-        setTimeout(navigate(ROUTES.HOME), 0);
+        setLoading(true);
+        setErrors({});
+        setError();
+        logIn(newUser)
+            .then(() => {
+                setLoading(false);
+                setTimeout(navigate(ROUTES.HOME), 0);
+            })
+            .catch((e) => {
+                setLoading(false);
+                if (e.response.status === 400) {
+                    const usernameErrors = e.response.data.username;
+                    const passwordErrors = e.response.data.password;
+
+                    let newErrors = {};
+                    if (usernameErrors) {
+                        newErrors.username = usernameErrors.join(', ');
+                    } else {
+                        newErrors.username = '';
+                    }
+                    if (passwordErrors) {
+                        newErrors.password = passwordErrors.join(', ');
+                    } else {
+                        newErrors.password = '';
+                    }
+                    setErrors(newErrors);
+                } else if (e.response.status === 401) {
+                    setError(e.response.data.detail);
+                }
+            });
     };
 
     return (
@@ -64,6 +96,11 @@ function LogIn({ logIn }) {
                 </Stack>
                 <Box>
                     <Stack gap='1'>
+                        {error && (
+                            <Text color='primary.300' fontSize='sm' px='6'>
+                                {error}
+                            </Text>
+                        )}
                         <CustomInput
                             id='username'
                             isRequired
@@ -75,6 +112,7 @@ function LogIn({ logIn }) {
                                     username: e.target.value,
                                 })
                             }
+                            errorLabelText={errors.username}
                         />
                         <CustomInput
                             id='password'
@@ -88,10 +126,12 @@ function LogIn({ logIn }) {
                                 })
                             }
                             type='password'
+                            errorLabelText={errors.password}
                         />
                         <CustomButton
                             text={t('log-in')}
                             onClick={submitHandler}
+                            isDisabled={loading}
                         />
                         <Stack>
                             <Text
@@ -111,6 +151,9 @@ function LogIn({ logIn }) {
                             </Text>
                         </Stack>
                     </Stack>
+                    <Flex h='100px' justifyContent='center' dir='row'>
+                        {loading && <LoadingIndicator />}
+                    </Flex>
                 </Box>
             </Flex>
         </Flex>

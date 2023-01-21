@@ -22,10 +22,13 @@ import {
     firstNameAndUsernameValidator,
     passwordValidator,
 } from '../../utils/validators';
+import LoadingIndicator from '../atoms/LoadingIndicator';
 
 function SignUp({ signUp, logIn }) {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState();
     const [canSubmit, setCanSubmit] = useState(false);
     const [errors, setErrors] = useState({});
     const [newUser, setNewUser] = useState({
@@ -109,10 +112,21 @@ function SignUp({ signUp, logIn }) {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        setLoading(true);
         const { checked_password, ..._user } = newUser;
-        await signUp(_user);
-        await logIn({ username: _user.username, password: _user.password });
-        setTimeout(navigate(ROUTES.HOME), 0);
+        signUp(_user)
+            .then(() => {
+                logIn({ username: _user.username, password: _user.password })
+                    .then(() => {
+                        setLoading(false);
+                        setTimeout(navigate(ROUTES.HOME), 0);
+                    })
+                    .catch((e) => {
+                        setLoading(false);
+                        setError(e?.response?.data?.detail);
+                    });
+            })
+            .catch((e) => setLoading(false));
     };
 
     return (
@@ -147,11 +161,16 @@ function SignUp({ signUp, logIn }) {
                 </Stack>
                 <Box>
                     <Stack gap='1'>
+                        {error && (
+                            <Text color='primary.300' fontSize='sm' px='6'>
+                                {error}
+                            </Text>
+                        )}
                         <Flex dir='row' gap='5'>
                             <CustomInput
                                 id='firstName'
                                 isRequired
-                                placeholder={t('first-name') + ' *'}
+                                placeholder={t('first-name')}
                                 value={newUser.first_name}
                                 onChange={(e) => {
                                     verifyField(e, 'first_name');
@@ -173,7 +192,7 @@ function SignUp({ signUp, logIn }) {
                         <CustomInput
                             id='email'
                             isRequired
-                            placeholder={t('email') + ' *'}
+                            placeholder={t('email')}
                             value={newUser.email}
                             onChange={(e) => verifyField(e, 'email')}
                             errorLabelText={errors.email}
@@ -181,7 +200,7 @@ function SignUp({ signUp, logIn }) {
                         <CustomInput
                             id='username'
                             isRequired
-                            placeholder={t('username') + ' *'}
+                            placeholder={t('username')}
                             value={newUser.username}
                             onChange={(e) => verifyField(e, 'username')}
                             errorLabelText={errors.username}
@@ -189,7 +208,7 @@ function SignUp({ signUp, logIn }) {
                         <CustomInput
                             id='password'
                             isRequired
-                            placeholder={t('password') + ' *'}
+                            placeholder={t('password')}
                             value={newUser.password}
                             onChange={(e) => verifyField(e, 'password')}
                             type='password'
@@ -198,7 +217,7 @@ function SignUp({ signUp, logIn }) {
                         <CustomInput
                             id='confirmPassword'
                             isRequired
-                            placeholder={t('confirm-password') + ' *'}
+                            placeholder={t('confirm-password')}
                             value={newUser.checked_password}
                             onChange={(e) => verifyField(e, 'checked_password')}
                             type='password'
@@ -207,7 +226,7 @@ function SignUp({ signUp, logIn }) {
                         <CustomButton
                             text={t('sign-up')}
                             onClick={submitHandler}
-                            isDisabled={!canSubmit}
+                            isDisabled={!canSubmit || loading}
                         />
                         <Stack>
                             <Text
@@ -227,6 +246,9 @@ function SignUp({ signUp, logIn }) {
                             </Text>
                         </Stack>
                     </Stack>
+                    <Flex h='100px' justifyContent='center' dir='row'>
+                        {loading && <LoadingIndicator />}
+                    </Flex>
                 </Box>
             </Flex>
         </Flex>
