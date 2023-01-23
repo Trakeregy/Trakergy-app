@@ -1,5 +1,5 @@
-import { Link } from '@chakra-ui/react';
 import React from 'react';
+import { Link } from '@chakra-ui/react';
 import ROUTES from '../../utils/routes';
 import { CustomButton } from '../atoms/CustomBasicComponents';
 

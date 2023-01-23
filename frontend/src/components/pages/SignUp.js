@@ -22,7 +22,7 @@ import {
     firstNameAndUsernameValidator,
     passwordValidator,
 } from '../../utils/validators';
-import LoadingIndicator from '../atoms/LoadingIndicator';
+import { LoadingIndicator } from '../atoms';
 
 function SignUp({ signUp, logIn }) {
     const { t } = useTranslation();
@@ -134,7 +134,6 @@ function SignUp({ signUp, logIn }) {
             h={'100vh'}
             direction='row'
             justifyContent='flex-end'
-            bg={useColorModeValue('gray.50', 'gray.800')}
         >
             <Box overflow='hidden'>
                 <Image
@@ -151,7 +150,7 @@ function SignUp({ signUp, logIn }) {
                 justifyContent='center'
                 direction='column'
                 gap='12'
-                bg={useColorModeValue('white', 'gray.700')}
+                bg='white'
             >
                 <Stack>
                     <Heading fontSize={'xl'}>{t('welcome-to-app')}</Heading>

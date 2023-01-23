@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { CustomButton } from '../atoms/CustomBasicComponents';
 import { logOut as logOutAction } from '../../state/actions/auth';
+import { AuthPage } from '.';
 
 function Home({ logOut }) {
     return (
-        <div>
+        <AuthPage>
             Home
             <CustomButton text='Log out' onClick={logOut} />
-        </div>
+        </AuthPage>
     );
 }
 

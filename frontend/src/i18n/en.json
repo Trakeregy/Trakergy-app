@@ -27,5 +27,11 @@
     "error-password-length-max": "Password must have at most 20 characters",
     "error-password-missing-letter": "Password must contain at least one letter",
     "error-password-missing-number": "Password must contain at least one digit",
-    "error-passwords-dont-match": "Passwords do not match"
+    "error-passwords-dont-match": "Passwords do not match",
+    "settings": "Settings",
+    "log-out": "Log out",
+    "trips": "Trips",
+    "statistics": "Statistics",
+    "calendar": "Calendar",
+    "debts": "Debts"
 }
