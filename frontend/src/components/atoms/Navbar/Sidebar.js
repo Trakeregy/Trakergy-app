@@ -32,6 +32,7 @@ function Sidebar({ onClose, logOut, ...rest }) {
             h='100%'
             p={{ base: 0, md: 6, lg: 6 }}
             {...rest}
+            zIndex={2}
         >
             <Flex
                 w='full'
