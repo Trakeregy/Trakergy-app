@@ -1,10 +1,19 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import './i18n/config.js';
 import { Route, Routes } from 'react-router-dom';
 import ROUTES from './utils/routes.js';
 
-import { Home, Landing, LogIn, SignUp } from './components/pages';
+import {
+    Calendar,
+    Debts,
+    Home,
+    Landing,
+    LogIn,
+    Settings,
+    SignUp,
+    Statistics,
+} from './components/pages';
 import { PrivateRoute, UnauthRoute } from './components/atoms/RoutePermissions';
 
 function App() {
@@ -17,14 +26,6 @@ function App() {
                         <UnauthRoute>
                             <Landing />
                         </UnauthRoute>
-                    }
-                />
-                <Route
-                    path={ROUTES.HOME}
-                    element={
-                        <PrivateRoute>
-                            <Home />
-                        </PrivateRoute>
                     }
                 />
                 <Route
@@ -41,6 +42,46 @@ function App() {
                         <UnauthRoute>
                             <LogIn />
                         </UnauthRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.HOME}
+                    element={
+                        <PrivateRoute>
+                            <Home />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.STATISTICS}
+                    element={
+                        <PrivateRoute>
+                            <Statistics />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.CALENDAR}
+                    element={
+                        <PrivateRoute>
+                            <Calendar />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.DEBTS}
+                    element={
+                        <PrivateRoute>
+                            <Debts />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.SETTINGS}
+                    element={
+                        <PrivateRoute>
+                            <Settings />
+                        </PrivateRoute>
                     }
                 />
             </Routes>

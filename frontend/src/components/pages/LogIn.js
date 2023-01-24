@@ -6,7 +6,6 @@ import {
     Stack,
     Heading,
     Text,
-    useColorModeValue,
     Link,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +15,7 @@ import cover from '../../assets/cover.png';
 import { CustomInput, CustomButton } from '../atoms/CustomBasicComponents';
 import { logIn as logInAction } from '../../state/actions/auth';
 import { useNavigate } from 'react-router-dom';
-import LoadingIndicator from '../atoms/LoadingIndicator';
+import { LoadingIndicator } from '../atoms';
 
 function LogIn({ logIn }) {
     const { t } = useTranslation();
@@ -69,7 +68,6 @@ function LogIn({ logIn }) {
             h={'100vh'}
             direction='row'
             justifyContent='flex-end'
-            bg={useColorModeValue('gray.50', 'gray.800')}
         >
             <Box overflow='hidden'>
                 <Image
@@ -86,7 +84,7 @@ function LogIn({ logIn }) {
                 justifyContent='center'
                 direction='column'
                 gap='12'
-                bg={useColorModeValue('white', 'gray.700')}
+                bg='white'
             >
                 <Stack>
                     <Heading fontSize={'xl'}>{t('welcome-back')}</Heading>
