@@ -1,15 +1,24 @@
 import React from 'react';
-import { Avatar, Box, Flex, HStack, IconButton, Text } from '@chakra-ui/react';
+import { Box, Flex, HStack, IconButton, Text } from '@chakra-ui/react';
 import { BellIcon, MenuIcon } from '../icons';
+import { connect } from 'react-redux';
+import CustomAvatar from '../CustomBasicComponents/CustomAvatar';
 
-function Header({ onOpen }) {
+function Header({ onOpen, currentUser }) {
+    const {
+        first_name: firstName,
+        last_name: lastName,
+        image_url: imageUrl,
+    } = currentUser ? currentUser : {};
+    const userName = firstName + ' ' + lastName;
+
     return (
-        <Box p={{ base: 0, md: 6, lg: 6 }}>
+        <Box p={6} h={130}>
             <Flex
                 ml={{ base: 0, md: 126 }}
                 px={{ base: 6, md: 6 }}
                 borderRadius={20}
-                h='20'
+                h='full'
                 alignItems='center'
                 bg='white'
                 justifyContent={{ base: 'space-between', md: 'flex-end' }}
@@ -31,14 +40,9 @@ function Header({ onOpen }) {
                     />
                     <Flex alignItems={'center'}>
                         <Text fontSize='md' mx={5}>
-                            Justina Clark
+                            {userName}
                         </Text>
-                        <Avatar
-                            size={'sm'}
-                            src={
-                                'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                            }
-                        />
+                        <CustomAvatar src={imageUrl} name={userName} />
                     </Flex>
                 </HStack>
             </Flex>
@@ -46,4 +50,10 @@ function Header({ onOpen }) {
     );
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+    return {
+        currentUser: state.auth.currentUser,
+    };
+};
+
+export default connect(mapStateToProps)(Header);

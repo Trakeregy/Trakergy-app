@@ -11,8 +11,10 @@ import {
 } from '../icons';
 import ROUTES from '../../../utils/routes';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import { logOut as logOutAction } from '../../../state/actions/auth';
 
-function Sidebar({ onClose, ...rest }) {
+function Sidebar({ onClose, logOut, ...rest }) {
     const { t } = useTranslation();
 
     const LinkItems = [
@@ -74,11 +76,21 @@ function Sidebar({ onClose, ...rest }) {
                     key={'logout'}
                     icon={LogOutIcon}
                     text={t('log-out')}
-                    link={ROUTES.LANDING}
+                    onClick={logOut}
                 />
             </Flex>
         </Box>
     );
 }
 
-export default Sidebar;
+const mapStateToProps = (state) => {
+    return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        logOut: () => dispatch(logOutAction()),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

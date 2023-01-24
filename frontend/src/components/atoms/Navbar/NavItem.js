@@ -1,16 +1,19 @@
 import React from 'react';
-import { Flex, Link, Text, Icon } from '@chakra-ui/react';
+import { Flex, Text, Icon, Box } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
+import '../../../App.scss';
 
 function NavItem({ icon, text, link = '#', onClick = () => {} }) {
     return (
-        <Link
-            _focus={{ boxShadow: 'none' }}
-            px={{ base: 6 }}
-            w='full'
-            onClick={onClick}
-        >
-            <NavLink to={link} style={{ textDecoration: 'none' }}>
+        <Box w='100%' px={5}>
+            <NavLink
+                to={link}
+                style={{
+                    textDecoration: 'none',
+                    color: link === '#' ? 'black' : '',
+                }}
+                onClick={onClick}
+            >
                 <Flex
                     align='center'
                     p='4'
@@ -28,7 +31,7 @@ function NavItem({ icon, text, link = '#', onClick = () => {} }) {
                     </Text>
                 </Flex>
             </NavLink>
-        </Link>
+        </Box>
     );
 }
 
