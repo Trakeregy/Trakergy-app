@@ -1,6 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import { AuthPage } from '.';
+import BarChart from '../atoms/Graphs/BarChart';
 import LineChart from '../atoms/Graphs/LineChart';
 import PieChart from '../atoms/Graphs/PieChart';
 
@@ -9,7 +10,7 @@ function Statistics() {
         {
             id: 'Entertainment',
             label: 'Entertainment',
-            value: 70,
+            value: 700,
         },
         {
             id: 'Food',
@@ -241,10 +242,56 @@ function Statistics() {
             ],
         },
     ];
+    const barData = [
+        {
+            year: '2018',
+            Souvenirs: 34,
+            Entertainment: 145,
+            Food: 17,
+            Transportation: 77,
+        },
+        {
+            year: '2019',
+            Souvenirs: 12,
+            Entertainment: 25,
+            Food: 65,
+            Transportation: 67,
+        },
+        {
+            year: '2020',
+            Souvenirs: 49,
+            Entertainment: 223,
+            Food: 67,
+            Transportation: 11,
+        },
+        {
+            year: '2021',
+            Souvenirs: 25,
+            Entertainment: 67,
+            Food: 56,
+            Transportation: 95,
+        },
+        {
+            year: '2022',
+            Souvenirs: 12,
+            Entertainment: 67,
+            Food: 232,
+            Transportation: 97,
+        },
+    ];
+
+    const sum = data.map((i) => i.value).reduce((acc, a) => acc + a, 0);
+    const percentageData = data.map((i) => {
+        const newValue = Math.round((i.value / sum) * 100 * 100) / 100;
+        return {
+            ...i,
+            value: newValue,
+        };
+    });
 
     return (
         <AuthPage>
-            <Flex dir='row' gap={5}>
+            <Flex dir='row' gap={5} flexWrap='wrap'>
                 <PieChart
                     data={data}
                     title='Total sum of expenses by type, 2022'
@@ -252,6 +299,15 @@ function Statistics() {
                 <PieChart
                     data={data}
                     title='Number of expenses by type, 2022'
+                />
+                <PieChart
+                    data={percentageData}
+                    title='Percentage (%) of expenses by type, 2022'
+                />
+                <BarChart
+                    data={barData}
+                    title='Total of expenses by type, all years'
+                    keyName='year'
                 />
             </Flex>
             <Box mt={5}>

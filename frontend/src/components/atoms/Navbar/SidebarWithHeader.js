@@ -26,7 +26,7 @@ function SidebarWithHeader({ children }) {
 
             <Header onOpen={onOpen} />
 
-            <Box ml={{ base: 0, md: 126, lg: 126 }} p={6} pt={150}>
+            <Box ml={{ base: 0, md: 116, lg: 116 }} p={6} pt={130}>
                 {children}
             </Box>
         </Box>

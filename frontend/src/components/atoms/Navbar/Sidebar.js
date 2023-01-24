@@ -28,7 +28,7 @@ function Sidebar({ onClose, logOut, ...rest }) {
         <Box
             bg='transparent'
             pos='fixed'
-            w={{ base: 'full', md: 150, lg: 150 }}
+            w={{ base: 'full', md: 140, lg: 140 }}
             h='100%'
             p={{ base: 0, md: 6, lg: 6 }}
             {...rest}

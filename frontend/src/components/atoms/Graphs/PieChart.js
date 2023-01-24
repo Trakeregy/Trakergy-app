@@ -1,12 +1,13 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { ResponsivePie } from '@nivo/pie';
 import COLORS from '../../../theme/_colors.scss';
 
 const PieChart = ({ data, title }) => {
     const chartMargin = 80;
     return (
-        <Box
-            w={{ base: '100%', lg: '30%' }}
+        <Flex
+            flexDir='column'
+            flex='1'
             h='fit-content'
             bg='white'
             borderRadius={20}
@@ -15,7 +16,7 @@ const PieChart = ({ data, title }) => {
             <Text textAlign='center' fontSize={30}>
                 {title}
             </Text>
-            <Box w='100%' h={400}>
+            <Flex w='100%' h={400}>
                 <ResponsivePie
                     data={data}
                     colors={{ scheme: 'pastel2' }}
@@ -38,8 +39,8 @@ const PieChart = ({ data, title }) => {
                     activeInnerRadiusOffset={4}
                     activeOuterRadiusOffset={4}
                 />
-            </Box>
-        </Box>
+            </Flex>
+        </Flex>
     );
 };
 

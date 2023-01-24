@@ -20,7 +20,7 @@ const LineChart = ({ data, title, xAxisName, yAxisName }) => {
     };
 
     return (
-        <Box w='100%' h='fit-content' bg='white' borderRadius={20} p={5}>
+        <Box w='100%' bg='white' borderRadius={20} p={5}>
             <Text textAlign='center' fontSize={30}>
                 {title}
             </Text>
