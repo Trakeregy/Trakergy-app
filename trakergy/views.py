@@ -4,6 +4,7 @@ from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, Bl
 from rest_framework_simplejwt.tokens import AccessToken
 
 from .serializers import *
+from .models import Expense, Tag
 import re
 
 
@@ -133,3 +134,64 @@ class EditPasswordAPI(generics.GenericAPIView):
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
 
+
+class PersonalExpensesByTypeAPI(generics.GenericAPIView):
+    def get(self, request):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            try:
+                selected_year = request.query_params['year']
+                # to calculate the sum of current user's expenses
+                # get all the expenses that the current user must pay
+                curr_user_id = user.id
+                user_expenses = Expense.objects.filter(users_to_split__in=[curr_user_id], date__year=selected_year)
+
+                amounts_to_pay = dict()
+
+                # for each expense that the current user must pay,
+                # get his actual sum to pay for the respective expense
+                for e in user_expenses:
+                    curr_eid = e.id
+                    curr_e_amount = e.amount
+
+                    # get the ids of the users that must pay the current expense
+                    users_to_split = CustomUser.objects.filter(expenses__in=user_expenses.filter(id=curr_eid))
+                    users_to_split_ids = [u.id for u in users_to_split]
+                    
+                    # calculate how many users must pay the expense
+                    split_into = users_to_split.count()
+                    
+                    tag_name = Tag.objects.get(id=e.tag_id).name
+
+                    # add the tag if it does not exist
+                    if tag_name not in amounts_to_pay:
+                        amounts_to_pay[tag_name] = []
+
+                    # make an array of all individual expense value for a tag
+                    if curr_user_id in users_to_split_ids:
+                        amounts_to_pay[tag_name].append(float(curr_e_amount / split_into))
+
+                # calculate the sum for each tag
+                for k in amounts_to_pay:
+                    amounts_to_pay[k] = sum(amounts_to_pay[k])
+
+                # create the response object
+                amounts = []
+                for a in amounts_to_pay:
+                    tag_name = a
+                    total_sum = amounts_to_pay[a]
+                    if total_sum > 0:
+                        amounts.append({"tag_name": tag_name, "sum": total_sum})
+
+                data = SumByTypeSerializer(amounts, many=True).data
+                return Response(data=data, status=status.HTTP_200_OK)
+
+            except Exception:
+                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)

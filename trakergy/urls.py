@@ -1,4 +1,4 @@
-"""trakergy URL Configuration
+"""trackergy URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -16,7 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from trakergy.views import RegisterAPI, LogoutAPI, EditUsernameAPI, EditEmailAPI, EditPasswordAPI, SeeCurrentUserAPI
+from trakergy.views import (
+    RegisterAPI,
+    LogoutAPI,
+    EditUsernameAPI,
+    EditEmailAPI,
+    EditPasswordAPI,
+    SeeCurrentUserAPI,
+    PersonalExpensesByTypeAPI
+)
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -32,5 +40,7 @@ urlpatterns = [
     path('users/edit/email', EditEmailAPI.as_view(), name='edit_email'),
     path('users/edit/password', EditPasswordAPI.as_view(), name='edit_password'),
     path('users/view/current_user', SeeCurrentUserAPI.as_view(), name='see_current_user'),
+    # reports
+    path('reports/personal/sum_by_type', PersonalExpensesByTypeAPI.as_view(), name='personal_exp_sum_by_type'),
     path('', admin.site.urls),
 ]

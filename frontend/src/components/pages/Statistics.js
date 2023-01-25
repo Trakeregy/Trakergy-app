@@ -1,33 +1,23 @@
+import React, { useEffect } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import React from 'react';
+import { connect } from 'react-redux';
 import { AuthPage } from '.';
-import BarChart from '../atoms/Graphs/BarChart';
-import LineChart from '../atoms/Graphs/LineChart';
-import PieChart from '../atoms/Graphs/PieChart';
+import { BarChart, LineChart, PieChart } from '../atoms/Charts';
+import { getPersonalSumByType as getPersonalSumByTypeAction } from '../../state/actions/reports';
 
-function Statistics() {
-    const data = [
-        {
-            id: 'Entertainment',
-            label: 'Entertainment',
-            value: 700,
-        },
-        {
-            id: 'Food',
-            label: 'Food',
-            value: 149,
-        },
-        {
-            id: 'Transportation',
-            label: 'Transportation',
-            value: 508,
-        },
-        {
-            id: 'Souvenirs',
-            label: 'Souvenirs',
-            value: 65,
-        },
-    ];
+function Statistics({ getPersonalSumByType, sumByType }) {
+    useEffect(() => {
+        getPersonalSumByType(2022); // TODO: user - select year
+    }, []);
+
+    const pieData = sumByType.map((i) => {
+        return {
+            id: i.tag_name,
+            label: i.tag_name,
+            value: i.sum,
+        };
+    });
+
     const lineData = [
         {
             id: 'Souvenirs',
@@ -280,8 +270,8 @@ function Statistics() {
         },
     ];
 
-    const sum = data.map((i) => i.value).reduce((acc, a) => acc + a, 0);
-    const percentageData = data.map((i) => {
+    const sum = pieData.map((i) => i.value).reduce((acc, a) => acc + a, 0);
+    const percentagePieData = pieData.map((i) => {
         const newValue = Math.round((i.value / sum) * 100 * 100) / 100;
         return {
             ...i,
@@ -293,16 +283,13 @@ function Statistics() {
         <AuthPage>
             <Flex dir='row' gap={5} flexWrap='wrap'>
                 <PieChart
-                    data={data}
+                    data={pieData}
                     title='Total sum of expenses by type, 2022'
                 />
                 <PieChart
-                    data={data}
-                    title='Number of expenses by type, 2022'
-                />
-                <PieChart
-                    data={percentageData}
+                    data={percentagePieData}
                     title='Percentage (%) of expenses by type, 2022'
+                    labelSuffix='%'
                 />
                 <BarChart
                     data={barData}
@@ -320,4 +307,16 @@ function Statistics() {
     );
 }
 
-export default Statistics;
+const mapStateToProps = (state) => {
+    return {
+        sumByType: state.personalReports.sumByType,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getPersonalSumByType: (y) => dispatch(getPersonalSumByTypeAction(y)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Statistics);

@@ -47,7 +47,7 @@ const logOut = () => async (dispatch) => {
         },
     });
     localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-    localStorage.removeItem('persist:root');
+
     dispatch({
         type: AUTH_ACTION_TYPES.LOG_OUT,
     });
