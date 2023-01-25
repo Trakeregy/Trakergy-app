@@ -22,4 +22,21 @@ const getPersonalSumByType = (year) => async (dispatch) => {
     });
 };
 
-export { getPersonalSumByType };
+const getPersonalYears = () => async (dispatch) => {
+    const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+
+    const res = await axios.get(`${BASE_URL}/reports/personal/all_years`, {
+        headers: {
+            Authorization: `Bearer ${authToken}`,
+        },
+    });
+
+    const payload = res.data;
+
+    dispatch({
+        type: PERSONAL_REPORTS_ACTION_TYPES.GET_ALL_YEARS,
+        payload,
+    });
+};
+
+export { getPersonalSumByType, getPersonalYears };

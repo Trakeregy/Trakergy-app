@@ -23,7 +23,8 @@ from trakergy.views import (
     EditEmailAPI,
     EditPasswordAPI,
     SeeCurrentUserAPI,
-    PersonalExpensesByTypeAPI
+    PersonalExpensesByTypeAPI,
+    PersonalExpensesYearsAPI
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -41,6 +42,7 @@ urlpatterns = [
     path('users/edit/password', EditPasswordAPI.as_view(), name='edit_password'),
     path('users/view/current_user', SeeCurrentUserAPI.as_view(), name='see_current_user'),
     # reports
+    path('reports/personal/all_years', PersonalExpensesYearsAPI.as_view(), name='personal_exp_years'),
     path('reports/personal/sum_by_type', PersonalExpensesByTypeAPI.as_view(), name='personal_exp_sum_by_type'),
     path('', admin.site.urls),
 ]

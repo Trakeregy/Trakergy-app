@@ -135,6 +135,29 @@ class EditPasswordAPI(generics.GenericAPIView):
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
 
 
+class PersonalExpensesYearsAPI(generics.GenericAPIView):
+    def get(self, request):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            try:
+                curr_user_id = user.id
+                user_expenses = Expense.objects.filter(users_to_split__in=[curr_user_id])
+                years = list(set([e.date.year for e in user_expenses]))
+                years.sort(reverse=True)
+
+                return Response(data=years, status=status.HTTP_200_OK)
+
+            except Exception:
+                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+
+
 class PersonalExpensesByTypeAPI(generics.GenericAPIView):
     def get(self, request):
         try:
@@ -161,10 +184,10 @@ class PersonalExpensesByTypeAPI(generics.GenericAPIView):
                     # get the ids of the users that must pay the current expense
                     users_to_split = CustomUser.objects.filter(expenses__in=user_expenses.filter(id=curr_eid))
                     users_to_split_ids = [u.id for u in users_to_split]
-                    
+
                     # calculate how many users must pay the expense
                     split_into = users_to_split.count()
-                    
+
                     tag_name = Tag.objects.get(id=e.tag_id).name
 
                     # add the tag if it does not exist

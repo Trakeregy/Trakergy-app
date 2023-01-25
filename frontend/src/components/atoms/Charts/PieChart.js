@@ -4,6 +4,9 @@ import COLORS from '../../../theme/_colors.scss';
 
 const PieChart = ({ data, title, labelSuffix = '' }) => {
     const chartMargin = 80;
+    
+    if (!data || data.length === 0) return <></>;
+
     return (
         <Flex
             flexDir='column'

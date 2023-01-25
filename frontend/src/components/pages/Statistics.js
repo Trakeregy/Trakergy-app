@@ -1,20 +1,50 @@
-import React, { useEffect } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Flex, Select, Text } from '@chakra-ui/react';
 import { connect } from 'react-redux';
 import { AuthPage } from '.';
 import { BarChart, LineChart, PieChart } from '../atoms/Charts';
-import { getPersonalSumByType as getPersonalSumByTypeAction } from '../../state/actions/reports';
+import {
+    getPersonalSumByType as getPersonalSumByTypeAction,
+    getPersonalYears as getPersonalYearsAction,
+} from '../../state/actions/reports';
 
-function Statistics({ getPersonalSumByType, sumByType }) {
+function Statistics({
+    getPersonalSumByType,
+    getPersonalYears,
+    years,
+    sumByType,
+}) {
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
     useEffect(() => {
-        getPersonalSumByType(2022); // TODO: user - select year
+        getPersonalYears();
+        getPersonalSumByType(selectedYear);
     }, []);
+
+    useEffect(() => {
+        const newSelectedYear =
+            years && years.length > 0 ? years[0] : new Date().getFullYear();
+        handleSelectYear(newSelectedYear);
+    }, [years]);
+
+    const handleSelectYear = (newYear) => {
+        setSelectedYear(newYear);
+        getPersonalSumByType(newYear);
+    };
 
     const pieData = sumByType.map((i) => {
         return {
             id: i.tag_name,
             label: i.tag_name,
             value: i.sum,
+        };
+    });
+    const sum = pieData.map((i) => i.value).reduce((acc, a) => acc + a, 0);
+    const percentagePieData = pieData.map((i) => {
+        const newValue = Math.round((i.value / sum) * 100 * 100) / 100;
+        return {
+            ...i,
+            value: newValue,
         };
     });
 
@@ -270,25 +300,34 @@ function Statistics({ getPersonalSumByType, sumByType }) {
         },
     ];
 
-    const sum = pieData.map((i) => i.value).reduce((acc, a) => acc + a, 0);
-    const percentagePieData = pieData.map((i) => {
-        const newValue = Math.round((i.value / sum) * 100 * 100) / 100;
-        return {
-            ...i,
-            value: newValue,
-        };
-    });
-
     return (
         <AuthPage>
+            <Flex alignItems='center' mb={5}>
+                <Text>Select year</Text>
+                <Select
+                    bg='white'
+                    border='none'
+                    onChange={(e) => handleSelectYear(e.target.value)}
+                    defaultValue={selectedYear}
+                    value={selectedYear}
+                    w='fit-content'
+                    mx={5}
+                >
+                    {years?.map((y) => (
+                        <option key={y}>{y}</option>
+                    ))}
+                </Select>
+            </Flex>
             <Flex dir='row' gap={5} flexWrap='wrap'>
                 <PieChart
                     data={pieData}
-                    title='Total sum of expenses by type, 2022'
+                    title={'Total sum of expenses by type, ' + selectedYear}
                 />
                 <PieChart
                     data={percentagePieData}
-                    title='Percentage (%) of expenses by type, 2022'
+                    title={
+                        'Percentage (%) of expenses by type, ' + selectedYear
+                    }
                     labelSuffix='%'
                 />
                 <BarChart
@@ -309,12 +348,14 @@ function Statistics({ getPersonalSumByType, sumByType }) {
 
 const mapStateToProps = (state) => {
     return {
+        years: state.personalReports.years,
         sumByType: state.personalReports.sumByType,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        getPersonalYears: () => dispatch(getPersonalYearsAction()),
         getPersonalSumByType: (y) => dispatch(getPersonalSumByTypeAction(y)),
     };
 };
