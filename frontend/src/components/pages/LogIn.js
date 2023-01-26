@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-    Flex,
-    Box,
-    Image,
-    Stack,
-    Heading,
-    Text,
-    Link,
-} from '@chakra-ui/react';
+import { Flex, Box, Image, Stack, Heading, Text, Link } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import ROUTES from '../../utils/routes';
@@ -64,12 +56,11 @@ function LogIn({ logIn }) {
     };
 
     return (
-        <Flex
-            h={'100vh'}
-            direction='row'
-            justifyContent='flex-end'
-        >
-            <Box overflow='hidden'>
+        <Flex minH={'100vh'} direction='row' justifyContent='flex-end'>
+            <Box
+                overflow='hidden'
+                w={{ base: '80%', sm: '10%', md: '10%', lg: '100%' }}
+            >
                 <Image
                     objectFit='cover'
                     h='100%'
@@ -79,15 +70,25 @@ function LogIn({ logIn }) {
                 />
             </Box>
             <Flex
-                w='50vw'
-                px='28'
+                w='full'
+                px='20'
                 justifyContent='center'
                 direction='column'
                 gap='12'
                 bg='white'
+                py={10}
             >
                 <Stack>
-                    <Heading fontSize={'xl'}>{t('welcome-back')}</Heading>
+                    <Heading
+                        fontSize={{
+                            base: '30pt',
+                            lg: '36pt',
+                            sm: '36pt',
+                            md: '36pt',
+                        }}
+                    >
+                        {t('welcome-back')}
+                    </Heading>
                     <Text fontSize={'md'} color={'black.600'}>
                         {t('enter-account')}
                     </Text>

@@ -1,35 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Flex, Select, Text } from '@chakra-ui/react';
 import { connect } from 'react-redux';
 import { AuthPage } from '.';
 import { BarChart, LineChart, PieChart } from '../atoms/Charts';
 import {
-    getPersonalSumByType as getPersonalSumByTypeAction,
     getPersonalYears as getPersonalYearsAction,
+    getPersonalSumByTypeLastXYears as getPersonalSumByTypeLastXYearsAction,
 } from '../../state/actions/reports';
 
 function Statistics({
-    getPersonalSumByType,
     getPersonalYears,
+    getPersonalSumByTypeLastXYears,
     years,
-    sumByType,
+    expensesPerYear,
 }) {
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [lastNYears, setLastNYears] = useState(10);
+    const [lastNYearsData, setLastNYearsData] = useState(expensesPerYear);
+    const [sumByType, setSumByType] = useState([]);
+
+    const y = useMemo(() => years, [years]);
 
     useEffect(() => {
         getPersonalYears();
-        getPersonalSumByType(selectedYear);
+        getPersonalSumByTypeLastXYears(lastNYears); // 10
     }, []);
 
     useEffect(() => {
-        const newSelectedYear =
-            years && years.length > 0 ? years[0] : new Date().getFullYear();
-        handleSelectYear(newSelectedYear);
-    }, [years]);
+        handleSelectYear(selectedYear);
+        setLastNYearsData(expensesPerYear);
+        setLastNYears(10);
+    }, [expensesPerYear]);
 
-    const handleSelectYear = (newYear) => {
+    useEffect(() => {
+        if (!years) handleSelectYear(2022);
+        else handleSelectYear(years[0]);
+    }, [y]);
+
+    const handleSelectYear = (yr) => {
+        const newYear = parseInt(yr);
         setSelectedYear(newYear);
-        getPersonalSumByType(newYear);
+        if (!expensesPerYear) return;
+
+        const filtered = expensesPerYear.filter((i) => i.year === newYear);
+        if (filtered.length > 0) {
+            const yearObject = filtered[0];
+            const amounts = yearObject.amounts;
+            setSumByType(amounts);
+        }
+    };
+
+    const handleSelectLastNYears = (newVal) => {
+        const newExpenses = expensesPerYear.slice(-newVal);
+        setLastNYearsData(newExpenses);
+        setLastNYears(newVal);
     };
 
     const pieData = sumByType.map((i) => {
@@ -262,63 +286,50 @@ function Statistics({
             ],
         },
     ];
-    const barData = [
-        {
-            year: '2018',
-            Souvenirs: 34,
-            Entertainment: 145,
-            Food: 17,
-            Transportation: 77,
-        },
-        {
-            year: '2019',
-            Souvenirs: 12,
-            Entertainment: 25,
-            Food: 65,
-            Transportation: 67,
-        },
-        {
-            year: '2020',
-            Souvenirs: 49,
-            Entertainment: 223,
-            Food: 67,
-            Transportation: 11,
-        },
-        {
-            year: '2021',
-            Souvenirs: 25,
-            Entertainment: 67,
-            Food: 56,
-            Transportation: 95,
-        },
-        {
-            year: '2022',
-            Souvenirs: 12,
-            Entertainment: 67,
-            Food: 232,
-            Transportation: 97,
-        },
-    ];
+
+    let counter = 0;
+    let number = lastNYearsData ? lastNYearsData.length : 0;
+    const barData = lastNYearsData
+        ? lastNYearsData.map((i) => {
+              let tags = [];
+              if (i.amounts?.length > 0) {
+                  i.amounts.map((am) => {
+                      return (tags[am.tag_name] = am.sum);
+                  });
+              }
+              const newObj = {
+                  year: i.year,
+                  ...tags,
+              };
+              const noOfKeys = Object.keys(newObj).length;
+              if (noOfKeys === 1) counter++;
+              return newObj;
+          })
+        : [];
 
     return (
         <AuthPage>
             <Flex alignItems='center' mb={5}>
-                <Text>Select year</Text>
-                <Select
-                    bg='white'
-                    border='none'
-                    onChange={(e) => handleSelectYear(e.target.value)}
-                    defaultValue={selectedYear}
-                    value={selectedYear}
-                    w='fit-content'
-                    mx={5}
-                >
-                    {years?.map((y) => (
-                        <option key={y}>{y}</option>
-                    ))}
-                </Select>
+                {years && years.length > 0 && (
+                    <>
+                        <Text>Select year</Text>
+                        <Select
+                            bg='white'
+                            border='none'
+                            onChange={(e) => handleSelectYear(e.target.value)}
+                            value={selectedYear}
+                            w='fit-content'
+                            mx={5}
+                        >
+                            {years.map((y) => (
+                                <option key={y}>{y}</option>
+                            ))}
+                        </Select>
+                    </>
+                )}
             </Flex>
-            <Flex dir='row' gap={5} flexWrap='wrap'>
+
+            <Flex flexDir={{base: 'row', sm:'column', md:'column', lg:'row'}} gap={5} flexWrap='wrap'>
                 <PieChart
                     data={pieData}
                     title={'Total sum of expenses by type, ' + selectedYear}
@@ -330,12 +341,45 @@ function Statistics({
                     }
                     labelSuffix='%'
                 />
-                <BarChart
-                    data={barData}
-                    title='Total of expenses by type, all years'
-                    keyName='year'
-                />
             </Flex>
+            {counter !== number && (
+                <Flex
+                    flex='1'
+                    flexDir='column'
+                    bg='white'
+                    borderRadius={20}
+                    my={5}
+                >
+                    <Flex
+                        alignItems='center'
+                        mb={5}
+                        px={10}
+                        pt={10}
+                        justifyContent='flex-end'
+                    >
+                        <Text>Select number of years</Text>
+                        <Select
+                            bg='grey.100'
+                            border='none'
+                            onChange={(e) =>
+                                handleSelectLastNYears(e.target.value)
+                            }
+                            value={lastNYears}
+                            w='fit-content'
+                            mx={5}
+                        >
+                            {[2, 3, 5, 8, 10].map((y) => (
+                                <option key={y}>{y}</option>
+                            ))}
+                        </Select>
+                    </Flex>
+                    <BarChart
+                        data={barData}
+                        title='Total of expenses by type, all years'
+                        keyName='year'
+                    />
+                </Flex>
+            )}
             <Box mt={5}>
                 <LineChart
                     data={lineData}
@@ -349,14 +393,15 @@ function Statistics({
 const mapStateToProps = (state) => {
     return {
         years: state.personalReports.years,
-        sumByType: state.personalReports.sumByType,
+        expensesPerYear: state.personalReports.expensesPerYear,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getPersonalYears: () => dispatch(getPersonalYearsAction()),
-        getPersonalSumByType: (y) => dispatch(getPersonalSumByTypeAction(y)),
+        getPersonalSumByTypeLastXYears: (ny) =>
+            dispatch(getPersonalSumByTypeLastXYearsAction(ny)),
     };
 };
 

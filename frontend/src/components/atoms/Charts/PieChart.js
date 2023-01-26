@@ -42,11 +42,11 @@ const PieChart = ({ data, title, labelSuffix = '' }) => {
                     activeOuterRadiusOffset={4}
                     legends={[
                         {
-                            anchor: 'bottom',
-                            direction: 'row',
+                            anchor: 'bottom-left',
+                            direction: 'column',
                             justify: false,
                             translateX: 0,
-                            translateY: 60,
+                            translateY: 0,
                             itemsSpacing: 0,
                             itemWidth: 100,
                             itemHeight: 18,

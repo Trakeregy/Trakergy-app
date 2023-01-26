@@ -17,6 +17,14 @@ const personalReportsReducer = (state = ReportState, action) => {
             ...state,
             years,
         };
+    } else if (
+        action.type === PERSONAL_REPORTS_ACTION_TYPES.SUM_BY_TYPE_LAST_X_YEARS
+    ) {
+        let expensesPerYear = action.payload;
+        return {
+            ...state,
+            expensesPerYear,
+        };
     }
     return state;
 };

@@ -2,7 +2,14 @@ import { Box, Text } from '@chakra-ui/react';
 import { ResponsiveBar } from '@nivo/bar';
 
 const BarChart = ({ data, title, keyName }) => {
-    const keys = Object.keys(data[0]).filter((k) => k !== keyName);
+    let keySet = new Set();
+    for (let i = 0; i < data.length; i++) {
+        let d = data[i];
+        const keys = Object.keys(d).filter((k) => k !== keyName);
+        keys.forEach((k) => keySet.add(k));
+    }
+
+    let keyArr = Array.from(keySet);
 
     return (
         <Box
@@ -19,7 +26,7 @@ const BarChart = ({ data, title, keyName }) => {
                 <ResponsiveBar
                     data={data}
                     colors={{ scheme: 'pastel2' }}
-                    keys={keys}
+                    keys={keyArr}
                     indexBy='year'
                     margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
                     padding={0.3}
