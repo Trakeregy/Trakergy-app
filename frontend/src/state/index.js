@@ -5,8 +5,8 @@ import storage from 'redux-persist/lib/storage';
 import rootReducer from './reducers/index.js';
 
 const persistConfig = {
-    key: 'root',
-    storage,
+  key: 'root',
+  storage,
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = createStore(persistedReducer, applyMiddleware(thunk));

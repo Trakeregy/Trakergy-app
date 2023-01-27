@@ -8,12 +8,12 @@ import SettingsIcon from './SettingsIcon';
 import TripIcon from './TripIcon';
 
 export {
-    BellIcon,
-    CalendarIcon,
-    ChartIcon,
-    LogOutIcon,
-    MoneyIcon,
-    MenuIcon,
-    SettingsIcon,
-    TripIcon,
+  BellIcon,
+  CalendarIcon,
+  ChartIcon,
+  LogOutIcon,
+  MoneyIcon,
+  MenuIcon,
+  SettingsIcon,
+  TripIcon,
 };

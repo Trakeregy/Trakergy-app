@@ -9,13 +9,13 @@ import Calendar from './Calendar';
 import Debts from './Debts';
 
 export {
-    Landing,
-    SignUp,
-    LogIn,
-    Home,
-    AuthPage,
-    Statistics,
-    Settings,
-    Calendar,
-    Debts,
+  Landing,
+  SignUp,
+  LogIn,
+  Home,
+  AuthPage,
+  Statistics,
+  Settings,
+  Calendar,
+  Debts,
 };
