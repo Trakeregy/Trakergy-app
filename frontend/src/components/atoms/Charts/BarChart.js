@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { ResponsiveBar } from '@nivo/bar';
 
 const BarChart = ({ data, title, keyName }) => {
@@ -12,8 +12,9 @@ const BarChart = ({ data, title, keyName }) => {
   let keyArr = Array.from(keySet);
 
   return (
-    <Box
-      w={{ base: '100%', lg: 'full' }}
+    <Flex
+      flexDir='column'
+      flex='1'
       h='fit-content'
       bg='white'
       borderRadius={20}
@@ -22,7 +23,7 @@ const BarChart = ({ data, title, keyName }) => {
       <Text textAlign='center' fontSize={30}>
         {title}
       </Text>
-      <Box w='100%' h={400}>
+      <Flex w='100%' h={400}>
         <ResponsiveBar
           data={data}
           colors={{ scheme: 'pastel2' }}
@@ -82,8 +83,8 @@ const BarChart = ({ data, title, keyName }) => {
             );
           }}
         />
-      </Box>
-    </Box>
+      </Flex>
+    </Flex>
   );
 };
 

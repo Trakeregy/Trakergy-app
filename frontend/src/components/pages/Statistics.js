@@ -308,6 +308,23 @@ function Statistics({
         return newObj;
       })
     : [];
+  const barData2 = lastNYearsData
+    ? lastNYearsData.map((i) => {
+        const year = i.year;
+        const amounts = i.amounts;
+        const values = amounts.map((am) => am.sum);
+        const totalSum = values.reduce((sum, amount) => sum + amount, 0);
+        const newObj = totalSum
+          ? {
+              year,
+              Total: Math.round(totalSum * 100) / 100,
+            }
+          : {
+              year,
+            };
+        return newObj;
+      })
+    : [];
 
   return (
     <AuthPage>
@@ -331,11 +348,7 @@ function Statistics({
         )}
       </Flex>
 
-      <Flex
-        flexDir={{ base: 'row', sm: 'column', md: 'column', lg: 'row' }}
-        gap={5}
-        flexWrap='wrap'
-      >
+      <Flex flexDir='row' gap={5} flexWrap='wrap'>
         <PieChart
           data={pieData}
           title={'Total sum of expenses by type, ' + selectedYear}
@@ -346,6 +359,13 @@ function Statistics({
           labelSuffix='%'
         />
       </Flex>
+
+      <Box mt={5}>
+        <LineChart
+          data={lineData}
+          title='Total sum of expenses by type, on each month'
+        />
+      </Box>
 
       <Flex flex='1' flexDir='column' bg='white' borderRadius={20} my={5}>
         <Flex
@@ -370,23 +390,24 @@ function Statistics({
           </Select>
         </Flex>
         {counter !== number ? (
-          <BarChart
-            data={barData}
-            title='Total of expenses by type, all years'
-            keyName='year'
-          />
+          <Flex flexDir='row' gap={5} flexWrap='wrap'>
+            <BarChart
+              data={barData}
+              title={`Total of expenses by type, last ${lastNYears} years`}
+              keyName='year'
+            />
+            <BarChart
+              data={barData2}
+              title={`Total of expenses, last ${lastNYears} years`}
+              keyName='year'
+            />
+          </Flex>
         ) : (
           <Text px={10} pb={10} textAlign='center'>
             No expenses in the last {lastNYears} years
           </Text>
         )}
       </Flex>
-      <Box mt={5}>
-        <LineChart
-          data={lineData}
-          title='Total sum of expenses by type, on each month'
-        />
-      </Box>
     </AuthPage>
   );
 }
