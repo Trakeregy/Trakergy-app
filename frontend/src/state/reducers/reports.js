@@ -5,11 +5,11 @@ export const ReportState = {
 };
 
 const personalReportsReducer = (state = ReportState, action) => {
-  if (action.type === PERSONAL_REPORTS_ACTION_TYPES.SUM_BY_TYPE) {
-    let sumByType = action.payload;
+  if (action.type === PERSONAL_REPORTS_ACTION_TYPES.SUM_BY_TYPE_BY_MONTH) {
+    let sumByTypeByMonth = action.payload;
     return {
       ...state,
-      sumByType,
+      sumByTypeByMonth,
     };
   } else if (action.type === PERSONAL_REPORTS_ACTION_TYPES.GET_ALL_YEARS) {
     let years = action.payload;

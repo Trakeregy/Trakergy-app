@@ -33,5 +33,13 @@
     "trips": "Trips",
     "statistics": "Statistics",
     "calendar": "Calendar",
-    "debts": "Debts"
+    "debts": "Debts",
+    "select-year": "Select year",
+    "sum-by-type": "Total expenses by type",
+    "percentage-by-type": "Percentage (%) by type",
+    "sum-by-type-monthly": "Monthly total expenses by type",
+    "select-number-of-years": "Select number of years",
+    "last": "last",
+    "years": "years",
+    "total-expenses": "Total expenses"
 }

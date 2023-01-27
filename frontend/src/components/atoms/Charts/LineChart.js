@@ -1,10 +1,14 @@
 import { Box, Text } from '@chakra-ui/react';
 import { ResponsiveLine } from '@nivo/line';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const LineChart = ({ data, title, xAxisName, yAxisName }) => {
   const [dataToDisplay, setDataToDisplay] = useState(data);
   const [dataId, setDataId] = useState(null);
+
+  useEffect(() => {
+    setDataToDisplay(data);
+  }, [data]);
 
   const handleOnClick = (point, _) => {
     const pointId = point.serieId;

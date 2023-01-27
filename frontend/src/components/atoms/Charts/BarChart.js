@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { ResponsiveBar } from '@nivo/bar';
 
 const BarChart = ({ data, title, keyName }) => {
@@ -28,7 +28,7 @@ const BarChart = ({ data, title, keyName }) => {
           data={data}
           colors={{ scheme: 'pastel2' }}
           keys={keyArr}
-          indexBy='year'
+          indexBy={keyName}
           margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
           padding={0.3}
           valueScale={{ type: 'linear' }}
@@ -76,12 +76,6 @@ const BarChart = ({ data, title, keyName }) => {
             },
           ]}
           role='application'
-          ariaLabel='Nivo bar chart demo'
-          barAriaLabel={function (e) {
-            return (
-              e.id + ': ' + e.formattedValue + ' in country: ' + e.indexValue
-            );
-          }}
         />
       </Flex>
     </Flex>

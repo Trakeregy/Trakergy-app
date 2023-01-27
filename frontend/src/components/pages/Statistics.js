@@ -6,23 +6,31 @@ import { BarChart, LineChart, PieChart } from '../atoms/Charts';
 import {
   getPersonalYears as getPersonalYearsAction,
   getPersonalSumByTypeLastXYears as getPersonalSumByTypeLastXYearsAction,
+  getPersonalSumByTypeByMonth as getPersonalSumByTypeByMonthAction,
 } from '../../state/actions/reports';
+import { getMonthName } from '../../utils/functions';
+import { useTranslation } from 'react-i18next';
 
 function Statistics({
   getPersonalYears,
   getPersonalSumByTypeLastXYears,
+  getPersonalSumByTypeByMonth,
   years,
   expensesPerYear,
+  sumByTypeByMonth,
 }) {
+  const { t } = useTranslation();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [lastNYears, setLastNYears] = useState(10);
   const [lastNYearsData, setLastNYearsData] = useState();
   const [sumByType, setSumByType] = useState([]);
+  const [monthlyData, setMonthlyData] = useState();
   const y = useMemo(() => years, [years]);
 
   useEffect(() => {
     getPersonalYears();
     getPersonalSumByTypeLastXYears(lastNYears); // 10
+    getPersonalSumByTypeByMonth();
   }, []);
 
   useEffect(() => {
@@ -41,7 +49,7 @@ function Statistics({
   const handleSelectYear = (yr) => {
     const newYear = parseInt(yr);
     setSelectedYear(newYear);
-    if (!expensesPerYear) return;
+    if (!expensesPerYear || !sumByTypeByMonth) return;
 
     const filtered = expensesPerYear.filter((i) => i.year === newYear);
     if (filtered.length > 0) {
@@ -49,6 +57,30 @@ function Statistics({
       const amounts = yearObject.amounts;
       setSumByType(amounts);
     }
+
+    const monthlyData = sumByTypeByMonth[newYear];
+
+    const dataPerTag = monthlyData.map((item) => {
+      const tag = item.tag_name;
+      const monthIndex = item.month;
+      const monthSumForTag = item.sum;
+      const monthName = getMonthName(monthIndex);
+
+      return {
+        id: tag,
+        x: monthName,
+        y: monthSumForTag,
+      };
+    });
+
+    let data = {};
+    dataPerTag.forEach((item) => {
+      const { id, x, y } = item;
+      if (!(id in data)) data[id] = [];
+      data[id].push({ x, y });
+    });
+
+    setMonthlyData(data);
   };
 
   const handleSelectLastNYears = (newVal) => {
@@ -73,220 +105,9 @@ function Statistics({
     };
   });
 
-  const lineData = [
-    {
-      id: 'Souvenirs',
-      data: [
-        {
-          x: 'january',
-          y: 296,
-        },
-        {
-          x: 'february',
-          y: 21,
-        },
-        {
-          x: 'march',
-          y: 245,
-        },
-        {
-          x: 'april',
-          y: 13,
-        },
-        {
-          x: 'may',
-          y: 259,
-        },
-        {
-          x: 'june',
-          y: 99,
-        },
-        {
-          x: 'july',
-          y: 252,
-        },
-        {
-          x: 'august',
-          y: 171,
-        },
-        {
-          x: 'september',
-          y: 231,
-        },
-        {
-          x: 'october',
-          y: 96,
-        },
-        {
-          x: 'november',
-          y: 2,
-        },
-        {
-          x: 'december',
-          y: 146,
-        },
-      ],
-    },
-    {
-      id: 'Entertainment',
-      data: [
-        {
-          x: 'january',
-          y: 208,
-        },
-        {
-          x: 'february',
-          y: 179,
-        },
-        {
-          x: 'march',
-          y: 29,
-        },
-        {
-          x: 'april',
-          y: 116,
-        },
-        {
-          x: 'may',
-          y: 129,
-        },
-        {
-          x: 'june',
-          y: 297,
-        },
-        {
-          x: 'july',
-          y: 178,
-        },
-        {
-          x: 'august',
-          y: 251,
-        },
-        {
-          x: 'september',
-          y: 168,
-        },
-        {
-          x: 'october',
-          y: 34,
-        },
-        {
-          x: 'november',
-          y: 201,
-        },
-        {
-          x: 'december',
-          y: 206,
-        },
-      ],
-    },
-    {
-      id: 'Food',
-      data: [
-        {
-          x: 'january',
-          y: 220,
-        },
-        {
-          x: 'february',
-          y: 299,
-        },
-        {
-          x: 'march',
-          y: 245,
-        },
-        {
-          x: 'april',
-          y: 281,
-        },
-        {
-          x: 'may',
-          y: 121,
-        },
-        {
-          x: 'june',
-          y: 26,
-        },
-        {
-          x: 'july',
-          y: 276,
-        },
-        {
-          x: 'august',
-          y: 189,
-        },
-        {
-          x: 'september',
-          y: 15,
-        },
-        {
-          x: 'october',
-          y: 131,
-        },
-        {
-          x: 'november',
-          y: 76,
-        },
-        {
-          x: 'december',
-          y: 175,
-        },
-      ],
-    },
-    {
-      id: 'Transportation',
-      data: [
-        {
-          x: 'january',
-          y: 249,
-        },
-        {
-          x: 'february',
-          y: 238,
-        },
-        {
-          x: 'march',
-          y: 57,
-        },
-        {
-          x: 'april',
-          y: 256,
-        },
-        {
-          x: 'may',
-          y: 190,
-        },
-        {
-          x: 'june',
-          y: 247,
-        },
-        {
-          x: 'july',
-          y: 193,
-        },
-        {
-          x: 'august',
-          y: 194,
-        },
-        {
-          x: 'september',
-          y: 249,
-        },
-        {
-          x: 'october',
-          y: 22,
-        },
-        {
-          x: 'november',
-          y: 161,
-        },
-        {
-          x: 'december',
-          y: 262,
-        },
-      ],
-    },
-  ];
+  const lineData = monthlyData
+    ? Object.keys(monthlyData).map((k) => ({ id: k, data: monthlyData[k] }))
+    : [];
 
   let counter = 0;
   let number = lastNYearsData ? lastNYearsData.length : 0;
@@ -331,7 +152,7 @@ function Statistics({
       <Flex alignItems='center' mb={5}>
         {years && years.length > 0 && (
           <>
-            <Text>Select year</Text>
+            <Text>{t('select-year')}</Text>
             <Select
               bg='white'
               border='none'
@@ -351,20 +172,17 @@ function Statistics({
       <Flex flexDir='row' gap={5} flexWrap='wrap'>
         <PieChart
           data={pieData}
-          title={'Total sum of expenses by type, ' + selectedYear}
+          title={`${t('sum-by-type')}, ${selectedYear}`}
         />
         <PieChart
           data={percentagePieData}
-          title={'Percentage (%) of expenses by type, ' + selectedYear}
+          title={`${t('percentage-by-type')}, ${selectedYear}`}
           labelSuffix='%'
         />
       </Flex>
 
       <Box mt={5}>
-        <LineChart
-          data={lineData}
-          title='Total sum of expenses by type, on each month'
-        />
+        <LineChart data={lineData} title={t('sum-by-type-monthly')} />
       </Box>
 
       <Flex flex='1' flexDir='column' bg='white' borderRadius={20} my={5}>
@@ -375,7 +193,7 @@ function Statistics({
           pt={10}
           justifyContent='flex-end'
         >
-          <Text>Select number of years</Text>
+          <Text>{t('select-number-of-years')}</Text>
           <Select
             bg='grey.100'
             border='none'
@@ -393,18 +211,22 @@ function Statistics({
           <Flex flexDir='row' gap={5} flexWrap='wrap'>
             <BarChart
               data={barData}
-              title={`Total of expenses by type, last ${lastNYears} years`}
+              title={`${t('sum-by-type')}, ${t('last')} ${lastNYears} ${t(
+                'years'
+              )}`}
               keyName='year'
             />
             <BarChart
               data={barData2}
-              title={`Total of expenses, last ${lastNYears} years`}
+              title={`${t('total-expenses')}, ${t('last')} ${lastNYears} ${t(
+                'years'
+              )}`}
               keyName='year'
             />
           </Flex>
         ) : (
           <Text px={10} pb={10} textAlign='center'>
-            No expenses in the last {lastNYears} years
+            {`${t('no-expenses')} (${t('last')} ${lastNYears} ${t('years')})`}
           </Text>
         )}
       </Flex>
@@ -416,6 +238,7 @@ const mapStateToProps = (state) => {
   return {
     years: state.personalReports.years,
     expensesPerYear: state.personalReports.expensesPerYear,
+    sumByTypeByMonth: state.personalReports.sumByTypeByMonth,
   };
 };
 
@@ -424,6 +247,8 @@ const mapDispatchToProps = (dispatch) => {
     getPersonalYears: () => dispatch(getPersonalYearsAction()),
     getPersonalSumByTypeLastXYears: (ny) =>
       dispatch(getPersonalSumByTypeLastXYearsAction(ny)),
+    getPersonalSumByTypeByMonth: (y) =>
+      dispatch(getPersonalSumByTypeByMonthAction(y)),
   };
 };
 
