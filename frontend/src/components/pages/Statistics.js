@@ -16,9 +16,8 @@ function Statistics({
 }) {
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [lastNYears, setLastNYears] = useState(10);
-    const [lastNYearsData, setLastNYearsData] = useState(expensesPerYear);
+    const [lastNYearsData, setLastNYearsData] = useState();
     const [sumByType, setSumByType] = useState([]);
-
     const y = useMemo(() => years, [years]);
 
     useEffect(() => {
@@ -27,13 +26,15 @@ function Statistics({
     }, []);
 
     useEffect(() => {
-        handleSelectYear(selectedYear);
-        setLastNYearsData(expensesPerYear);
-        setLastNYears(10);
+        if (expensesPerYear) {
+            handleSelectYear(y[0]);
+            setLastNYearsData(expensesPerYear);
+            setLastNYears(10);
+        }
     }, [expensesPerYear]);
 
     useEffect(() => {
-        if (!years) handleSelectYear(2022);
+        if (!years) return
         else handleSelectYear(years[0]);
     }, [y]);
 
@@ -60,7 +61,7 @@ function Statistics({
         return {
             id: i.tag_name,
             label: i.tag_name,
-            value: i.sum,
+            value: Math.round(i.sum * 100) / 100,
         };
     });
     const sum = pieData.map((i) => i.value).reduce((acc, a) => acc + a, 0);
@@ -294,7 +295,8 @@ function Statistics({
               let tags = [];
               if (i.amounts?.length > 0) {
                   i.amounts.map((am) => {
-                      return (tags[am.tag_name] = am.sum);
+                      tags[am.tag_name] = Math.round(am.sum * 100) / 100;
+                      return null;
                   });
               }
               const newObj = {
@@ -342,7 +344,7 @@ function Statistics({
                     labelSuffix='%'
                 />
             </Flex>
-            {counter !== number && (
+            
                 <Flex
                     flex='1'
                     flexDir='column'
@@ -373,13 +375,13 @@ function Statistics({
                             ))}
                         </Select>
                     </Flex>
-                    <BarChart
+                    {counter !== number ? (<BarChart
                         data={barData}
                         title='Total of expenses by type, all years'
                         keyName='year'
                     />
+                    ) : <Text px={10} pb={10} textAlign='center'>No expenses in the last {lastNYears} years</Text>}
                 </Flex>
-            )}
             <Box mt={5}>
                 <LineChart
                     data={lineData}
