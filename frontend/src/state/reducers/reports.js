@@ -6,13 +6,13 @@ export const ReportState = {
 
 const personalReportsReducer = (state = ReportState, action) => {
   if (action.type === PERSONAL_REPORTS_ACTION_TYPES.SUM_BY_TYPE_BY_MONTH) {
-    let sumByTypeByMonth = action.payload;
+    const sumByTypeByMonth = action.payload;
     return {
       ...state,
       sumByTypeByMonth,
     };
   } else if (action.type === PERSONAL_REPORTS_ACTION_TYPES.GET_ALL_YEARS) {
-    let years = action.payload;
+    const years = action.payload;
     return {
       ...state,
       years,
@@ -20,7 +20,7 @@ const personalReportsReducer = (state = ReportState, action) => {
   } else if (
     action.type === PERSONAL_REPORTS_ACTION_TYPES.SUM_BY_TYPE_LAST_X_YEARS
   ) {
-    let expensesPerYear = action.payload;
+    const expensesPerYear = action.payload;
     return {
       ...state,
       expensesPerYear,
@@ -28,10 +28,18 @@ const personalReportsReducer = (state = ReportState, action) => {
   } else if (
     action.type === PERSONAL_REPORTS_ACTION_TYPES.GET_ALL_YEARS_DAILY_COUNT
   ) {
-    let dailyCountAllYears = action.payload;
+    const dailyCountAllYears = action.payload;
     return {
       ...state,
       dailyCountAllYears,
+    };
+  } else if (
+    action.type === PERSONAL_REPORTS_ACTION_TYPES.GET_SUM_PER_COUNTRY
+  ) {
+    const sumPerCountry = action.payload;
+    return {
+      ...state,
+      sumPerCountry,
     };
   }
   return state;

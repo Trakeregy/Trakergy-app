@@ -2,12 +2,19 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Flex, Select, Text } from '@chakra-ui/react';
 import { connect } from 'react-redux';
 import { AuthPage } from '.';
-import { BarChart, CalendarChart, LineChart, PieChart } from '../atoms/Charts';
+import {
+  BarChart,
+  CalendarChart,
+  LineChart,
+  MapChart,
+  PieChart,
+} from '../atoms/Charts';
 import {
   getPersonalYears as getPersonalYearsAction,
   getPersonalSumByTypeLastXYears as getPersonalSumByTypeLastXYearsAction,
   getPersonalSumByTypeByMonth as getPersonalSumByTypeByMonthAction,
   getPersonalDailyAllYears as getPersonalDailyAllYearsAction,
+  getPersonalExpensesByCountry as getPersonalExpensesByCountryAction,
 } from '../../state/actions/reports';
 import { getMonthName } from '../../utils/functions';
 import { useTranslation } from 'react-i18next';
@@ -17,10 +24,12 @@ function Statistics({
   getPersonalSumByTypeLastXYears,
   getPersonalSumByTypeByMonth,
   getPersonalDailyAllYears,
+  getPersonalExpensesByCountry,
   years,
   expensesPerYear,
   sumByTypeByMonth,
   dailyCountAllYears,
+  sumPerCountry,
 }) {
   const { t } = useTranslation();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -29,6 +38,7 @@ function Statistics({
   const [sumByType, setSumByType] = useState([]);
   const [monthlyData, setMonthlyData] = useState();
   const [dailyData, setDailyData] = useState();
+  const [dataPerCountry, setDataPerCountry] = useState([]);
   const y = useMemo(() => years, [years]);
 
   useEffect(() => {
@@ -36,6 +46,7 @@ function Statistics({
     getPersonalSumByTypeLastXYears(lastNYears); // 10
     getPersonalSumByTypeByMonth();
     getPersonalDailyAllYears();
+    getPersonalExpensesByCountry();
   }, []);
 
   useEffect(() => {
@@ -57,7 +68,18 @@ function Statistics({
 
       setDailyData(daily);
     }
-  }, [expensesPerYear, sumByTypeByMonth, dailyCountAllYears]);
+
+    if (sumPerCountry) {
+      const perCountry = Object.keys(sumPerCountry).map((k) => {
+        return {
+          id: k,
+          value: Math.round(sumPerCountry[k] * 100) / 100,
+        };
+      });
+
+      setDataPerCountry(perCountry);
+    }
+  }, [expensesPerYear, sumByTypeByMonth, dailyCountAllYears, sumPerCountry]);
 
   useEffect(() => {
     if (!years) return;
@@ -207,6 +229,15 @@ function Statistics({
         <LineChart data={lineData} title={t('sum-by-type-monthly')} />
       </Box>
 
+      <Flex flexDir='row' gap={5} flexWrap='wrap' my={5}>
+        <CalendarChart
+          from={selectedYear.toString()}
+          to={selectedYear.toString()}
+          data={calendarData}
+          title={t('calendar-total-expenses')}
+        />
+      </Flex>
+
       <Flex flex='1' flexDir='column' bg='white' borderRadius={20} my={5}>
         <Flex
           alignItems='center'
@@ -252,12 +283,11 @@ function Statistics({
           </Text>
         )}
       </Flex>
-      <Flex flexDir='row' gap={5} flexWrap='wrap' my={5}>
-        <CalendarChart
-          from={selectedYear.toString()}
-          to={selectedYear.toString()}
-          data={calendarData}
-          title={t('calendar-total-expenses')}
+
+      <Flex mt={5}>
+        <MapChart
+          title={t('map-total-expenses')}
+          data={dataPerCountry}
         />
       </Flex>
     </AuthPage>
@@ -270,6 +300,7 @@ const mapStateToProps = (state) => {
     expensesPerYear: state.personalReports.expensesPerYear,
     sumByTypeByMonth: state.personalReports.sumByTypeByMonth,
     dailyCountAllYears: state.personalReports.dailyCountAllYears,
+    sumPerCountry: state.personalReports.sumPerCountry,
   };
 };
 
@@ -281,6 +312,8 @@ const mapDispatchToProps = (dispatch) => {
     getPersonalSumByTypeByMonth: (y) =>
       dispatch(getPersonalSumByTypeByMonthAction(y)),
     getPersonalDailyAllYears: () => dispatch(getPersonalDailyAllYearsAction()),
+    getPersonalExpensesByCountry: () =>
+      dispatch(getPersonalExpensesByCountryAction()),
   };
 };
 

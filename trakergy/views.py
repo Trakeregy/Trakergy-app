@@ -338,3 +338,38 @@ class PersonalExpensesForUserYearsAPI(generics.GenericAPIView):
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+
+
+class PersonalExpensesPerCountryAPI(generics.GenericAPIView):
+    def get(self, request):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            try:
+                user_id = user.id
+                expenses = Expense.objects.filter(users_to_split__in=[user_id])
+                res = dict()
+
+                for exp in expenses:
+                    eid = exp.id
+                    users_to_split = CustomUser.objects.filter(expenses__in=expenses.filter(id=eid))
+                    split_into = users_to_split.count()
+
+                    # expense amount
+                    amount = exp.amount / split_into
+                    # country code
+                    country_code = exp.trip.location.code
+                    if country_code not in res:
+                        res[country_code] = 0
+
+                    res[country_code] += amount
+
+                return Response(data=res, status=status.HTTP_200_OK)
+            except Exception:
+                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)

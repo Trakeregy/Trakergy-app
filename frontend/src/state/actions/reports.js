@@ -78,12 +78,30 @@ const getPersonalDailyAllYears = () => async (dispatch) => {
     type: PERSONAL_REPORTS_ACTION_TYPES.GET_ALL_YEARS_DAILY_COUNT,
     payload,
   });
+};
 
-}
+const getPersonalExpensesByCountry = () => async (dispatch) => {
+  const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+
+  const res = await axios.get(`${BASE_URL}/reports/personal/sum_per_country`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  const payload = res.data;
+
+  dispatch({
+    type: PERSONAL_REPORTS_ACTION_TYPES.GET_SUM_PER_COUNTRY,
+    payload,
+  });
+};
 
 export {
   getPersonalSumByTypeByMonth,
   getPersonalYears,
   getPersonalSumByTypeLastXYears,
   getPersonalDailyAllYears,
+  getPersonalExpensesByCountry,
 };
