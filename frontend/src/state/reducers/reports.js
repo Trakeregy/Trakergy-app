@@ -25,6 +25,14 @@ const personalReportsReducer = (state = ReportState, action) => {
       ...state,
       expensesPerYear,
     };
+  } else if (
+    action.type === PERSONAL_REPORTS_ACTION_TYPES.GET_ALL_YEARS_DAILY_COUNT
+  ) {
+    let dailyCountAllYears = action.payload;
+    return {
+      ...state,
+      dailyCountAllYears,
+    };
   }
   return state;
 };

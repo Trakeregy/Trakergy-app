@@ -41,5 +41,6 @@
     "select-number-of-years": "Select number of years",
     "last": "last",
     "years": "years",
-    "total-expenses": "Total expenses"
+    "total-expenses": "Total expenses",
+    "calendar-total-expenses": "Calendar - total expenses"
 }

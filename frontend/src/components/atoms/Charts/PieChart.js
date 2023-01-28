@@ -3,7 +3,7 @@ import { ResponsivePie } from '@nivo/pie';
 import COLORS from '../../../theme/_colors.scss';
 
 const PieChart = ({ data, title, labelSuffix = '' }) => {
-  const chartMargin = 80;
+  const chartMargin = 40;
 
   if (!data || data.length === 0) return <></>;
 
@@ -19,12 +19,12 @@ const PieChart = ({ data, title, labelSuffix = '' }) => {
       <Text textAlign='center' fontSize={30}>
         {title}
       </Text>
-      <Flex w='100%' h={400}>
+      <Flex w='100%' h={300}>
         <ResponsivePie
           data={data}
           colors={{ scheme: 'pastel2' }}
           margin={{
-            top: chartMargin / 2,
+            top: chartMargin,
             right: 0,
             bottom: chartMargin,
             left: 0,

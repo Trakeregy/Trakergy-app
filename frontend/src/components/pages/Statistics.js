@@ -2,11 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Flex, Select, Text } from '@chakra-ui/react';
 import { connect } from 'react-redux';
 import { AuthPage } from '.';
-import { BarChart, LineChart, PieChart } from '../atoms/Charts';
+import { BarChart, CalendarChart, LineChart, PieChart } from '../atoms/Charts';
 import {
   getPersonalYears as getPersonalYearsAction,
   getPersonalSumByTypeLastXYears as getPersonalSumByTypeLastXYearsAction,
   getPersonalSumByTypeByMonth as getPersonalSumByTypeByMonthAction,
+  getPersonalDailyAllYears as getPersonalDailyAllYearsAction,
 } from '../../state/actions/reports';
 import { getMonthName } from '../../utils/functions';
 import { useTranslation } from 'react-i18next';
@@ -15,9 +16,11 @@ function Statistics({
   getPersonalYears,
   getPersonalSumByTypeLastXYears,
   getPersonalSumByTypeByMonth,
+  getPersonalDailyAllYears,
   years,
   expensesPerYear,
   sumByTypeByMonth,
+  dailyCountAllYears,
 }) {
   const { t } = useTranslation();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -25,12 +28,14 @@ function Statistics({
   const [lastNYearsData, setLastNYearsData] = useState();
   const [sumByType, setSumByType] = useState([]);
   const [monthlyData, setMonthlyData] = useState();
+  const [dailyData, setDailyData] = useState();
   const y = useMemo(() => years, [years]);
 
   useEffect(() => {
     getPersonalYears();
     getPersonalSumByTypeLastXYears(lastNYears); // 10
     getPersonalSumByTypeByMonth();
+    getPersonalDailyAllYears();
   }, []);
 
   useEffect(() => {
@@ -39,7 +44,20 @@ function Statistics({
       setLastNYearsData(expensesPerYear);
       setLastNYears(10);
     }
-  }, [expensesPerYear]);
+    if (sumByTypeByMonth) {
+      handleSelectYear(y[0]);
+    }
+    if (dailyCountAllYears) {
+      const daily = Object.keys(dailyCountAllYears).map((k) => {
+        return {
+          day: k,
+          value: Math.round(dailyCountAllYears[k] * 100) / 100,
+        };
+      });
+
+      setDailyData(daily);
+    }
+  }, [expensesPerYear, sumByTypeByMonth, dailyCountAllYears]);
 
   useEffect(() => {
     if (!years) return;
@@ -49,7 +67,7 @@ function Statistics({
   const handleSelectYear = (yr) => {
     const newYear = parseInt(yr);
     setSelectedYear(newYear);
-    if (!expensesPerYear || !sumByTypeByMonth) return;
+    if (!expensesPerYear) return;
 
     const filtered = expensesPerYear.filter((i) => i.year === newYear);
     if (filtered.length > 0) {
@@ -57,6 +75,8 @@ function Statistics({
       const amounts = yearObject.amounts;
       setSumByType(amounts);
     }
+
+    if (!sumByTypeByMonth) return;
 
     const monthlyData = sumByTypeByMonth[newYear];
 
@@ -147,6 +167,8 @@ function Statistics({
       })
     : [];
 
+  const calendarData = dailyData ? dailyData : [];
+
   return (
     <AuthPage>
       <Flex alignItems='center' mb={5}>
@@ -230,6 +252,14 @@ function Statistics({
           </Text>
         )}
       </Flex>
+      <Flex flexDir='row' gap={5} flexWrap='wrap' my={5}>
+        <CalendarChart
+          from={selectedYear.toString()}
+          to={selectedYear.toString()}
+          data={calendarData}
+          title={t('calendar-total-expenses')}
+        />
+      </Flex>
     </AuthPage>
   );
 }
@@ -239,6 +269,7 @@ const mapStateToProps = (state) => {
     years: state.personalReports.years,
     expensesPerYear: state.personalReports.expensesPerYear,
     sumByTypeByMonth: state.personalReports.sumByTypeByMonth,
+    dailyCountAllYears: state.personalReports.dailyCountAllYears,
   };
 };
 
@@ -249,6 +280,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(getPersonalSumByTypeLastXYearsAction(ny)),
     getPersonalSumByTypeByMonth: (y) =>
       dispatch(getPersonalSumByTypeByMonthAction(y)),
+    getPersonalDailyAllYears: () => dispatch(getPersonalDailyAllYearsAction()),
   };
 };
 
