@@ -300,3 +300,41 @@ class PersonalExpensesByTypeByMonthAPI(generics.GenericAPIView):
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+
+
+class PersonalExpensesForUserYearsAPI(generics.GenericAPIView):
+    def get(self, request):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            try:
+                curr_user_id = user.id
+                user_expenses = Expense.objects.filter(users_to_split__in=[curr_user_id])
+                years = list(set([e.date.year for e in user_expenses]))
+                years.sort(reverse=True)
+
+                grouped_by_day = dict()
+
+                for y in years:
+                    year_data = Expense.objects.filter(date__year=y, users_to_split__in=[curr_user_id])
+                    for expense in year_data:
+                        expense_date = str(expense.date)
+                        expense_id = expense.id
+                        if expense_date not in grouped_by_day:
+                            grouped_by_day[expense_date] = 0
+
+                        users_to_split = CustomUser.objects.filter(expenses__in=user_expenses.filter(id=expense_id))
+
+                        split_into = users_to_split.count()
+                        grouped_by_day[expense_date] += expense.amount / split_into
+
+                return Response(data=grouped_by_day, status=status.HTTP_200_OK)
+
+            except Exception:
+                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
