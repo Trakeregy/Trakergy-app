@@ -1,7 +1,7 @@
 import Landing from './Landing';
 import SignUp from './SignUp';
 import LogIn from './LogIn';
-import Home from './Home';
+import Trips from './Trips';
 import AuthPage from './AuthPage';
 import Statistics from './Statistics';
 import Settings from './Settings';
@@ -12,7 +12,7 @@ export {
   Landing,
   SignUp,
   LogIn,
-  Home,
+  Trips,
   AuthPage,
   Statistics,
   Settings,

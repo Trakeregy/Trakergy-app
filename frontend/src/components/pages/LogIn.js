@@ -29,7 +29,7 @@ function LogIn({ logIn }) {
     logIn(newUser)
       .then(() => {
         setLoading(false);
-        setTimeout(navigate(ROUTES.HOME), 0);
+        setTimeout(navigate(ROUTES.TRIPS), 0);
       })
       .catch((e) => {
         setLoading(false);

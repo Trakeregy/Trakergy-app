@@ -108,7 +108,7 @@ function SignUp({ signUp, logIn }) {
         logIn({ username: _user.username, password: _user.password })
           .then(() => {
             setLoading(false);
-            setTimeout(navigate(ROUTES.HOME), 0);
+            setTimeout(navigate(ROUTES.TRIPS), 0);
           })
           .catch((e) => {
             setLoading(false);

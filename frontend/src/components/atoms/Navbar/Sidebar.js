@@ -18,7 +18,7 @@ function Sidebar({ onClose, logOut, ...rest }) {
   const { t } = useTranslation();
 
   const LinkItems = [
-    { name: t('trips'), icon: TripIcon, route: ROUTES.HOME },
+    { name: t('trips'), icon: TripIcon, route: ROUTES.TRIPS },
     { name: t('statistics'), icon: ChartIcon, route: ROUTES.STATISTICS },
     { name: t('calendar'), icon: CalendarIcon, route: ROUTES.CALENDAR },
     { name: t('debts'), icon: MoneyIcon, route: ROUTES.DEBTS },

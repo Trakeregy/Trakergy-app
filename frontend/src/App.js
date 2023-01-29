@@ -7,7 +7,7 @@ import ROUTES from './utils/routes.js';
 import {
   Calendar,
   Debts,
-  Home,
+  Trips,
   Landing,
   LogIn,
   Settings,
@@ -45,10 +45,10 @@ function App() {
           }
         />
         <Route
-          path={ROUTES.HOME}
+          path={ROUTES.TRIPS}
           element={
             <PrivateRoute>
-              <Home />
+              <Trips />
             </PrivateRoute>
           }
         />
