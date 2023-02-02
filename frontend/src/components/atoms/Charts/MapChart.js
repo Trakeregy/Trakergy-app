@@ -3,7 +3,8 @@ import { Flex, Text } from '@chakra-ui/react';
 import { ResponsiveChoropleth } from '@nivo/geo';
 import worldMapFeatures from '../../../assets/world_countries.json';
 import { ArrowsRightLeftIcon, ArrowsUpDownIcon, ZoomIcon } from '../icons';
-import Slider from '../Slider';
+import { Slider } from '../';
+import COLORS from '../../../theme/_colors.scss';
 
 const MapChart = ({ data, title }) => {
   const minValForZoom = 100;
@@ -58,7 +59,7 @@ const MapChart = ({ data, title }) => {
       h='fit-content'
       bg='white'
       borderRadius={20}
-      p={5}
+      p={10}
     >
       <Text textAlign='center' fontSize={30}>
         {title}
@@ -72,7 +73,7 @@ const MapChart = ({ data, title }) => {
             margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
             colors='BrBG'
             domain={[minValue, maxValue]}
-            unknownColor='#666666'
+            unknownColor={COLORS.grey}
             label='properties.name'
             valueFormat='.2f'
             projectionScale={zoom}
@@ -91,7 +92,7 @@ const MapChart = ({ data, title }) => {
                 itemWidth: 120,
                 itemHeight: 18,
                 itemDirection: 'left-to-right',
-                itemTextColor: '#444444',
+                itemTextColor: 'secondary.300',
                 itemOpacity: 1,
                 symbolSize: 18,
               },

@@ -18,7 +18,7 @@ const BarChart = ({ data, title, keyName }) => {
       h='fit-content'
       bg='white'
       borderRadius={20}
-      p={5}
+      p={10}
     >
       <Text textAlign='center' fontSize={30}>
         {title}

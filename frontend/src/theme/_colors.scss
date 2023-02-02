@@ -1,3 +1,4 @@
+$primaryLight: #ffcfbb;
 $primary: #ef8354;
 $primaryDark: #df5b23;
 $secondary: #4f5d75;
@@ -9,6 +10,7 @@ $greyMedium: #979797;
 $greyDark: #404040;
 
 :export {
+  primaryLight: $primaryLight;
   primary: $primary;
   primaryDark: $primaryDark;
   secondary: $secondary;

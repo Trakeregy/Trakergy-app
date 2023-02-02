@@ -45,7 +45,7 @@ function App() {
           }
         />
         <Route
-          path={ROUTES.TRIPS}
+          path={`${ROUTES.TRIPS}/:tripId?`}
           element={
             <PrivateRoute>
               <Trips />

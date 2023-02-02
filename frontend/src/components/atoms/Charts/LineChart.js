@@ -14,9 +14,11 @@ const LineChart = ({ data, title, xAxisName, yAxisName }) => {
     const pointId = point.serieId;
 
     if (dataId === null) {
-      const newData = data.filter((item) => item.id === pointId);
+      const filteredData = data.filter((item) => item.id === pointId);
+      const newData = filteredData[0].data.filter((i) => i.y !== null);
+      filteredData[0].data = newData;
       setDataId(pointId);
-      setDataToDisplay(newData);
+      setDataToDisplay(filteredData);
     } else {
       setDataId(null);
       setDataToDisplay(data);
@@ -24,7 +26,7 @@ const LineChart = ({ data, title, xAxisName, yAxisName }) => {
   };
 
   return (
-    <Box w='100%' bg='white' borderRadius={20} p={5}>
+    <Box w='100%' bg='white' borderRadius={20} p={10}>
       <Text textAlign='center' fontSize={30}>
         {title}
       </Text>
@@ -32,7 +34,7 @@ const LineChart = ({ data, title, xAxisName, yAxisName }) => {
         <ResponsiveLine
           data={dataToDisplay}
           colors={{ scheme: 'pastel2' }}
-          margin={{ top: 50, right: 200, bottom: 50, left: 60 }}
+          margin={{ top: 50, right: 200, bottom: 60, left: 60 }}
           xScale={{ type: 'point' }}
           yScale={{
             type: 'linear',

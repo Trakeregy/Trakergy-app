@@ -17,12 +17,12 @@ const theme = extendTheme({
   colors: {
     primary: {
       // define all the color's shades to use it as a component's colorScheme
-      100: COLORS.primary,
-      200: COLORS.primary,
-      300: COLORS.primary,
+      100: COLORS.primaryLight,
+      200: COLORS.primaryLight,
+      300: COLORS.primaryLight,
       400: COLORS.primary,
       500: COLORS.primary,
-      600: COLORS.primaryDark,
+      600: COLORS.primary,
       700: COLORS.primaryDark,
       800: COLORS.primaryDark,
       900: COLORS.primaryDark,

@@ -44,5 +44,14 @@
   "total-expenses": "Total expenses",
   "no-expenses": "No expenses",
   "calendar-total-expenses": "Calendar - total expenses",
-  "map-total-expenses": "Map view - total expenses, lifetime"
+  "map-total-expenses": "Map view - total expenses, lifetime",
+  "about": "About",
+  "expenses": "Expenses",
+  "total-by-day": "Total expenses per day",
+  "total-by-day-by-type": "Total expenses per day, by type",
+  "total-by-type-by-user": "Total expenses per user, by type",
+  "total-by-user": "Total expenses per user",
+  "forbidden": "Forbidden",
+  "forbidden-sorry": "Sorry, you don't have permission to access this page.",
+  "return-to-trips": "Return to your trips"
 }

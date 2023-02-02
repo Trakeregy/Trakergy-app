@@ -7,10 +7,8 @@ function hasLetter(str) {
 }
 
 function getMonthName(monthNumber) {
-  const date = new Date();
-  date.setMonth(monthNumber - 1);
-
-  return date.toLocaleString('en-US', { month: 'long' });
+  const date = new Date(0, monthNumber - 1);
+  return date.toLocaleDateString('en-US', { month: 'long' });
 }
 
 export { hasNumber, hasLetter, getMonthName };

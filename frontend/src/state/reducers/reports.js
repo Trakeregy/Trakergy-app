@@ -1,7 +1,11 @@
 import { PERSONAL_REPORTS_ACTION_TYPES } from '../types';
 
 export const ReportState = {
-  sumByType: [],
+  sumByTypeByMonth: [],
+  years: [],
+  expensesPerYear: [],
+  dailyCountAllYears: [],
+  sumPerCountry: [],
 };
 
 const personalReportsReducer = (state = ReportState, action) => {

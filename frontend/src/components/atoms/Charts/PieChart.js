@@ -2,10 +2,22 @@ import { Flex, Text } from '@chakra-ui/react';
 import { ResponsivePie } from '@nivo/pie';
 import COLORS from '../../../theme/_colors.scss';
 
-const PieChart = ({ data, title, labelSuffix = '' }) => {
+const PieChart = ({ data, title, percentage = false }) => {
   const chartMargin = 40;
 
   if (!data || data.length === 0) return <></>;
+
+  let dataToDisplay = [...data];
+  if (percentage) {
+    const sum = data.map((i) => i.value).reduce((acc, a) => acc + a, 0);
+    dataToDisplay = data.map((i) => {
+      const newValue = Math.round((i.value / sum) * 100 * 100) / 100;
+      return {
+        ...i,
+        value: newValue,
+      };
+    });
+  }
 
   return (
     <Flex
@@ -14,14 +26,14 @@ const PieChart = ({ data, title, labelSuffix = '' }) => {
       h='fit-content'
       bg='white'
       borderRadius={20}
-      p={5}
+      p={10}
     >
       <Text textAlign='center' fontSize={30}>
         {title}
       </Text>
       <Flex w='100%' h={300}>
         <ResponsivePie
-          data={data}
+          data={dataToDisplay}
           colors={{ scheme: 'pastel2' }}
           margin={{
             top: chartMargin,
@@ -33,7 +45,7 @@ const PieChart = ({ data, title, labelSuffix = '' }) => {
           padAngle={0.7}
           cornerRadius={5}
           enableArcLinkLabels={false}
-          arcLabel={(d) => `${d.value}${labelSuffix}`}
+          arcLabel={(d) => `${d.value}${percentage ? '%' : ''}`}
           arcLabelsTextColor={{
             from: 'color',
             modifiers: [['darker', 2]],

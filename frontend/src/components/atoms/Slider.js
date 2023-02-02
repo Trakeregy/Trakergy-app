@@ -40,14 +40,14 @@ function Slider({
       </SliderTrack>
       <Tooltip
         hasArrow
-        bg='primary.300'
+        bg='primary.500'
         color='white'
         placement='auto'
         isOpen={showTooltip}
         label={`${sliderValue}%`}
       >
         <SliderThumb boxSize={5}>
-          <Box color='primary.300' as={icon} />
+          <Box color='primary.500' as={icon} />
         </SliderThumb>
       </Tooltip>
     </ChakraSlider>

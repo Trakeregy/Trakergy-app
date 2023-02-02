@@ -18,6 +18,7 @@ import {
 } from '../../state/actions/reports';
 import { getMonthName } from '../../utils/functions';
 import { useTranslation } from 'react-i18next';
+import { Heading } from '../atoms';
 
 function Statistics({
   getPersonalYears,
@@ -102,7 +103,7 @@ function Statistics({
 
     const monthlyData = sumByTypeByMonth[newYear];
 
-    const dataPerTag = monthlyData.map((item) => {
+    const dataPerTag = monthlyData?.map((item) => {
       const tag = item.tag_name;
       const monthIndex = item.month;
       const monthSumForTag = item.sum;
@@ -116,7 +117,7 @@ function Statistics({
     });
 
     let data = {};
-    dataPerTag.forEach((item) => {
+    dataPerTag?.forEach((item) => {
       const { id, x, y } = item;
       if (!(id in data)) data[id] = [];
       data[id].push({ x, y });
@@ -136,14 +137,6 @@ function Statistics({
       id: i.tag_name,
       label: i.tag_name,
       value: Math.round(i.sum * 100) / 100,
-    };
-  });
-  const sum = pieData.map((i) => i.value).reduce((acc, a) => acc + a, 0);
-  const percentagePieData = pieData.map((i) => {
-    const newValue = Math.round((i.value / sum) * 100 * 100) / 100;
-    return {
-      ...i,
-      value: newValue,
     };
   });
 
@@ -193,9 +186,10 @@ function Statistics({
 
   return (
     <AuthPage>
-      <Flex alignItems='center' mb={5}>
+      <Flex align='center' mb={5} justify='space-between'>
+        <Heading text={t('statistics')} />
         {years && years.length > 0 && (
-          <>
+          <Flex align='center'>
             <Text>{t('select-year')}</Text>
             <Select
               bg='white'
@@ -209,7 +203,7 @@ function Statistics({
                 <option key={y}>{y}</option>
               ))}
             </Select>
-          </>
+          </Flex>
         )}
       </Flex>
 
@@ -219,24 +213,15 @@ function Statistics({
           title={`${t('sum-by-type')}, ${selectedYear}`}
         />
         <PieChart
-          data={percentagePieData}
+          data={pieData}
           title={`${t('percentage-by-type')}, ${selectedYear}`}
-          labelSuffix='%'
+          percentage={true}
         />
       </Flex>
 
       <Box mt={5}>
         <LineChart data={lineData} title={t('sum-by-type-monthly')} />
       </Box>
-
-      <Flex flexDir='row' gap={5} flexWrap='wrap' my={5}>
-        <CalendarChart
-          from={selectedYear.toString()}
-          to={selectedYear.toString()}
-          data={calendarData}
-          title={t('calendar-total-expenses')}
-        />
-      </Flex>
 
       <Flex flex='1' flexDir='column' bg='white' borderRadius={20} my={5}>
         <Flex
@@ -278,17 +263,23 @@ function Statistics({
             />
           </Flex>
         ) : (
-          <Text px={10} pb={10} textAlign='center'>
+          <Text px={10} pb={10} textAlign='center' fontSize={26}>
             {`${t('no-expenses')} (${t('last')} ${lastNYears} ${t('years')})`}
           </Text>
         )}
       </Flex>
+      
+      <Flex flexDir='row' gap={5} flexWrap='wrap' my={5}>
+        <CalendarChart
+          from={selectedYear.toString()}
+          to={selectedYear.toString()}
+          data={calendarData}
+          title={t('calendar-total-expenses')}
+        />
+      </Flex>
 
       <Flex mt={5}>
-        <MapChart
-          title={t('map-total-expenses')}
-          data={dataPerCountry}
-        />
+        <MapChart title={t('map-total-expenses')} data={dataPerCountry} />
       </Flex>
     </AuthPage>
   );
