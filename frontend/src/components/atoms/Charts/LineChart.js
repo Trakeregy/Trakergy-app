@@ -33,6 +33,10 @@ const LineChart = ({ data, title, xAxisName, yAxisName }) => {
     handle(legendId);
   };
 
+  if (!dataToDisplay || dataToDisplay.length === 0) {
+    return <></>;
+  }
+
   return (
     <Box w='100%' bg='white' borderRadius={20} p={10}>
       <Text textAlign='center' fontSize={30}>

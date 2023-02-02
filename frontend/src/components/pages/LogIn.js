@@ -90,7 +90,7 @@ function LogIn({ logIn }) {
         <Box>
           <Stack gap='1'>
             {error && (
-              <Text color='primary.300' fontSize='sm' px='6'>
+              <Text color='primary.500' fontSize='sm' px='6'>
                 {error}
               </Text>
             )}

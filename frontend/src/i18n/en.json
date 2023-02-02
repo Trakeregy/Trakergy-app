@@ -60,5 +60,7 @@
   "payer": "Payer",
   "tag": "Tag",
   "no-data": "No data to show",
-  "users-to-split": "Users to pay"
+  "users-to-split": "Users to pay",
+  "page-not-found": "Whoops... Looks like you're lost.",
+  "page-not-found-descr": "Sorry, the page you requested could not be found. Please go back to your trips."
 }

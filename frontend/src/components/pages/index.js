@@ -7,6 +7,7 @@ import Statistics from './Statistics';
 import Settings from './Settings';
 import Calendar from './Calendar';
 import Debts from './Debts';
+import NotFound from './NotFound';
 
 export {
   Landing,
@@ -18,4 +19,5 @@ export {
   Settings,
   Calendar,
   Debts,
+  NotFound,
 };

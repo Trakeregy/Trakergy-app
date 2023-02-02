@@ -200,7 +200,9 @@ function Statistics({
               mx={5}
             >
               {years.map((y) => (
-                <option key={y}>{y}</option>
+                <option key={y} value={y}>
+                  {y}
+                </option>
               ))}
             </Select>
           </Flex>
@@ -222,6 +224,15 @@ function Statistics({
       <Box mt={5}>
         <LineChart data={lineData} title={t('sum-by-type-monthly')} />
       </Box>
+
+      <Flex flexDir='row' gap={5} flexWrap='wrap' my={5}>
+        <CalendarChart
+          from={selectedYear.toString()}
+          to={selectedYear.toString()}
+          data={calendarData}
+          title={t('calendar-total-expenses')}
+        />
+      </Flex>
 
       <Flex flex='1' flexDir='column' bg='white' borderRadius={20} my={5}>
         <Flex
@@ -267,15 +278,6 @@ function Statistics({
             {`${t('no-expenses')} (${t('last')} ${lastNYears} ${t('years')})`}
           </Text>
         )}
-      </Flex>
-
-      <Flex flexDir='row' gap={5} flexWrap='wrap' my={5}>
-        <CalendarChart
-          from={selectedYear.toString()}
-          to={selectedYear.toString()}
-          data={calendarData}
-          title={t('calendar-total-expenses')}
-        />
       </Flex>
 
       <Flex mt={5}>

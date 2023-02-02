@@ -13,6 +13,7 @@ import {
   Settings,
   SignUp,
   Statistics,
+  NotFound,
 } from './components/pages';
 import { PrivateRoute, UnauthRoute } from './components/atoms/RoutePermissions';
 
@@ -84,6 +85,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </div>
   );

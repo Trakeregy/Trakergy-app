@@ -153,7 +153,7 @@ function SignUp({ signUp, logIn }) {
         <Box>
           <Stack gap='1'>
             {error && (
-              <Text color='primary.300' fontSize='sm' px='6'>
+              <Text color='primary.500' fontSize='sm' px='6'>
                 {error}
               </Text>
             )}
@@ -223,7 +223,7 @@ function SignUp({ signUp, logIn }) {
               <Text fontSize={'md'} m='0' color={'gray.600'} textAlign='center'>
                 {t('already-have-account')}{' '}
                 <Link
-                  color={'primary.300'}
+                  color={'primary.500'}
                   href={ROUTES.LOGIN}
                   fontWeight='bold'
                 >

@@ -27,7 +27,7 @@ function CustomInput({
           type={type}
         />
         {errorLabelText && (
-          <Text fontSize='sm' color='primary.300' px='6'>
+          <Text fontSize='sm' color='primary.500' px='6'>
             {errorLabelText}
           </Text>
         )}
