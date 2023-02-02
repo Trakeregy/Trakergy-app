@@ -10,19 +10,27 @@ const LineChart = ({ data, title, xAxisName, yAxisName }) => {
     setDataToDisplay(data);
   }, [data]);
 
-  const handleOnClick = (point, _) => {
-    const pointId = point.serieId;
-
+  const handle = (id) => {
     if (dataId === null) {
-      const filteredData = data.filter((item) => item.id === pointId);
+      const filteredData = data.filter((item) => item.id === id);
       const newData = filteredData[0].data.filter((i) => i.y !== null);
       filteredData[0].data = newData;
-      setDataId(pointId);
+      setDataId(id);
       setDataToDisplay(filteredData);
     } else {
       setDataId(null);
       setDataToDisplay(data);
     }
+  };
+
+  const handleOnClick = (point, _) => {
+    const pointId = point.serieId;
+    handle(pointId);
+  };
+
+  const handleLegendClick = (legendItem, _) => {
+    const legendId = legendItem.id;
+    handle(legendId);
   };
 
   return (
@@ -80,6 +88,7 @@ const LineChart = ({ data, title, xAxisName, yAxisName }) => {
               itemOpacity: 1,
               symbolSize: 12,
               symbolShape: 'circle',
+              onClick: handleLegendClick,
             },
           ]}
           onClick={handleOnClick}
