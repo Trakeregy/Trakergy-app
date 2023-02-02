@@ -6,6 +6,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Text,
 } from '@chakra-ui/react';
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
@@ -207,10 +208,22 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
 
   const getExpensesData = (exps) => {
     const data = exps.map((e) => {
-      const { amount, date, description, payer: payerId, tag } = e;
+      const {
+        amount,
+        date,
+        description,
+        payer: payerId,
+        tag,
+        users_to_split: usersToSplit,
+      } = e;
       const { name: tagName } = tag;
       const payer = members.find((m) => m.id === parseInt(payerId));
       const payerName = payer?.first_name + ' ' + payer?.last_name;
+
+      const usersToPay = usersToSplit.map((id) => {
+        const user = members.find((m) => m.id === id);
+        return user;
+      });
 
       return {
         amount: parseFloat(amount),
@@ -218,6 +231,7 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
         description,
         payer: payerName,
         tag: tagName,
+        usersToPay: usersToPay,
       };
     });
 
@@ -240,6 +254,26 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
 
     return (
       <AuthPage>
+        <Box bg='white' borderRadius={20} p={5}>
+          <Text fontWeight='bold'>{tripName}</Text>
+          <Text>Start date: {startDate}</Text>
+          <Text>End date: {endDate}</Text>
+          {location && (
+            <Text>
+              Location: {location.country} {location.code}
+            </Text>
+          )}
+
+          <Flex gap={2}>
+            <Text>MEMBERS:</Text>
+            {members?.map((m, i) => (
+              <Text key={i}>
+                {i + 1}. {m.first_name} {m.last_name}
+              </Text>
+            ))}
+          </Flex>
+        </Box>
+
         <Tabs variant='soft-rounded' colorScheme='primary'>
           <TabList gap={5} my={5}>
             <Tab>{t('about')}</Tab>
@@ -255,8 +289,8 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
             </TabPanel>
 
             {/* expenses */}
-            <TabPanel p={0} m={0}>
-              <Box bg='white' borderRadius={20} pb={5}>
+            <TabPanel p={0} m={0} borderRadius={20} overflow='hidden'>
+              <Box bg='white'>
                 <CustomTable
                   columns={expensesTableCols}
                   columnNames={expensesTableColNames}

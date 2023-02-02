@@ -9,6 +9,7 @@ const TimerangeChart = ({ data, title, from, to }) => {
       flexDir='column'
       minH='fit-content'
       w='fit-content'
+      minW={400}
       bg='white'
       borderRadius={20}
       p={10}

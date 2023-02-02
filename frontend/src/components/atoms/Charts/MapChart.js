@@ -4,7 +4,6 @@ import { ResponsiveChoropleth } from '@nivo/geo';
 import worldMapFeatures from '../../../assets/world_countries.json';
 import { ArrowsRightLeftIcon, ArrowsUpDownIcon, ZoomIcon } from '../icons';
 import { CustomSlider } from '../CustomBasicComponents';
-import COLORS from '../../../theme/_colors.scss';
 
 const MapChart = ({ data, title }) => {
   const minValForZoom = 100;
@@ -73,7 +72,7 @@ const MapChart = ({ data, title }) => {
             margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
             colors='BrBG'
             domain={[minValue, maxValue]}
-            unknownColor={COLORS.grey}
+            unknownColor='white'
             label='properties.name'
             valueFormat='.2f'
             projectionScale={zoom}

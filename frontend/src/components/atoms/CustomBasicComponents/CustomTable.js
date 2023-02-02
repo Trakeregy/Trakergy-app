@@ -19,6 +19,24 @@ const NoDataComponent = () => {
   );
 };
 
+const ExpandedComponent = ({ data }) => {
+  const { t } = useTranslation();
+  return (
+    <Flex align='flex-start' flexDir='column'>
+      <Text px={10} fontWeight='bold'>
+        {t('users-to-split')}:
+      </Text>
+      <Flex flexWrap='wrap' w='100%'>
+        {data.usersToPay.map((item, i) => (
+          <Text key={i} px={10} py={1} fontSize={16} w='20%'>
+            {item.first_name} {item.last_name}
+          </Text>
+        ))}
+      </Flex>
+    </Flex>
+  );
+};
+
 function CustomTable({ columns = [], columnNames = [], data = [] }) {
   const cols = columns.map((col, i) => {
     return {
@@ -42,7 +60,9 @@ function CustomTable({ columns = [], columnNames = [], data = [] }) {
       data={rows}
       pagination
       striped
+      expandableRows
       noDataComponent={<NoDataComponent />}
+      expandableRowsComponent={ExpandedComponent}
       customStyles={{
         head: {
           style: {

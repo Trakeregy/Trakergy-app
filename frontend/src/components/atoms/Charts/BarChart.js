@@ -54,10 +54,7 @@ const BarChart = ({ data, title, keyName }) => {
             legendPosition: 'middle',
             legendOffset: -40,
           }}
-          labelTextColor={{
-            from: 'color',
-            modifiers: [['darker', 1.6]],
-          }}
+          label={false}
           legends={[
             {
               dataFrom: 'keys',
@@ -75,7 +72,6 @@ const BarChart = ({ data, title, keyName }) => {
               symbolShape: 'circle',
             },
           ]}
-          role='application'
         />
       </Flex>
     </Flex>
