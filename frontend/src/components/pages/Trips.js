@@ -20,6 +20,7 @@ import {
 import ROUTES from '../../utils/routes';
 import { Forbidden, Heading } from '../atoms';
 import { PieChart, LineChart, TimerangeChart, BarChart } from '../atoms/Charts';
+import { CustomTable } from '../atoms/CustomBasicComponents';
 
 function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
   const { tripId } = useParams();
@@ -197,6 +198,33 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
     return data;
   };
 
+  const getExpensesCols = () => {
+    return ['description', 'amount', 'date', 'payer', 'tag'];
+  };
+
+  const getExpensesColNames = () => {
+    return [t('description'), t('amount'), t('date'), t('payer'), t('tag')];
+  };
+
+  const getExpensesData = (exps) => {
+    const data = exps.map((e) => {
+      const { amount, date, description, payer: payerId, tag } = e;
+      const { name: tagName } = tag;
+      const payer = members.find((m) => m.id === parseInt(payerId));
+      const payerName = payer?.first_name + ' ' + payer?.last_name;
+
+      return {
+        amount: parseFloat(amount),
+        date,
+        description,
+        payer: payerName,
+        tag: tagName,
+      };
+    });
+
+    return data;
+  };
+
   // show trip data
   if (tripId) {
     const totalByType = expenses ? computeTotalByType(expenses) : [];
@@ -206,6 +234,10 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
     const totalByUser = expenses ? computeTotalByUser(expenses) : [];
     const totalByTypeByDay = expenses ? computeTotalByTypeByDay(expenses) : [];
     const totalByDay = expenses ? computeTotalByDay(expenses) : [];
+
+    const expensesTableCols = getExpensesCols();
+    const expensesTableColNames = getExpensesColNames();
+    const expensesTableData = expenses ? getExpensesData(expenses) : [];
 
     return (
       <AuthPage>
@@ -243,9 +275,13 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
 
             {/* expenses */}
             <TabPanel p={0} m={0}>
-              <Flex bg='white' borderRadius={20}>
-                two
-              </Flex>
+              <Box bg='white' borderRadius={20} pb={5}>
+                <CustomTable
+                  columns={expensesTableCols}
+                  columnNames={expensesTableColNames}
+                  data={expensesTableData}
+                />
+              </Box>
             </TabPanel>
 
             {/* statistics */}

@@ -53,5 +53,11 @@
   "total-by-user": "Total expenses per user",
   "forbidden": "Forbidden",
   "forbidden-sorry": "Sorry, you don't have permission to access this page.",
-  "return-to-trips": "Return to your trips"
+  "return-to-trips": "Return to your trips",
+  "amount": "Amount",
+  "date": "Date",
+  "description": "Description",
+  "payer": "Payer",
+  "tag": "Tag",
+  "no-data": "No data to show"
 }

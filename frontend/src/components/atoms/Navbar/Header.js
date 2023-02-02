@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Flex, HStack, IconButton, Text } from '@chakra-ui/react';
 import { BellIcon, MenuIcon } from '../icons';
 import { connect } from 'react-redux';
-import CustomAvatar from '../CustomBasicComponents/CustomAvatar';
+import { CustomAvatar } from '../CustomBasicComponents';
 
 function Header({ onOpen, currentUser }) {
   const {
