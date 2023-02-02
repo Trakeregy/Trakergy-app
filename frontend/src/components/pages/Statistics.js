@@ -18,7 +18,7 @@ import {
 } from '../../state/actions/reports';
 import { getMonthName } from '../../utils/functions';
 import { useTranslation } from 'react-i18next';
-import { Heading } from '../atoms';
+import { CustomHeading } from '../atoms/CustomBasicComponents';
 
 function Statistics({
   getPersonalYears,
@@ -187,7 +187,7 @@ function Statistics({
   return (
     <AuthPage>
       <Flex align='center' mb={5} justify='space-between'>
-        <Heading text={t('statistics')} />
+        <CustomHeading text={t('statistics')} />
         {years && years.length > 0 && (
           <Flex align='center'>
             <Text>{t('select-year')}</Text>
@@ -268,7 +268,7 @@ function Statistics({
           </Text>
         )}
       </Flex>
-      
+
       <Flex flexDir='row' gap={5} flexWrap='wrap' my={5}>
         <CalendarChart
           from={selectedYear.toString()}

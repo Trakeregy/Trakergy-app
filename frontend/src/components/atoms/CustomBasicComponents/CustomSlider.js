@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Slider as ChakraSlider,
+  Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
   Tooltip,
 } from '@chakra-ui/react';
 
-function Slider({
+function CustomSlider({
   orientation = 'horizontal',
   defaultValue = 0,
   min = 0,
@@ -20,7 +20,7 @@ function Slider({
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <ChakraSlider
+    <Slider
       defaultValue={defaultValue}
       orientation={orientation}
       min={min}
@@ -50,8 +50,8 @@ function Slider({
           <Box color='primary.500' as={icon} />
         </SliderThumb>
       </Tooltip>
-    </ChakraSlider>
+    </Slider>
   );
 }
 
-export default Slider;
+export default CustomSlider;

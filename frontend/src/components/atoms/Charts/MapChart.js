@@ -3,7 +3,7 @@ import { Flex, Text } from '@chakra-ui/react';
 import { ResponsiveChoropleth } from '@nivo/geo';
 import worldMapFeatures from '../../../assets/world_countries.json';
 import { ArrowsRightLeftIcon, ArrowsUpDownIcon, ZoomIcon } from '../icons';
-import { Slider } from '../';
+import { CustomSlider } from '../CustomBasicComponents';
 import COLORS from '../../../theme/_colors.scss';
 
 const MapChart = ({ data, title }) => {
@@ -64,7 +64,7 @@ const MapChart = ({ data, title }) => {
       <Text textAlign='center' fontSize={30}>
         {title}
       </Text>
-      <Slider onChange={handleZoom} icon={ZoomIcon} />
+      <CustomSlider onChange={handleZoom} icon={ZoomIcon} />
       <Flex w='100%' h='100%'>
         <Flex flex='1' h='40rem'>
           <ResponsiveChoropleth
@@ -100,7 +100,7 @@ const MapChart = ({ data, title }) => {
           />
         </Flex>
         <Flex>
-          <Slider
+          <CustomSlider
             onChange={handleTranslate}
             defaultValue={50}
             icon={ArrowsUpDownIcon}
@@ -108,7 +108,7 @@ const MapChart = ({ data, title }) => {
           />
         </Flex>
       </Flex>
-      <Slider
+      <CustomSlider
         onChange={handleRotate}
         defaultValue={50}
         icon={ArrowsRightLeftIcon}

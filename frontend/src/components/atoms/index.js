@@ -1,6 +1,4 @@
-import LoadingIndicator from './LoadingIndicator';
-import Heading from './Heading';
-import Slider from './Slider';
+import LoadingIndicator from './LoadingIndicator'
 import Forbidden from './Forbidden';
 
-export { LoadingIndicator, Heading, Slider, Forbidden };
+export { LoadingIndicator, Forbidden };

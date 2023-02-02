@@ -6,7 +6,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from '@chakra-ui/react';
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
@@ -18,9 +17,9 @@ import {
   getUserTrips as getUserTripsAction,
 } from '../../state/actions/trips';
 import ROUTES from '../../utils/routes';
-import { Forbidden, Heading } from '../atoms';
+import { Forbidden } from '../atoms';
 import { PieChart, LineChart, TimerangeChart, BarChart } from '../atoms/Charts';
-import { CustomTable } from '../atoms/CustomBasicComponents';
+import { CustomTable, CustomHeading } from '../atoms/CustomBasicComponents';
 
 function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
   const { tripId } = useParams();
@@ -241,24 +240,6 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
 
     return (
       <AuthPage>
-        <Box bg='white' borderRadius={20} p={5}>
-          <Text fontWeight='bold'>{tripName}</Text>
-          <Text>Start date: {startDate}</Text>
-          <Text>End date: {endDate}</Text>
-          {location && (
-            <Text>
-              Location: {location.country} {location.code}
-            </Text>
-          )}
-          <Flex gap={2}>
-            <Text>MEMBERS:</Text>
-            {members?.map((m, i) => (
-              <Text key={i}>
-                {i + 1}. {m.first_name} {m.last_name}
-              </Text>
-            ))}
-          </Flex>
-        </Box>
         <Tabs variant='soft-rounded' colorScheme='primary'>
           <TabList gap={5} my={5}>
             <Tab>{t('about')}</Tab>
@@ -328,7 +309,7 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
   // show trip list
   return (
     <AuthPage>
-      <Heading text={t('trips')} />
+      <CustomHeading text={t('trips')} />
       {trips.map((tr, i) => (
         <Flex
           key={i}
