@@ -1,0 +1,44 @@
+[
+  {
+    "model": "trakergy.Tag",
+    "pk": 1,
+    "fields": {
+      "name": "Entertainment"
+    }
+  },
+  {
+    "model": "trakergy.Tag",
+    "pk": 2,
+    "fields": {
+      "name": "Food & Drinks"
+    }
+  },
+  {
+    "model": "trakergy.Tag",
+    "pk": 3,
+    "fields": {
+      "name": "Souvenirs"
+    }
+  },
+  {
+    "model": "trakergy.Tag",
+    "pk": 4,
+    "fields": {
+      "name": "Transport"
+    }
+  },
+  {
+    "model": "trakergy.Tag",
+    "pk": 5,
+    "fields": {
+      "name": "Cultural"
+    }
+  },
+  {
+    "model": "trakergy.Tag",
+    "pk": 6,
+    "fields": {
+      "name": "Other"
+    }
+  }
+]

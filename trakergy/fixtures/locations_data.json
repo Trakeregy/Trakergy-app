@@ -1,0 +1,1410 @@
+[
+  {
+    "model": "trakergy.Location",
+    "pk": 1,
+    "fields": {
+      "country": "Afghanistan",
+      "code": "AFG"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 2,
+    "fields": {
+      "country": "Angola",
+      "code": "AGO"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 3,
+    "fields": {
+      "country": "Albania",
+      "code": "ALB"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 4,
+    "fields": {
+      "country": "United Arab Emirates",
+      "code": "ARE"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 5,
+    "fields": {
+      "country": "Argentina",
+      "code": "ARG"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 6,
+    "fields": {
+      "country": "Armenia",
+      "code": "ARM"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 7,
+    "fields": {
+      "country": "Antarctica",
+      "code": "ATA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 8,
+    "fields": {
+      "country": "French Southern and Antarctic Lands",
+      "code": "ATF"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 9,
+    "fields": {
+      "country": "Australia",
+      "code": "AUS"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 10,
+    "fields": {
+      "country": "Austria",
+      "code": "AUT"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 11,
+    "fields": {
+      "country": "Azerbaijan",
+      "code": "AZE"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 12,
+    "fields": {
+      "country": "Burundi",
+      "code": "BDI"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 13,
+    "fields": {
+      "country": "Belgium",
+      "code": "BEL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 14,
+    "fields": {
+      "country": "Benin",
+      "code": "BEN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 15,
+    "fields": {
+      "country": "Burkina Faso",
+      "code": "BFA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 16,
+    "fields": {
+      "country": "Bangladesh",
+      "code": "BGD"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 17,
+    "fields": {
+      "country": "Bulgaria",
+      "code": "BGR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 18,
+    "fields": {
+      "country": "The Bahamas",
+      "code": "BHS"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 19,
+    "fields": {
+      "country": "Bosnia and Herzegovina",
+      "code": "BIH"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 20,
+    "fields": {
+      "country": "Belarus",
+      "code": "BLR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 21,
+    "fields": {
+      "country": "Belize",
+      "code": "BLZ"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 22,
+    "fields": {
+      "country": "Bolivia",
+      "code": "BOL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 23,
+    "fields": {
+      "country": "Brazil",
+      "code": "BRA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 24,
+    "fields": {
+      "country": "Brunei",
+      "code": "BRN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 25,
+    "fields": {
+      "country": "Bhutan",
+      "code": "BTN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 26,
+    "fields": {
+      "country": "Botswana",
+      "code": "BWA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 27,
+    "fields": {
+      "country": "Central African Republic",
+      "code": "CAF"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 28,
+    "fields": {
+      "country": "Canada",
+      "code": "CAN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 29,
+    "fields": {
+      "country": "Switzerland",
+      "code": "CHE"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 30,
+    "fields": {
+      "country": "Chile",
+      "code": "CHL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 31,
+    "fields": {
+      "country": "China",
+      "code": "CHN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 32,
+    "fields": {
+      "country": "Ivory Coast",
+      "code": "CIV"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 33,
+    "fields": {
+      "country": "Cameroon",
+      "code": "CMR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 34,
+    "fields": {
+      "country": "Democratic Republic of the Congo",
+      "code": "COD"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 35,
+    "fields": {
+      "country": "Republic of the Congo",
+      "code": "COG"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 36,
+    "fields": {
+      "country": "Colombia",
+      "code": "COL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 37,
+    "fields": {
+      "country": "Costa Rica",
+      "code": "CRI"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 38,
+    "fields": {
+      "country": "Cuba",
+      "code": "CUB"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 39,
+    "fields": {
+      "country": "Northern Cyprus",
+      "code": "-99"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 40,
+    "fields": {
+      "country": "Cyprus",
+      "code": "CYP"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 41,
+    "fields": {
+      "country": "Czech Republic",
+      "code": "CZE"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 42,
+    "fields": {
+      "country": "Germany",
+      "code": "DEU"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 43,
+    "fields": {
+      "country": "Djibouti",
+      "code": "DJI"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 44,
+    "fields": {
+      "country": "Denmark",
+      "code": "DNK"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 45,
+    "fields": {
+      "country": "Dominican Republic",
+      "code": "DOM"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 46,
+    "fields": {
+      "country": "Algeria",
+      "code": "DZA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 47,
+    "fields": {
+      "country": "Ecuador",
+      "code": "ECU"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 48,
+    "fields": {
+      "country": "Egypt",
+      "code": "EGY"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 49,
+    "fields": {
+      "country": "Eritrea",
+      "code": "ERI"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 50,
+    "fields": {
+      "country": "Spain",
+      "code": "ESP"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 51,
+    "fields": {
+      "country": "Estonia",
+      "code": "EST"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 52,
+    "fields": {
+      "country": "Ethiopia",
+      "code": "ETH"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 53,
+    "fields": {
+      "country": "Finland",
+      "code": "FIN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 54,
+    "fields": {
+      "country": "Fiji",
+      "code": "FJI"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 55,
+    "fields": {
+      "country": "Falkland Islands",
+      "code": "FLK"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 56,
+    "fields": {
+      "country": "France",
+      "code": "FRA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 57,
+    "fields": {
+      "country": "Gabon",
+      "code": "GAB"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 58,
+    "fields": {
+      "country": "UK",
+      "code": "GBR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 59,
+    "fields": {
+      "country": "Georgia",
+      "code": "GEO"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 60,
+    "fields": {
+      "country": "Ghana",
+      "code": "GHA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 61,
+    "fields": {
+      "country": "Guinea",
+      "code": "GIN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 62,
+    "fields": {
+      "country": "Gambia",
+      "code": "GMB"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 63,
+    "fields": {
+      "country": "Guinea Bissau",
+      "code": "GNB"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 64,
+    "fields": {
+      "country": "Equatorial Guinea",
+      "code": "GNQ"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 65,
+    "fields": {
+      "country": "Greece",
+      "code": "GRC"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 66,
+    "fields": {
+      "country": "Greenland",
+      "code": "GRL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 67,
+    "fields": {
+      "country": "Guatemala",
+      "code": "GTM"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 68,
+    "fields": {
+      "country": "Guyana",
+      "code": "GUY"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 69,
+    "fields": {
+      "country": "Honduras",
+      "code": "HND"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 70,
+    "fields": {
+      "country": "Croatia",
+      "code": "HRV"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 71,
+    "fields": {
+      "country": "Haiti",
+      "code": "HTI"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 72,
+    "fields": {
+      "country": "Hungary",
+      "code": "HUN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 73,
+    "fields": {
+      "country": "Indonesia",
+      "code": "IDN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 74,
+    "fields": {
+      "country": "India",
+      "code": "IND"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 75,
+    "fields": {
+      "country": "Ireland",
+      "code": "IRL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 76,
+    "fields": {
+      "country": "Iran",
+      "code": "IRN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 77,
+    "fields": {
+      "country": "Iraq",
+      "code": "IRQ"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 78,
+    "fields": {
+      "country": "Iceland",
+      "code": "ISL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 79,
+    "fields": {
+      "country": "Israel",
+      "code": "ISR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 80,
+    "fields": {
+      "country": "Italy",
+      "code": "ITA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 81,
+    "fields": {
+      "country": "Jamaica",
+      "code": "JAM"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 82,
+    "fields": {
+      "country": "Jordan",
+      "code": "JOR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 83,
+    "fields": {
+      "country": "Japan",
+      "code": "JPN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 84,
+    "fields": {
+      "country": "Kazakhstan",
+      "code": "KAZ"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 85,
+    "fields": {
+      "country": "Kenya",
+      "code": "KEN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 86,
+    "fields": {
+      "country": "Kyrgyzstan",
+      "code": "KGZ"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 87,
+    "fields": {
+      "country": "Cambodia",
+      "code": "KHM"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 88,
+    "fields": {
+      "country": "Kosovo",
+      "code": "OSA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 89,
+    "fields": {
+      "country": "Kuwait",
+      "code": "KWT"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 90,
+    "fields": {
+      "country": "Laos",
+      "code": "LAO"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 91,
+    "fields": {
+      "country": "Lebanon",
+      "code": "LBN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 92,
+    "fields": {
+      "country": "Liberia",
+      "code": "LBR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 93,
+    "fields": {
+      "country": "Libya",
+      "code": "LBY"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 94,
+    "fields": {
+      "country": "Sri Lanka",
+      "code": "LKA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 95,
+    "fields": {
+      "country": "Lesotho",
+      "code": "LSO"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 96,
+    "fields": {
+      "country": "Lithuania",
+      "code": "LTU"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 97,
+    "fields": {
+      "country": "Luxembourg",
+      "code": "LUX"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 98,
+    "fields": {
+      "country": "Latvia",
+      "code": "LVA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 99,
+    "fields": {
+      "country": "Morocco",
+      "code": "MAR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 100,
+    "fields": {
+      "country": "Moldova",
+      "code": "MDA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 101,
+    "fields": {
+      "country": "Madagascar",
+      "code": "MDG"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 102,
+    "fields": {
+      "country": "Mexico",
+      "code": "MEX"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 103,
+    "fields": {
+      "country": "Macedonia",
+      "code": "MKD"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 104,
+    "fields": {
+      "country": "Mali",
+      "code": "MLI"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 105,
+    "fields": {
+      "country": "Myanmar",
+      "code": "MMR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 106,
+    "fields": {
+      "country": "Montenegro",
+      "code": "MNE"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 107,
+    "fields": {
+      "country": "Mongolia",
+      "code": "MNG"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 108,
+    "fields": {
+      "country": "Mozambique",
+      "code": "MOZ"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 109,
+    "fields": {
+      "country": "Mauritania",
+      "code": "MRT"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 110,
+    "fields": {
+      "country": "Malawi",
+      "code": "MWI"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 111,
+    "fields": {
+      "country": "Malaysia",
+      "code": "MYS"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 112,
+    "fields": {
+      "country": "Namibia",
+      "code": "NAM"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 113,
+    "fields": {
+      "country": "New Caledonia",
+      "code": "NCL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 114,
+    "fields": {
+      "country": "Niger",
+      "code": "NER"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 115,
+    "fields": {
+      "country": "Nigeria",
+      "code": "NGA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 116,
+    "fields": {
+      "country": "Nicaragua",
+      "code": "NIC"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 117,
+    "fields": {
+      "country": "Netherlands",
+      "code": "NLD"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 118,
+    "fields": {
+      "country": "Norway",
+      "code": "NOR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 119,
+    "fields": {
+      "country": "Nepal",
+      "code": "NPL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 120,
+    "fields": {
+      "country": "New Zealand",
+      "code": "NZL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 121,
+    "fields": {
+      "country": "Oman",
+      "code": "OMN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 122,
+    "fields": {
+      "country": "Pakistan",
+      "code": "PAK"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 123,
+    "fields": {
+      "country": "Panama",
+      "code": "PAN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 124,
+    "fields": {
+      "country": "Peru",
+      "code": "PER"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 125,
+    "fields": {
+      "country": "Philippines",
+      "code": "PHL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 126,
+    "fields": {
+      "country": "Papua New Guinea",
+      "code": "PNG"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 127,
+    "fields": {
+      "country": "Poland",
+      "code": "POL"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 128,
+    "fields": {
+      "country": "Puerto Rico",
+      "code": "PRI"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 129,
+    "fields": {
+      "country": "Portugal",
+      "code": "PRT"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 130,
+    "fields": {
+      "country": "Paraguay",
+      "code": "PRY"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 131,
+    "fields": {
+      "country": "Qatar",
+      "code": "QAT"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 132,
+    "fields": {
+      "country": "Romania",
+      "code": "ROU"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 133,
+    "fields": {
+      "country": "Russia",
+      "code": "RUS"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 134,
+    "fields": {
+      "country": "Rwanda",
+      "code": "RWA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 135,
+    "fields": {
+      "country": "Western Sahara",
+      "code": "ESH"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 136,
+    "fields": {
+      "country": "Saudi Arabia",
+      "code": "SAU"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 137,
+    "fields": {
+      "country": "Sudan",
+      "code": "SDN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 138,
+    "fields": {
+      "country": "South Sudan",
+      "code": "SDS"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 139,
+    "fields": {
+      "country": "Senegal",
+      "code": "SEN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 140,
+    "fields": {
+      "country": "Solomon Islands",
+      "code": "SLB"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 141,
+    "fields": {
+      "country": "Sierra Leone",
+      "code": "SLE"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 142,
+    "fields": {
+      "country": "El Salvador",
+      "code": "SLV"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 143,
+    "fields": {
+      "country": "Somaliland",
+      "code": "ABV"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 144,
+    "fields": {
+      "country": "Somalia",
+      "code": "SOM"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 145,
+    "fields": {
+      "country": "Serbia",
+      "code": "SRB"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 146,
+    "fields": {
+      "country": "Suriname",
+      "code": "SUR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 147,
+    "fields": {
+      "country": "Slovakia",
+      "code": "SVK"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 148,
+    "fields": {
+      "country": "Slovenia",
+      "code": "SVN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 149,
+    "fields": {
+      "country": "Sweden",
+      "code": "SWE"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 150,
+    "fields": {
+      "country": "Swaziland",
+      "code": "SWZ"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 151,
+    "fields": {
+      "country": "Syria",
+      "code": "SYR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 152,
+    "fields": {
+      "country": "Chad",
+      "code": "TCD"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 153,
+    "fields": {
+      "country": "Togo",
+      "code": "TGO"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 154,
+    "fields": {
+      "country": "Thailand",
+      "code": "THA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 155,
+    "fields": {
+      "country": "Tajikistan",
+      "code": "TJK"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 156,
+    "fields": {
+      "country": "Turkmenistan",
+      "code": "TKM"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 157,
+    "fields": {
+      "country": "East Timor",
+      "code": "TLS"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 158,
+    "fields": {
+      "country": "Trinidad and Tobago",
+      "code": "TTO"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 159,
+    "fields": {
+      "country": "Tunisia",
+      "code": "TUN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 160,
+    "fields": {
+      "country": "Turkey",
+      "code": "TUR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 161,
+    "fields": {
+      "country": "Taiwan",
+      "code": "TWN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 162,
+    "fields": {
+      "country": "Tanzania",
+      "code": "TZA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 163,
+    "fields": {
+      "country": "Uganda",
+      "code": "UGA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 164,
+    "fields": {
+      "country": "Ukraine",
+      "code": "UKR"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 165,
+    "fields": {
+      "country": "Uruguay",
+      "code": "URY"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 166,
+    "fields": {
+      "country": "USA",
+      "code": "USA"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 167,
+    "fields": {
+      "country": "Uzbekistan",
+      "code": "UZB"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 168,
+    "fields": {
+      "country": "Venezuela",
+      "code": "VEN"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 169,
+    "fields": {
+      "country": "Vietnam",
+      "code": "VNM"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 170,
+    "fields": {
+      "country": "Vanuatu",
+      "code": "VUT"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 171,
+    "fields": {
+      "country": "West Bank",
+      "code": "PSE"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 172,
+    "fields": {
+      "country": "Yemen",
+      "code": "YEM"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 173,
+    "fields": {
+      "country": "South Africa",
+      "code": "ZAF"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 174,
+    "fields": {
+      "country": "Zambia",
+      "code": "ZMB"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 175,
+    "fields": {
+      "country": "Zimbabwe",
+      "code": "ZWE"
+    }
+  },
+  {
+    "model": "trakergy.Location",
+    "pk": 176,
+    "fields": {
+      "country": "Korea",
+      "code": "KOR"
+    }
+  }
+]

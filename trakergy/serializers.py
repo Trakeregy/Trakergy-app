@@ -1,4 +1,4 @@
-from .models import CustomUser
+from .models import *
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
@@ -55,3 +55,31 @@ class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'username', 'email', 'first_name', 'last_name', 'image_url')
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ('id', 'code', 'country')
+
+
+class TripSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Trip
+        fields = ('id', 'name', 'from_date', 'to_date', 'location', 'members')
+
+
+class ExpenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Expense
+        fields = ('id', 'amount', 'description', 'date', 'tag', 'payer', 'users_to_split')
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ('id', 'name')
+
+class SumByTypeSerializer(serializers.Serializer):
+    tag_name = serializers.CharField()
+    sum = serializers.FloatField()

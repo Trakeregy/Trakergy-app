@@ -1,18 +1,18 @@
 @font-face {
-    font-family: 'Nexa';
-    src: url('./fonts/Nexa\ Light.otf');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Nexa';
+  src: url('./fonts/Nexa\ Light.otf');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'Nexa';
-    src: url('./fonts/Nexa\ Bold.otf');
-    font-weight: bold;
-    font-style: normal;
+  font-family: 'Nexa';
+  src: url('./fonts/Nexa\ Bold.otf');
+  font-weight: bold;
+  font-style: normal;
 }
 
 body {
-    margin: 0;
-    font-size: 15pt;
+  margin: 0;
+  font-size: 15pt;
 }

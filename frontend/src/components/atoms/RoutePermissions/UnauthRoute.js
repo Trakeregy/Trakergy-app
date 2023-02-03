@@ -4,13 +4,13 @@ import { Navigate } from 'react-router-dom';
 import ROUTES from '../../../utils/routes';
 
 function UnauthRoute({ authenticated, children }) {
-    return !authenticated ? children : <Navigate to={ROUTES.HOME} />;
+  return !authenticated ? children : <Navigate to={ROUTES.TRIPS} />;
 }
 
 const mapStateToProps = (state) => {
-    return {
-        authenticated: state.auth.authenticated,
-    };
+  return {
+    authenticated: state.auth.authenticated,
+  };
 };
 
 export default connect(mapStateToProps)(UnauthRoute);

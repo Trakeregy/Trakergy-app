@@ -1,4 +1,4 @@
-"""trakergy URL Configuration
+"""trackergy URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -16,7 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from trakergy.views import RegisterAPI, LogoutAPI, EditUsernameAPI, EditEmailAPI, EditPasswordAPI, SeeCurrentUserAPI
+from trakergy.views import (
+    RegisterAPI,
+    LogoutAPI,
+    EditUsernameAPI,
+    EditEmailAPI,
+    EditPasswordAPI,
+    SeeCurrentUserAPI,
+    PersonalExpensesByTypeAPI,
+    PersonalExpensesYearsAPI,
+    PersonalExpensesByTypeByMonthAPI,
+    PersonalExpensesForUserYearsAPI,
+    PersonalExpensesPerCountryAPI,
+    TripInformationAPI,
+    UserTripsAPI
+)
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -32,5 +46,14 @@ urlpatterns = [
     path('users/edit/email', EditEmailAPI.as_view(), name='edit_email'),
     path('users/edit/password', EditPasswordAPI.as_view(), name='edit_password'),
     path('users/view/current_user', SeeCurrentUserAPI.as_view(), name='see_current_user'),
+    # reports
+    path('reports/personal/all_years', PersonalExpensesYearsAPI.as_view(), name='personal_exp_years'),
+    path('reports/personal/sum_by_type', PersonalExpensesByTypeAPI.as_view(), name='personal_exp_sum_by_type'),
+    path('reports/personal/sum_by_type_by_month', PersonalExpensesByTypeByMonthAPI.as_view(), name='personal_exp_sum_by_type_by_month'),
+    path('reports/personal/daily_all_years', PersonalExpensesForUserYearsAPI.as_view(), name='personal_exp_daily_all_years'),
+    path('reports/personal/sum_per_country', PersonalExpensesPerCountryAPI.as_view(), name='personal_exp_per_country'),
+    # trips
+    path('trips/get_all_info/<int:trip_id>', TripInformationAPI.as_view(), name='trip_information'),
+    path('trips', UserTripsAPI.as_view(), name='user_trips'),
     path('', admin.site.urls),
 ]

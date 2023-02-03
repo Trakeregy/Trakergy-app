@@ -1,3 +1,4 @@
-import LoadingIndicator from './LoadingIndicator';
+import LoadingIndicator from './LoadingIndicator'
+import Forbidden from './Forbidden';
 
-export { LoadingIndicator };
+export { LoadingIndicator, Forbidden };
