@@ -12,11 +12,11 @@ const LineChart = ({ data, title, xAxisName, yAxisName }) => {
 
   const handle = (id) => {
     if (dataId === null) {
-      const filteredData = data.filter((item) => item.id === id);
-      const newData = filteredData[0].data.filter((i) => i.y !== null);
-      filteredData[0].data = newData;
+      const filteredData = data.find((item) => item.id === id);
+      const newData = filteredData.data.filter((i) => i.y !== null);
+      const newD = [{ id, data: newData }];
       setDataId(id);
-      setDataToDisplay(filteredData);
+      setDataToDisplay(newD);
     } else {
       setDataId(null);
       setDataToDisplay(data);
@@ -55,6 +55,7 @@ const LineChart = ({ data, title, xAxisName, yAxisName }) => {
             stacked: false,
             reverse: false,
           }}
+          enableArea={true}
           yFormat=' >-.0d'
           axisTop={null}
           axisRight={null}
