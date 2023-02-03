@@ -237,16 +237,13 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips, currentUser }) {
       };
     });
 
-    // TODO: what if someone else pays for my own expense?
-    // ex: payerId = 2, usersToPay = [1], userId = 1
-    // in this case, just remove the first condition
     const isPersonal = (exp) =>
-      exp.payerId === userId &&
-      exp.usersToPay.length === 1 &&
-      exp.usersToPay[0].id === userId;
+      exp.usersToPay.length === 1 && exp.usersToPay[0].id === userId;
+    const isOthersPersonal = (exp) =>
+      exp.usersToPay.length === 1 && exp.usersToPay[0].id !== userId;
 
     return {
-      group: data.filter((exp) => !isPersonal(exp)),
+      group: data.filter((exp) => !isPersonal(exp) && !isOthersPersonal(exp)),
       personal: data.filter(isPersonal),
     };
   };
@@ -305,15 +302,15 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips, currentUser }) {
             </TabPanel>
 
             {/* expenses */}
-            <TabPanel p={0} m={0} borderRadius={20} overflow='hidden'>
+            <TabPanel p={0} m={0}>
               <Tabs variant='soft-rounded' colorScheme='primary'>
                 <TabList gap={5} mb={5}>
                   <Tab>{t('group-expenses')}</Tab>
                   <Tab>{t('personal-expenses')}</Tab>
                 </TabList>
                 <TabPanels m={0}>
-                  <TabPanel p={0} m={0}>
-                    <Box bg='white' borderRadius={20}>
+                  <TabPanel p={0} m={0} borderRadius={20} overflow='hidden'>
+                    <Box bg='white'>
                       <CustomTable
                         columns={expensesTableCols}
                         columnNames={expensesTableColNames}
@@ -321,8 +318,8 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips, currentUser }) {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel p={0} m={0}>
-                    <Box bg='white' borderRadius={20}>
+                  <TabPanel p={0} m={0} borderRadius={20} overflow='hidden'>
+                    <Box bg='white'>
                       <CustomTable
                         columns={expensesTableCols}
                         columnNames={expensesTableColNames}

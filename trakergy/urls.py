@@ -29,7 +29,8 @@ from trakergy.views import (
     PersonalExpensesForUserYearsAPI,
     PersonalExpensesPerCountryAPI,
     TripInformationAPI,
-    UserTripsAPI
+    UserTripsAPI,
+    ExpensesForSpecificTrips
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -55,5 +56,7 @@ urlpatterns = [
     # trips
     path('trips/get_all_info/<int:trip_id>', TripInformationAPI.as_view(), name='trip_information'),
     path('trips', UserTripsAPI.as_view(), name='user_trips'),
+    # expenses
+    path('expenses/specific_trips', ExpensesForSpecificTrips.as_view(), name='expenses_for_specific_trips'),
     path('', admin.site.urls),
 ]

@@ -1,0 +1,50 @@
+@import './colors';
+
+.rbc-today {
+  background-color: $white;
+}
+
+div.rbc-now {
+  background-color: $secondary;
+  color: $white;
+}
+
+.rbc-now > button {
+  font-weight: bold;
+}
+
+.rbc-time-slot {
+  background-color: $white;
+}
+
+.rbc-current-time-indicator {
+  height: 4px;
+  background-color: $primary;
+}
+
+.rbc-toolbar-label {
+  font-weight: bold;
+  color: $primary;
+  font-size: 20pt;
+}
+
+.rbc-event-allday {
+  border-radius: 30pt;
+  padding: 0 15px;
+}
+
+.rbc-header.rbc-today {
+  background-color: $secondary;
+  color: $white;
+}
+
+div.rbc-header {
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rbc-header.rbc-today span {
+  font-weight: bold;
+}

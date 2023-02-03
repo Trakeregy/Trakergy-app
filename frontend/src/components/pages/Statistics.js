@@ -209,7 +209,7 @@ function Statistics({
         )}
       </Flex>
 
-      <Flex flexDir='row' gap={5} flexWrap='wrap'>
+      <Flex flexDir='row' gap={5} flexWrap='wrap' mb={5}>
         <PieChart
           data={pieData}
           title={`${t('sum-by-type')}, ${selectedYear}`}
@@ -221,11 +221,11 @@ function Statistics({
         />
       </Flex>
 
-      <Box mt={5}>
+      <Box mb={5}>
         <LineChart data={lineData} title={t('sum-by-type-monthly')} />
       </Box>
 
-      <Flex flexDir='row' gap={5} flexWrap='wrap' my={5}>
+      <Flex flexDir='row' gap={5} flexWrap='wrap' mb={5}>
         <CalendarChart
           from={selectedYear.toString()}
           to={selectedYear.toString()}
@@ -234,7 +234,7 @@ function Statistics({
         />
       </Flex>
 
-      <Flex flex='1' flexDir='column' bg='white' borderRadius={20} my={5}>
+      <Flex flex='1' flexDir='column' bg='white' borderRadius={20} mb={5}>
         <Flex
           alignItems='center'
           mb={5}
@@ -280,7 +280,7 @@ function Statistics({
         )}
       </Flex>
 
-      <Flex mt={5}>
+      <Flex>
         <MapChart title={t('map-total-expenses')} data={dataPerCountry} />
       </Flex>
     </AuthPage>

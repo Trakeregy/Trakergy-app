@@ -1,4 +1,5 @@
-import LoadingIndicator from './LoadingIndicator'
+import LoadingIndicator from './LoadingIndicator';
 import Forbidden from './Forbidden';
+import BigCalendar from './BigCalendar';
 
-export { LoadingIndicator, Forbidden };
+export { LoadingIndicator, Forbidden, BigCalendar };
