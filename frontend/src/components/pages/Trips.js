@@ -22,8 +22,9 @@ import { Forbidden } from '../atoms';
 import { PieChart, LineChart, TimerangeChart, BarChart } from '../atoms/Charts';
 import { CustomTable, CustomHeading } from '../atoms/CustomBasicComponents';
 
-function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
+function Trips({ getTripInfo, getUserTrips, tripInfo, trips, currentUser }) {
   const { tripId } = useParams();
+  const { id: userId } = currentUser;
   const [forbidden, setForbidden] = useState(false);
   const [tripData, setTripData] = useState({});
   const navigate = useNavigate();
@@ -232,10 +233,22 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
         payer: payerName,
         tag: tagName,
         usersToPay: usersToPay,
+        payerId,
       };
     });
 
-    return data;
+    // TODO: what if someone else pays for my own expense?
+    // ex: payerId = 2, usersToPay = [1], userId = 1
+    // in this case, just remove the first condition
+    const isPersonal = (exp) =>
+      exp.payerId === userId &&
+      exp.usersToPay.length === 1 &&
+      exp.usersToPay[0].id === userId;
+
+    return {
+      group: data.filter((exp) => !isPersonal(exp)),
+      personal: data.filter(isPersonal),
+    };
   };
 
   // show trip data
@@ -250,7 +263,10 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
 
     const expensesTableCols = getExpensesCols();
     const expensesTableColNames = getExpensesColNames();
-    const expensesTableData = expenses ? getExpensesData(expenses) : [];
+    const expensesTableDataObj = expenses ? getExpensesData(expenses) : [];
+
+    const { group: expensesTableData, personal: expensesTableDataPersonal } =
+      expensesTableDataObj;
 
     return (
       <AuthPage>
@@ -290,13 +306,33 @@ function Trips({ getTripInfo, getUserTrips, tripInfo, trips }) {
 
             {/* expenses */}
             <TabPanel p={0} m={0} borderRadius={20} overflow='hidden'>
-              <Box bg='white'>
-                <CustomTable
-                  columns={expensesTableCols}
-                  columnNames={expensesTableColNames}
-                  data={expensesTableData}
-                />
-              </Box>
+              <Tabs variant='soft-rounded' colorScheme='primary'>
+                <TabList gap={5} mb={5}>
+                  <Tab>{t('group-expenses')}</Tab>
+                  <Tab>{t('personal-expenses')}</Tab>
+                </TabList>
+                <TabPanels m={0}>
+                  <TabPanel p={0} m={0}>
+                    <Box bg='white' borderRadius={20}>
+                      <CustomTable
+                        columns={expensesTableCols}
+                        columnNames={expensesTableColNames}
+                        data={expensesTableData}
+                      />
+                    </Box>
+                  </TabPanel>
+                  <TabPanel p={0} m={0}>
+                    <Box bg='white' borderRadius={20}>
+                      <CustomTable
+                        columns={expensesTableCols}
+                        columnNames={expensesTableColNames}
+                        data={expensesTableDataPersonal}
+                        expandableRows={false}
+                      />
+                    </Box>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
             </TabPanel>
 
             {/* statistics */}
@@ -364,6 +400,7 @@ const mapStateToProps = (state) => {
   return {
     tripInfo: state.trips.tripInfo,
     trips: state.trips.trips,
+    currentUser: state.auth.currentUser,
   };
 };
 

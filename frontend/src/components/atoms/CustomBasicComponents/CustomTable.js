@@ -37,7 +37,12 @@ const ExpandedComponent = ({ data }) => {
   );
 };
 
-function CustomTable({ columns = [], columnNames = [], data = [] }) {
+function CustomTable({
+  columns = [],
+  columnNames = [],
+  data = [],
+  expandableRows = true,
+}) {
   const cols = columns.map((col, i) => {
     return {
       name: columnNames[i],
@@ -60,7 +65,7 @@ function CustomTable({ columns = [], columnNames = [], data = [] }) {
       data={rows}
       pagination
       striped
-      expandableRows
+      expandableRows={expandableRows}
       noDataComponent={<NoDataComponent />}
       expandableRowsComponent={ExpandedComponent}
       customStyles={{

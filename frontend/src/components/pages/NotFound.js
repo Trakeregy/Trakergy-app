@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Flex, Link, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Link, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import ROUTES from '../../utils/routes';
 import { NotFoundAnimation } from '../animations';
