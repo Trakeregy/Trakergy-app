@@ -453,3 +453,27 @@ class UserTripsAPI(generics.GenericAPIView):
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+
+
+class ExpensesForSpecificTrips(generics.GenericAPIView):
+    def get(self, request):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+
+            try:
+                body_trips = request.GET.getlist('tripId')
+                body_trips = [int(i) for i in body_trips]
+                expenses = Expense.objects.filter(trip_id__in=body_trips)
+                res = []
+                for expense in expenses:
+                    serializer = ExpenseSerializer(expense)
+                    res.append(serializer.data)
+
+                return Response(data=res, status=status.HTTP_200_OK)
+            except Exception:
+                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)

@@ -13,7 +13,7 @@ function Header({ onOpen, currentUser }) {
   const userName = firstName + ' ' + lastName;
 
   return (
-    <Box p={6} h={120} pos='fixed' w='full' bg='grey.100' zIndex={1}>
+    <Box p={6} h={120} pos='fixed' w='full' bg='grey.100' zIndex={5}>
       <Flex
         ml={{ base: 0, md: 116 }}
         px={{ base: 6, md: 6 }}
