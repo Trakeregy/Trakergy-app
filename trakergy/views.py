@@ -376,12 +376,10 @@ class PersonalExpensesPerCountryAPI(generics.GenericAPIView):
 
 
 class TripAPI(generics.GenericAPIView):
-
-    def delete(self, request, trip_id):
+    def patch(self, request, trip_id):
         token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
         access_token_obj = AccessToken(token)
         user_id = access_token_obj['user_id']
-
         if trip_id is None:
             return Response(data={'message': "Missing parameter trip_id"}, status=status.HTTP_400_BAD_REQUEST)
         try:
@@ -389,10 +387,46 @@ class TripAPI(generics.GenericAPIView):
         except ObjectDoesNotExist:
             return Response(data={'message': f"Wrong trip id: {trip_id}"}, status=status.HTTP_400_BAD_REQUEST)
         if trip.admin is None or trip.admin.id != user_id:
-            return Response(data={'message': "Current user is not the admin of this trip"}, status=status.HTTP_403_FORBIDDEN)
+            return Response(data={'message': "Current user is not the admin of this trip"},
+                            status=status.HTTP_403_FORBIDDEN)
 
-        trip.delete()
-        return Response(data={'message': 'Successfully deleted trip'}, status=status.HTTP_200_OK)
+        serializer = TripUpsertSerializer(trip, data=request.data, partial=True, context={'request': request})
+        if serializer.is_valid():
+            if 'members' in request.data and user_id not in request.data['members']:
+                return Response(data={'message': "Wrong trip id: admin member can't be removed"},
+                                status=status.HTTP_400_BAD_REQUEST)
+            if 'from_date' in request.data and 'to_date' not in request.data and request.data['from_date'] > trip.to_date.strftime("%Y-%m-%d"):
+                return Response(data={'message': "Start date must be lower than end date"},
+                                status=status.HTTP_400_BAD_REQUEST)
+            if 'to_date' in request.data and 'from_date' not in request.data and request.data['to_date'] < trip.from_date.strftime("%Y-%m-%d"):
+                return Response(data={'message': "End date must be grater than start date"},
+                                status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()
+            details_serializer = TripDetailSerializer(trip)
+            return Response(data=details_serializer.data, status=status.HTTP_200_OK)
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, trip_id):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+
+            if trip_id is None:
+                return Response(data={'message': "Missing parameter trip_id"}, status=status.HTTP_400_BAD_REQUEST)
+            try:
+                trip = Trip.objects.get(id=trip_id)
+            except ObjectDoesNotExist:
+                return Response(data={'message': f"Wrong trip id: {trip_id}"}, status=status.HTTP_400_BAD_REQUEST)
+            if trip.admin is None or trip.admin.id != user_id:
+                return Response(data={'message': "Current user is not the admin of this trip"},
+                                status=status.HTTP_403_FORBIDDEN)
+
+            trip.delete()
+            return Response(data={'message': 'Successfully deleted trip'}, status=status.HTTP_200_OK)
+
+        except Exception:
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
 
     def get(self, request, trip_id):
         try:

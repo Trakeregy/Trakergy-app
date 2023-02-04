@@ -73,6 +73,7 @@ class TripSerializer(serializers.ModelSerializer):
 
 class TripUpsertSerializer(serializers.ModelSerializer):
     members = serializers.ListField(required=False)
+
     class Meta:
         model = Trip
         fields = ('name', 'from_date', 'to_date', 'location', 'members')
@@ -82,7 +83,7 @@ class TripUpsertSerializer(serializers.ModelSerializer):
         Checks that start date is before end date.
         Checks that members exist.
         """
-        if data['from_date'] > data['to_date']:
+        if 'from_date' in data and 'to_date' in data and data['from_date'] > data['to_date']:
             raise serializers.ValidationError("End date must occur after start.")
         if 'members' in data:
             for member_id in data['members']:
@@ -99,7 +100,7 @@ class TripDetailSerializer(serializers.ModelSerializer):
     members_count = serializers.SerializerMethodField(method_name='get_members_count')
     members = serializers.SerializerMethodField(method_name='get_members')
 
-    def get_location(selfself,obj):
+    def get_location(selfself, obj):
         serializer = LocationSerializer(Location.objects.get(id=obj.location.id))
         return serializer.data
 
