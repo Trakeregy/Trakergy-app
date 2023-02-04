@@ -30,6 +30,7 @@ class Trip(models.Model):
     to_date = models.DateField()
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
     members = models.ManyToManyField(CustomUser, related_name='trips')
+    admin = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name

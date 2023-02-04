@@ -1,3 +1,5 @@
+from django.core.exceptions import ObjectDoesNotExist
+
 from .models import *
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
@@ -66,7 +68,61 @@ class LocationSerializer(serializers.ModelSerializer):
 class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
-        fields = ('id', 'name', 'from_date', 'to_date', 'location', 'members')
+        fields = ('id', 'name', 'from_date', 'to_date', 'location', 'admin', 'members')
+
+
+class TripUpsertSerializer(serializers.ModelSerializer):
+    members = serializers.ListField(required=False)
+
+    class Meta:
+        model = Trip
+        fields = ('name', 'from_date', 'to_date', 'location', 'members')
+
+    def validate(self, data):
+        """
+        Checks that start date is before end date.
+        Checks that members exist.
+        """
+        if 'from_date' in data and 'to_date' in data and data['from_date'] > data['to_date']:
+            raise serializers.ValidationError("End date must occur after start.")
+        if 'members' in data:
+            for member_id in data['members']:
+                try:
+                    CustomUser.objects.get(id=member_id)
+                except ObjectDoesNotExist:
+                    raise serializers.ValidationError(f"Wrong member id: {member_id}")
+        return data
+
+
+class TripDetailSerializer(serializers.ModelSerializer):
+    location = serializers.SerializerMethodField(method_name='get_location')
+    admin = serializers.SerializerMethodField(method_name='get_admin')
+    members_count = serializers.SerializerMethodField(method_name='get_members_count')
+    members = serializers.SerializerMethodField(method_name='get_members')
+
+    def get_location(selfself, obj):
+        serializer = LocationSerializer(Location.objects.get(id=obj.location.id))
+        return serializer.data
+
+    def get_admin(self, obj):
+        if obj.admin:
+            serializer = CustomUserSerializer(CustomUser.objects.get(id=obj.admin.id))
+            return serializer.data
+        return None
+
+    def get_members(self, obj):
+        data = []
+        for member in obj.members.all():
+            serializer = CustomUserSerializer(CustomUser.objects.get(id=member.id))
+            data.append(serializer.data)
+        return data
+
+    def get_members_count(self, obj):
+        return obj.members.count()
+
+    class Meta:
+        model = Trip
+        fields = ['id', 'name', 'location', 'from_date', 'to_date', 'admin', 'members', 'members_count']
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
@@ -79,6 +135,7 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('id', 'name')
+
 
 class SumByTypeSerializer(serializers.Serializer):
     tag_name = serializers.CharField()
