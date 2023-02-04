@@ -147,7 +147,7 @@ _Use a terminal for the following steps:_
 Visit [swagger folder](https://github.com/Homeify/Home-management-platform/tree/main/homeify/swagger_documentation) for HTML documentation for each endpoint.
 
 ### Useful phyton commands:
-* ```python manage.py create super user``` - creates an admin that can access administration backend platform (can see/add/edit entities)
+* ```python manage.py create superuser``` - creates an admin that can access administration backend platform (can see/add/edit entities)
 * ```pip freeze > requirements.txt``` - add local requirements in requirements.txt file
 
 

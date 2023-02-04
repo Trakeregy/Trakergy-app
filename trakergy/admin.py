@@ -1,5 +1,5 @@
 from django.db import models
-from .models import CustomUser
+from .models import CustomUser, Trip, Location, Expense, Tag
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
@@ -32,3 +32,7 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Trip)
+admin.site.register(Tag)
+admin.site.register(Location)
+admin.site.register(Expense)

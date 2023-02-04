@@ -12,10 +12,16 @@ class CustomUser(AbstractUser):
 class Tag(models.Model):
     name = models.TextField()
 
+    def __str__(self):
+        return self.name
+
 
 class Location(models.Model):
     code = models.TextField()
     country = models.TextField()
+
+    def __str__(self):
+        return str(self.country) + ' (' + str(self.code) + ')'
 
 
 class Trip(models.Model):
@@ -24,6 +30,9 @@ class Trip(models.Model):
     to_date = models.DateField()
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
     members = models.ManyToManyField(CustomUser, related_name='trips')
+
+    def __str__(self):
+        return self.name
 
 
 class Expense(models.Model):
