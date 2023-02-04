@@ -477,3 +477,49 @@ class ExpensesForSpecificTrips(generics.GenericAPIView):
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+
+
+class CreateTripAPI(generics.GenericAPIView):
+    def post(self, request):
+        # try:
+        token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+        access_token_obj = AccessToken(token)
+        user_id = access_token_obj['user_id']
+        user = CustomUser.objects.get(id=user_id)  # the user that adds the trip is the admin
+        serializer = TripUpsertSerializer(data=request.data)
+        if serializer.is_valid():
+            # create trip
+            data = serializer.data
+            new_trip = Trip.objects.create(name=data['name'], from_date=data['from_date'], to_date=data['to_date'])
+            new_trip.location = Location.objects.get(id=data['location'])
+            new_trip.admin = user
+            new_trip.members.add(user)
+            # save trip members
+            if 'members' in data:
+                for member_id in data['members']:
+                    new_member = CustomUser.objects.get(id=member_id)
+                    new_trip.members.add(new_member)
+            new_trip.save()
+            output = TripDetailSerializer(new_trip)
+            return Response(data=output.data, status=status.HTTP_201_CREATED)
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # except Exception:
+    # return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+
+
+def patch(self, request):
+    return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def get(self, request):
+    Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def delete(self, request):
+    Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AddUsersToTrip(generics.GenericAPIView):
+    def post(self, request, trip_id):
+        return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
