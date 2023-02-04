@@ -375,7 +375,19 @@ class PersonalExpensesPerCountryAPI(generics.GenericAPIView):
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
 
 
-class TripInformationAPI(generics.GenericAPIView):
+class TripAPI(generics.GenericAPIView):
+
+    def delete(self, request, trip_id):
+        token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+        access_token_obj = AccessToken(token)
+        user_id = access_token_obj['user_id']
+
+        if trip_id is None:
+            return Response(data={'message': "Missing parameter trip_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # try:
+    # trip = Trip.objects.get(id=trip_id)
+
     def get(self, request, trip_id):
         try:
             token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
@@ -384,48 +396,32 @@ class TripInformationAPI(generics.GenericAPIView):
 
             if trip_id is None:
                 return Response(data={'message': "Missing parameter trip_id"}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
-                # get basic trip information: id, name, date, location info, members info
                 trip = Trip.objects.get(id=trip_id)
-                trips = Trip.objects.filter(members__in=[user_id])
+            except ObjectDoesNotExist:
+                raise serializers.ValidationError(f"Wrong trip id: {trip_id}")
 
-                if trip not in trips:
-                    return Response(data={'message': "Not a member of this trip"}, status=status.HTTP_403_FORBIDDEN)
+            trips = Trip.objects.filter(members__in=[user_id])
+            if trip not in trips:
+                return Response(data={'message': "Not a member of this trip"}, status=status.HTTP_403_FORBIDDEN)
 
-                serializer = LocationSerializer(trip.location)
-                location_ser = serializer.data
-                serializer = TripSerializer(trip)
-                trip_ser = serializer.data
-                trip_ser['location'] = location_ser
-
-                users = []
-                for u_id in trip_ser['members']:
-                    u = CustomUser.objects.get(id=u_id)
-                    serializer = CustomUserSerializer(u)
-                    users.append(serializer.data)
-
-                trip_ser['members'] = users
-
-                # get trip expenses info: all expenses list
-                # for an expense: basic info, users to split (ids), payer (id), tag
-                expenses = Expense.objects.filter(trip_id=trip_id)
-                expenses_ser = []
-
-                for exp in expenses:
-                    serializer = TagSerializer(exp.tag)
-                    tag_ser = serializer.data
-                    serializer = ExpenseSerializer(exp)
-                    exp_ser = serializer.data
-                    exp_ser['tag'] = tag_ser
-                    expenses_ser.append(exp_ser)
+            trip_data = TripDetailSerializer(trip).data
+            # get trip expenses info: all expenses list
+            # for an expense: basic info, users to split (ids), payer (id), tag
+            expenses = Expense.objects.filter(trip_id=trip_id)
+            expenses_ser = []
+            for exp in expenses:
+                serializer = TagSerializer(exp.tag)
+                tag_ser = serializer.data
+                serializer = ExpenseSerializer(exp)
+                exp_ser = serializer.data
+                exp_ser['tag'] = tag_ser
+                expenses_ser.append(exp_ser)
 
                 # add the expenses to the response
-                trip_ser['expenses'] = expenses_ser
+                trip_data['expenses'] = expenses_ser
 
-                return Response(data=trip_ser, status=status.HTTP_200_OK)
-            except Exception:
-                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data=trip_data, status=status.HTTP_200_OK)
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
@@ -481,43 +477,31 @@ class ExpensesForSpecificTrips(generics.GenericAPIView):
 
 class CreateTripAPI(generics.GenericAPIView):
     def post(self, request):
-        # try:
-        token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
-        access_token_obj = AccessToken(token)
-        user_id = access_token_obj['user_id']
-        user = CustomUser.objects.get(id=user_id)  # the user that adds the trip is the admin
-        serializer = TripUpsertSerializer(data=request.data)
-        if serializer.is_valid():
-            # create trip
-            data = serializer.data
-            new_trip = Trip.objects.create(name=data['name'], from_date=data['from_date'], to_date=data['to_date'])
-            new_trip.location = Location.objects.get(id=data['location'])
-            new_trip.admin = user
-            new_trip.members.add(user)
-            # save trip members
-            if 'members' in data:
-                for member_id in data['members']:
-                    new_member = CustomUser.objects.get(id=member_id)
-                    new_trip.members.add(new_member)
-            new_trip.save()
-            output = TripDetailSerializer(new_trip)
-            return Response(data=output.data, status=status.HTTP_201_CREATED)
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)  # the user that adds the trip is the admin
+            serializer = TripUpsertSerializer(data=request.data)
+            if serializer.is_valid():
+                # create trip
+                data = serializer.data
+                new_trip = Trip.objects.create(name=data['name'], from_date=data['from_date'], to_date=data['to_date'])
+                new_trip.location = Location.objects.get(id=data['location'])
+                new_trip.admin = user
+                new_trip.members.add(user)
+                # save trip members
+                if 'members' in data:
+                    for member_id in data['members']:
+                        new_member = CustomUser.objects.get(id=member_id)
+                        new_trip.members.add(new_member)
+                new_trip.save()
+                output = TripDetailSerializer(new_trip)
+                return Response(data=output.data, status=status.HTTP_201_CREATED)
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # except Exception:
-    # return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
-
-
-def patch(self, request):
-    return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-def get(self, request):
-    Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-def delete(self, request):
-    Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
 
 
 class AddUsersToTrip(generics.GenericAPIView):

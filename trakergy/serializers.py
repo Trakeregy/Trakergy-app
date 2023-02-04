@@ -67,7 +67,7 @@ class LocationSerializer(serializers.ModelSerializer):
 
 class TripSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Trip  # @TODO verify if this still works
+        model = Trip
         fields = ('id', 'name', 'from_date', 'to_date', 'location', 'admin', 'members')
 
 
@@ -102,9 +102,12 @@ class TripDetailSerializer(serializers.ModelSerializer):
     def get_location(selfself,obj):
         serializer = LocationSerializer(Location.objects.get(id=obj.location.id))
         return serializer.data
+
     def get_admin(self, obj):
-        serializer = CustomUserSerializer(CustomUser.objects.get(id=obj.admin.id))
-        return serializer.data
+        if obj.admin:
+            serializer = CustomUserSerializer(CustomUser.objects.get(id=obj.admin.id))
+            return serializer.data
+        return None
 
     def get_members(self, obj):
         data = []
