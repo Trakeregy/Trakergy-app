@@ -384,9 +384,15 @@ class TripAPI(generics.GenericAPIView):
 
         if trip_id is None:
             return Response(data={'message': "Missing parameter trip_id"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            trip = Trip.objects.get(id=trip_id)
+        except ObjectDoesNotExist:
+            return Response(data={'message': f"Wrong trip id: {trip_id}"}, status=status.HTTP_400_BAD_REQUEST)
+        if trip.admin is None or trip.admin.id != user_id:
+            return Response(data={'message': "Current user is not the admin of this trip"}, status=status.HTTP_403_FORBIDDEN)
 
-    # try:
-    # trip = Trip.objects.get(id=trip_id)
+        trip.delete()
+        return Response(data={'message': 'Successfully deleted trip'}, status=status.HTTP_200_OK)
 
     def get(self, request, trip_id):
         try:
@@ -399,7 +405,7 @@ class TripAPI(generics.GenericAPIView):
             try:
                 trip = Trip.objects.get(id=trip_id)
             except ObjectDoesNotExist:
-                raise serializers.ValidationError(f"Wrong trip id: {trip_id}")
+                return Response(data={'message': f"Wrong trip id: {trip_id}"}, status=status.HTTP_400_BAD_REQUEST)
 
             trips = Trip.objects.filter(members__in=[user_id])
             if trip not in trips:
