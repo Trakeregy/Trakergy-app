@@ -47,6 +47,8 @@ class Trip(models.Model):
     name = models.TextField()
     from_date = models.DateField()
     to_date = models.DateField()
+    image_url = models.URLField(max_length=500, blank=False, null=True)
+    description = models.TextField(blank=False, null=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
     members = models.ManyToManyField(CustomUser, related_name='trips')
     admin = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)

@@ -74,5 +74,17 @@
   "password-updated-successfully": "Password updated successfully",
   "user-updated-successfully": "User updated successfully",
   "upload": "Upload",
-  "image-uploaded-successfully": "Image uploaded successfully"
+  "image-uploaded-successfully": "Image uploaded successfully",
+  "members-label": "Members",
+  "location-label": "Destination",
+  "end-date-label": "To",
+  "start-date-label": "From",
+  "trip-description-label": "Description",
+  "trip-name-label": "Name",
+  "trip-create-subtitle": "Get ready to make the best out of your trip.",
+  "trip-create-title": "Create a trip",
+  "trip-edit-subtitle": "Get ready to make the best out of your trip.",
+  "trip-edit-title": "Edit trip",
+  "members-access-title": "Member access",
+  "member-access-subtitle": "Add or remove users for this trip"
 }

@@ -8,11 +8,13 @@ import Settings from './Settings';
 import Calendar from './Calendar';
 import Debts from './Debts';
 import NotFound from './NotFound';
+import Trip from './Trip';
 
 export {
   Landing,
   SignUp,
   LogIn,
+  Trip,
   Trips,
   AuthPage,
   Statistics,

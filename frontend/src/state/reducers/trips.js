@@ -18,6 +18,46 @@ const tripsReducer = (state = TripsState, action) => {
       ...state,
       trips,
     };
+  } else if (action.type === TRIPS_ACTION_TYPES.ADD_TRIP) {
+    return {
+      ...state,
+      trips: [...state.trips, action.payload],
+    };
+  } else if (action.type === TRIPS_ACTION_TYPES.DELETE_TRIP) {
+    const tripId = action.payload;
+    const tripIndex = state.trips.findIndex((trip) => trip.id === tripId);
+    return {
+      ...state,
+      trips: [
+        ...state.trips.slice(0, tripIndex),
+        ...state.trips.slice(tripIndex + 1),
+      ],
+    };
+  } else if (action.type === TRIPS_ACTION_TYPES.EDIT_TRIP) {
+    const trip = action.payload;
+    const tripIndex = state.trips.findIndex((_trip) => _trip.id === trip.id);
+    return {
+      ...state,
+      trips: [
+        ...state.trips.slice(0, tripIndex),
+        trip,
+        ...state.trips.slice(tripIndex + 1),
+      ],
+    };
+  } else if (action.type === TRIPS_ACTION_TYPES.UPDATE_MEMBERS) {
+    const { id, members } = action.payload;
+    const tripIndex = state.trips.findIndex((_trip) => _trip.id === id);
+    return {
+      ...state,
+      trips: [
+        ...state.trips.slice(0, tripIndex),
+        {
+          ...state.trips[tripIndex],
+          members,
+        },
+        ...state.trips.slice(tripIndex + 1),
+      ],
+    };
   }
   return state;
 };

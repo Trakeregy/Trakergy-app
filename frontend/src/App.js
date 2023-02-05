@@ -14,6 +14,7 @@ import {
   SignUp,
   Statistics,
   NotFound,
+  Trip
 } from './components/pages';
 import { PrivateRoute, UnauthRoute } from './components/atoms/RoutePermissions';
 
@@ -46,10 +47,18 @@ function App() {
           }
         />
         <Route
-          path={`${ROUTES.TRIPS}/:tripId?`}
+          path={`${ROUTES.TRIPS}`}
           element={
             <PrivateRoute>
               <Trips />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={`${ROUTES.TRIPS}/:tripId`}
+          element={
+            <PrivateRoute>
+              <Trip />
             </PrivateRoute>
           }
         />

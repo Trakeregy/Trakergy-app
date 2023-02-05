@@ -29,6 +29,8 @@ from trakergy.views import (
     PersonalExpensesForUserYearsAPI,
     PersonalExpensesPerCountryAPI,
     UserTripsAPI,
+    LocationsAPI,
+    UsersAPI,
     ExpensesForSpecificTrips,
     CreateTripAPI,
     AddUsersToTrip,
@@ -50,6 +52,7 @@ urlpatterns = [
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('users/edit/personal_info', EditUserInfoAPI.as_view(), name='edit_user_info'),
     path('users/edit/password', EditPasswordAPI.as_view(), name='edit_password'),
+    path('users', UsersAPI.as_view(), name="users"),
     path('users/view/current_user', SeeCurrentUserAPI.as_view(), name='see_current_user'),
     path('users/upload_profile_image', UserAvatarUpload.as_view(), name='upload_profile_image'),
     # reports
@@ -63,6 +66,8 @@ urlpatterns = [
     path('trips', UserTripsAPI.as_view(), name='user_trips'),
     path('trips/add', CreateTripAPI.as_view(), name='handle_trips'),  # post trip
     path('trips/add_user/<int:trip_id>', AddUsersToTrip.as_view(), name='users_to_trip'),  # post, delete
+    # locations
+    path('locations', LocationsAPI.as_view(), name='locations'),
     # expenses
     path('expenses/specific_trips', ExpensesForSpecificTrips.as_view(), name='expenses_for_specific_trips'), #get
     path('expenses/<int:trip_id>', ExpenseAPI.as_view(), name='add_update_expenses'), # post, delete, patch
