@@ -1,5 +1,4 @@
 import {
-  Avatar,
   AvatarGroup,
   Box,
   Flex,
@@ -34,7 +33,7 @@ import ROUTES from '../../utils/routes';
 import { DEFAULT_TRIP_COVER_URL } from '../../utils/constants';
 import { Forbidden } from '../atoms';
 import { PieChart, LineChart, TimerangeChart, BarChart } from '../atoms/Charts';
-import { CustomTable } from '../atoms/CustomBasicComponents';
+import { CustomAvatar, CustomTable } from '../atoms/CustomBasicComponents';
 import {
   ArrowLeftShortIcon,
   EditIcon,
@@ -325,16 +324,17 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
         )}
         <Flex
           direction='row'
-          h='calc(100vh - 40px)'
+          h='calc(100vh - 48px)'
+          borderRadius={20}
           position='relative'
           overflow='hidden'
         >
-          <Box position='relative'>
+          <Box position='relative' w='40%'>
             <Image
               h='100%'
               borderTopLeftRadius='10'
               borderBottomLeftRadius='10'
-              w='40vw'
+              w='100%'
               objectFit='cover'
               src={image_url ?? DEFAULT_TRIP_COVER_URL}
               alt={location?.country}
@@ -350,7 +350,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
               onClick={() => navigate(ROUTES.TRIPS)}
             ></IconButton>
           </Box>
-          <Flex direction='column' flexGrow='1'>
+          <Flex direction='column' w='60%'>
             <Box
               bg='white'
               p={5}
@@ -361,10 +361,8 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
               h='100%'
             >
               <Box my='auto' mt='16'>
-                <Flex direction='row'>
-                  <Heading fontSize='36px' mb='5'>
-                    {tripName}
-                  </Heading>
+                <Flex direction='row' align='center' mb='5' gap={3}>
+                  <Heading fontSize='36px'>{tripName}</Heading>
                   <Menu>
                     <MenuButton
                       as={IconButton}
@@ -382,7 +380,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                           onClick={() => setOpenEditTrip(true)}
                           icon={<EditIcon size='16pt' />}
                         >
-                          Edit trip
+                          {t('edit-trip')}
                         </MenuItem>
                       )}
                       <MenuItem
@@ -390,7 +388,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                         icon={<UserGroupIcon size='16pt' />}
                         onClick={() => setOpenMemberAccess(true)}
                       >
-                        Manage members
+                        {t('manage-members')}
                       </MenuItem>
                       {isAdmin && (
                         <MenuItem
@@ -399,8 +397,9 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                             <Icon as={TrashIcon} size='16pt' color='red.500' />
                           }
                           onClick={handleDeleteTrip}
+                          color='red.500'
                         >
-                          Delete trip
+                          {t('delete-trip')}
                         </MenuItem>
                       )}
                     </MenuList>
@@ -420,7 +419,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                 {members?.length > 0 && (
                   <AvatarGroup mt='8' max={3}>
                     {members.map((member, i) => (
-                      <Avatar
+                      <CustomAvatar
                         ml='0'
                         height='42px'
                         width='42px'
@@ -505,13 +504,15 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                           percentage={true}
                         />
                       </Flex>
-                      <Flex my={5} gap={5}>
+                      <Flex my={5} gap={5} w='full' justifyContent='center'>
                         <TimerangeChart
                           data={totalByDay}
                           title={t('total-by-day')}
                           from={startDate}
                           to={endDate}
                         />
+                      </Flex>
+                      <Flex my={5} gap={5}>
                         <LineChart
                           data={totalByTypeByDay}
                           title={t('total-by-day-by-type')}

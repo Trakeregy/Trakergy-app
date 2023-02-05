@@ -4,13 +4,28 @@ from typing import List, Any
 from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 
 
 # holds definitions for our modules (classes)
+def upload_to(instance, filename):
+    return f'images/{filename}'
+
+
+def validate_image(image):
+    file_size = image.size
+    limit_mb = 5
+    if file_size > limit_mb * 1024 * 1024:
+        raise ValidationError(f'Max size of file is {limit_mb} MB')
+
 
 class CustomUser(AbstractUser):
     # additional fields added to the default user object
     image_url = models.URLField(blank=False, null=True)
+
+
+class MediaItem(models.Model):
+    image = models.ImageField(upload_to=upload_to, blank=True, null=True, validators=[validate_image])
 
 
 class Tag(models.Model):

@@ -23,13 +23,13 @@ const BarChart = ({ data, title, keyName }) => {
       <Text textAlign='center' fontSize={30}>
         {title}
       </Text>
-      <Flex w='100%' h={400}>
+      <Flex w='100%' h={500}>
         <ResponsiveBar
           data={data}
           colors={{ scheme: 'pastel2' }}
           keys={keyArr}
           indexBy={keyName}
-          margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+          margin={{ top: 50, right: 130, bottom: 150, left: 60 }}
           padding={0.3}
           valueScale={{ type: 'linear' }}
           indexScale={{ type: 'band', round: true }}
@@ -43,7 +43,7 @@ const BarChart = ({ data, title, keyName }) => {
           axisBottom={{
             tickSize: 5,
             tickPadding: 5,
-            tickRotation: 0,
+            tickRotation: -45,
             legendPosition: 'middle',
             legendOffset: 32,
           }}

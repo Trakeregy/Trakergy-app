@@ -53,6 +53,12 @@ class RegisterSerializer(serializers.ModelSerializer):
             print(e)
 
 
+class MediaItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MediaItem
+        fields = ('id', 'image')
+
+
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser

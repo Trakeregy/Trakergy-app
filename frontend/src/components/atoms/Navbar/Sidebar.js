@@ -30,7 +30,7 @@ function Sidebar({ onClose, logOut, ...rest }) {
       pos='fixed'
       w={{ base: 'full', md: 140, lg: 140 }}
       h='100%'
-      p={{ base: 0, md: 6, lg: 6 }}
+      p={{ base: 0, md: '24px', lg: '24px' }}
       {...rest}
       zIndex={10}
     >

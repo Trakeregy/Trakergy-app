@@ -11,7 +11,7 @@ const TripItem = ({ trip }) => {
       bg='white'
       display='inline-flex'
       direction='column'
-      borderRadius={10}
+      borderRadius={20}
       overflow='hidden'
       w='350px'
       onClick={() => navigate(ROUTES.TRIPS + '/' + trip.id)}
