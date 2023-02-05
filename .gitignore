@@ -58,3 +58,4 @@ drf_example
 
 media
 .env
+.env*.local

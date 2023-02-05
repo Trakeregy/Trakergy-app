@@ -91,5 +91,6 @@
   "edit-trip": "Edit trip",
   "dismiss": "Dismiss",
   "manage-members": "Manage members",
-  "delete-trip": "Delete trip"
+  "delete-trip": "Delete trip",
+  "create": "Create"
 }

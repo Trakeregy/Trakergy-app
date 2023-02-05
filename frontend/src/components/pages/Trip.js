@@ -324,7 +324,8 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
         )}
         <Flex
           direction='row'
-          h='calc(100vh - 40px)'
+          h='calc(100vh - 48px)'
+          borderRadius={20}
           position='relative'
           overflow='hidden'
         >

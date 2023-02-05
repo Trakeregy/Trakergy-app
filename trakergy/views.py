@@ -56,7 +56,6 @@ class UserAvatarUpload(APIView):
             return Response(data={'message': 'Invalid token'}, status=status.HTTP_403_FORBIDDEN)
 
 
-
 # Register API
 
 class RegisterAPI(generics.GenericAPIView):
