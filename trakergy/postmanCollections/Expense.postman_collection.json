@@ -1,0 +1,385 @@
+{
+	"info": {
+		"_postman_id": "2c0607d0-b4b1-4d32-951c-cc31da79551b",
+		"name": "Expense",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16868793"
+	},
+	"item": [
+		{
+			"name": "Add Expense",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc1NTk2NTcyLCJpYXQiOjE2NzU1OTQ3NzIsImp0aSI6IjNkMzBhNzRkYTQ2NDQ5ODBiYWFjZTFhNDQ5NDU0OTI3IiwidXNlcl9pZCI6NH0.iLTaurPLGsYlQjop69FQM77CpX7Bqx48-46PTqP9moc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"amount\": 12.03,\n\"date\": \"2023-10-03\",\n\"tag\": 6,\n\"users_to_split\": [4,1,2]\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/expenses/31",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"expenses",
+						"31"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Empty body",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc1NTk0NzU2LCJpYXQiOjE2NzU1OTI5NTYsImp0aSI6IjQyZGFkYmQ3ZGExYTQ3YjY4YTdmNzI0YWU2NjdiMjEwIiwidXNlcl9pZCI6NH0.Y6o7ln5NzseZd0hZZ3LB2FZ2DFfJ1e3l6Xkx8zGLxLM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/expenses/21",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"expenses",
+								"21"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 05 Feb 2023 10:34:11 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.6"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "73"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"amount\": [\n        \"This field is required.\"\n    ],\n    \"date\": [\n        \"This field is required.\"\n    ]\n}"
+				},
+				{
+					"name": "Incorrect date",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc1NTk0NzU2LCJpYXQiOjE2NzU1OTI5NTYsImp0aSI6IjQyZGFkYmQ3ZGExYTQ3YjY4YTdmNzI0YWU2NjdiMjEwIiwidXNlcl9pZCI6NH0.Y6o7ln5NzseZd0hZZ3LB2FZ2DFfJ1e3l6Xkx8zGLxLM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"amount\": 10.22,\n\"date\": \"2012-02-12\"}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/expenses/21",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"expenses",
+								"21"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 05 Feb 2023 10:35:11 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.6"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "75"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Incorrect date must be after 2023-10-02 and before 2023-10-03\"\n}"
+				},
+				{
+					"name": "Add Expense",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc1NTk2NTcyLCJpYXQiOjE2NzU1OTQ3NzIsImp0aSI6IjNkMzBhNzRkYTQ2NDQ5ODBiYWFjZTFhNDQ5NDU0OTI3IiwidXNlcl9pZCI6NH0.iLTaurPLGsYlQjop69FQM77CpX7Bqx48-46PTqP9moc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"amount\": 12.03,\n\"date\": \"2023-10-03\",\n\"tag\": 6,\n\"users_to_split\": [4,1,2]\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/expenses/31",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"expenses",
+								"31"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 05 Feb 2023 11:12:28 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.6"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1015"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 132,\n    \"amount\": \"12.03\",\n    \"description\": \"\",\n    \"date\": \"2023-10-03\",\n    \"tag\": {\n        \"id\": 6,\n        \"name\": \"Other\"\n    },\n    \"users_to_split\": [\n        {\n            \"id\": 1,\n            \"username\": \"diana\",\n            \"email\": \"d@gmail.com\",\n            \"first_name\": \"Diana\",\n            \"last_name\": \"Elena\",\n            \"image_url\": null\n        },\n        {\n            \"id\": 2,\n            \"username\": \"emma\",\n            \"email\": \"es@gm.com\",\n            \"first_name\": \"Emma\",\n            \"last_name\": \"Sophia\",\n            \"image_url\": null\n        }\n    ],\n    \"trip\": {\n        \"id\": 31,\n        \"name\": \"Test group with members\",\n        \"location\": {\n            \"id\": 1,\n            \"code\": \"AFG\",\n            \"country\": \"Afghanistan\"\n        },\n        \"from_date\": \"2023-10-02\",\n        \"to_date\": \"2023-10-03\",\n        \"admin\": {\n            \"id\": 4,\n            \"username\": \"admin\",\n            \"email\": \"admin@mail.com\",\n            \"first_name\": \"\",\n            \"last_name\": \"\",\n            \"image_url\": null\n        },\n        \"members\": [\n            {\n                \"id\": 1,\n                \"username\": \"diana\",\n                \"email\": \"d@gmail.com\",\n                \"first_name\": \"Diana\",\n                \"last_name\": \"Elena\",\n                \"image_url\": null\n            },\n            {\n                \"id\": 2,\n                \"username\": \"emma\",\n                \"email\": \"es@gm.com\",\n                \"first_name\": \"Emma\",\n                \"last_name\": \"Sophia\",\n                \"image_url\": null\n            },\n            {\n                \"id\": 4,\n                \"username\": \"admin\",\n                \"email\": \"admin@mail.com\",\n                \"first_name\": \"\",\n                \"last_name\": \"\",\n                \"image_url\": null\n            }\n        ],\n        \"members_count\": 3\n    },\n    \"payer\": {\n        \"username\": \"\",\n        \"email\": \"\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"image_url\": \"\"\n    }\n}"
+				},
+				{
+					"name": "Add Expense for this user",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc1NTk2NTcyLCJpYXQiOjE2NzU1OTQ3NzIsImp0aSI6IjNkMzBhNzRkYTQ2NDQ5ODBiYWFjZTFhNDQ5NDU0OTI3IiwidXNlcl9pZCI6NH0.iLTaurPLGsYlQjop69FQM77CpX7Bqx48-46PTqP9moc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"amount\": 12.03,\n\"date\": \"2023-10-03\",\n\"tag\": 6\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/expenses/31",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"expenses",
+								"31"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 05 Feb 2023 11:12:46 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.6"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "831"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 133,\n    \"amount\": \"12.03\",\n    \"description\": \"\",\n    \"date\": \"2023-10-03\",\n    \"tag\": {\n        \"id\": 6,\n        \"name\": \"Other\"\n    },\n    \"users_to_split\": [],\n    \"trip\": {\n        \"id\": 31,\n        \"name\": \"Test group with members\",\n        \"location\": {\n            \"id\": 1,\n            \"code\": \"AFG\",\n            \"country\": \"Afghanistan\"\n        },\n        \"from_date\": \"2023-10-02\",\n        \"to_date\": \"2023-10-03\",\n        \"admin\": {\n            \"id\": 4,\n            \"username\": \"admin\",\n            \"email\": \"admin@mail.com\",\n            \"first_name\": \"\",\n            \"last_name\": \"\",\n            \"image_url\": null\n        },\n        \"members\": [\n            {\n                \"id\": 1,\n                \"username\": \"diana\",\n                \"email\": \"d@gmail.com\",\n                \"first_name\": \"Diana\",\n                \"last_name\": \"Elena\",\n                \"image_url\": null\n            },\n            {\n                \"id\": 2,\n                \"username\": \"emma\",\n                \"email\": \"es@gm.com\",\n                \"first_name\": \"Emma\",\n                \"last_name\": \"Sophia\",\n                \"image_url\": null\n            },\n            {\n                \"id\": 4,\n                \"username\": \"admin\",\n                \"email\": \"admin@mail.com\",\n                \"first_name\": \"\",\n                \"last_name\": \"\",\n                \"image_url\": null\n            }\n        ],\n        \"members_count\": 3\n    },\n    \"payer\": {\n        \"id\": 4,\n        \"username\": \"admin\",\n        \"email\": \"admin@mail.com\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"image_url\": null\n    }\n}"
+				}
+			]
+		}
+	]
+}
