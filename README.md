@@ -56,11 +56,11 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+      <li><a href="#Documentation-and-diagrams">Documentation and diagrams</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#run-tests">Tests</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -99,7 +99,13 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * ```npm```
 * ```npx```
 * ```Node.js - at least v. 15.0```
+* 
+<!-- Documentation and diagrams -->
+### Documentation and diagrams 
+* [Requirements document](https://docs.google.com/document/d/1QMNdcxTd5C1YR0YM33znBCudPYa4MmKJidg9g2X_CQ0/edit#)
+* [Diagrams](https://drive.google.com/file/d/1yPtdrpi6EabocHHR0SCyS9LB3ZzKWVSF/view)
 
+<!-- Installation -->
 ### Installation
 _Use a terminal for the following steps:_
 1. Clone the repo
@@ -158,22 +164,6 @@ Visit [swagger folder](https://github.com/Homeify/Home-management-platform/tree/
 * ```python manage.py tests```
 * ```coverage run manage.py test```
 * ```coverage run manage.py test```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] JWT login system
-- [x] Groups
-- [x] Admin actions on group
-- [x] Tasks
-- [x] Customise tasks
-- [x] Comments
-- [x] Receive rewards in a group and decline task
-- [x] Frontend
-- [ ] User badges
-- [ ] Multi-language Support
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

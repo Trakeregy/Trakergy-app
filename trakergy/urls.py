@@ -33,6 +33,7 @@ from trakergy.views import (
     CreateTripAPI,
     AddUsersToTrip,
     TripAPI,
+    ExpenseAPI,
     EditUserInfoAPI,
     UserAvatarUpload
 )
@@ -63,6 +64,7 @@ urlpatterns = [
     path('trips/add', CreateTripAPI.as_view(), name='handle_trips'),  # post trip
     path('trips/add_user/<int:trip_id>', AddUsersToTrip.as_view(), name='users_to_trip'),  # post, delete
     # expenses
-    path('expenses/specific_trips', ExpensesForSpecificTrips.as_view(), name='expenses_for_specific_trips'),
+    path('expenses/specific_trips', ExpensesForSpecificTrips.as_view(), name='expenses_for_specific_trips'), #get
+    path('expenses/<int:trip_id>', ExpenseAPI.as_view(), name='add_update_expenses'), # post, delete, patch
     path('', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
