@@ -72,5 +72,7 @@
   "confirm-new-password": "Confirm new password",
   "save": "Save",
   "password-updated-successfully": "Password updated successfully",
-  "user-updated-successfully": "User updated successfully"
+  "user-updated-successfully": "User updated successfully",
+  "upload": "Upload",
+  "image-uploaded-successfully": "Image uploaded successfully"
 }

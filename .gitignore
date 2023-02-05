@@ -55,3 +55,5 @@ drf_example
 *.sql
 *.sqlite
 *.sqlite3
+
+media

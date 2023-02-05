@@ -1,5 +1,5 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { Box, Flex, Input, Text, useToast } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { AuthPage } from '.';
@@ -14,6 +14,7 @@ import { CameraIcon, LockIcon, UserIcon } from '../atoms/icons';
 import {
   updatePassword as updatePasswordAction,
   updateUserInfo as updateUserInfoAction,
+  uploadProfileImage as uploadProfileImageAction,
 } from '../../state/actions/user';
 import { getCurrentUser as getCurrentUserAction } from '../../state/actions/auth';
 import { LoadingAnimation } from '../animations';
@@ -21,11 +22,14 @@ import { LoadingAnimation } from '../animations';
 function Settings({
   updatePassword,
   updateUserInfo,
+  uploadProfileImage,
   getCurrentUser,
   currentUser,
 }) {
   const { t } = useTranslation();
+  const toast = useToast();
   const {
+    id: userId,
     first_name: firstName,
     last_name: lastName,
     username,
@@ -34,12 +38,12 @@ function Settings({
   } = currentUser;
   const userName = `${firstName} ${lastName}`;
   const [showAvatarHover, setShowAvatarHover] = useState(false);
-  const [passwordError, setPasswordError] = useState();
-  const [passwordSuccess, setPasswordSuccess] = useState();
   const [passwordLoading, setPasswordLoading] = useState(false);
-  const [userInfoError, setUserInfoError] = useState();
-  const [userInfoSuccess, setUserInfoSuccess] = useState();
   const [userInfoLoading, setUserInfoLoading] = useState(false);
+  const [imageInputRef, setImageInputRef] = useState();
+  const [imageName, setImageName] = useState('');
+  const [imageToPost, setImageToPost] = useState(null);
+  const [loadingImage, setLoadingImage] = useState(false);
   const [newUserInfo, setNewUserInfo] = useState({
     firstName,
     lastName,
@@ -50,8 +54,26 @@ function Settings({
     confirmNewPassword: '',
   });
 
-  const handleUploadImage = () => {
-    console.log('Uploading image...');
+  const successToast = (text) => {
+    toast({
+      containerStyle: { color: 'white' },
+      description: text,
+      status: 'success',
+      duration: 5000,
+    });
+  };
+
+  const errorToast = (text) => {
+    toast({
+      containerStyle: { color: 'white' },
+      description: text,
+      status: 'error',
+      duration: 5000,
+    });
+  };
+
+  const handleSelectImage = () => {
+    imageInputRef.click();
   };
 
   const handleChangeValue = (e, keyName) => {
@@ -60,8 +82,6 @@ function Settings({
 
   const handleChangePassword = () => {
     setPasswordLoading(true);
-    setPasswordError(null);
-    setPasswordSuccess(null);
     const { oldPassword, newPassword, confirmNewPassword } = newUserInfo;
     updatePassword({
       oldPassword,
@@ -69,21 +89,17 @@ function Settings({
       confirmNewPassword,
     })
       .then((_) => {
-        setPasswordError(null);
-        setPasswordSuccess(t('password-updated-successfully'));
         setPasswordLoading(false);
+        successToast(t('password-updated-successfully'));
       })
       .catch((e) => {
-        setPasswordError(e.response.data.message);
-        setPasswordSuccess(null);
         setPasswordLoading(false);
+        errorToast(e.response.data.message);
       });
   };
 
   const handleChangeUserInfo = () => {
     setUserInfoLoading(true);
-    setUserInfoError(null);
-    setUserInfoSuccess(null);
     const { firstName, lastName, username, email } = newUserInfo;
     updateUserInfo({
       firstName,
@@ -92,15 +108,39 @@ function Settings({
       email,
     })
       .then((_) => {
-        setUserInfoError(null);
-        setUserInfoSuccess(t('user-updated-successfully'));
         setUserInfoLoading(false);
         getCurrentUser();
+        successToast(t('user-updated-successfully'));
       })
       .catch((e) => {
-        setUserInfoError(e.response.data.message);
-        setUserInfoSuccess(null);
         setUserInfoLoading(false);
+        errorToast(e.response.data.message);
+      });
+  };
+
+  const handleChangeImage = (e) => {
+    const file = e.target.files[0];
+    const newFileName = `${userId}--${file.name}`;
+    const newFile = new File([file], newFileName);
+    setImageName(file.name);
+    setImageToPost(newFile);
+  };
+
+  const handleUploadImage = () => {
+    setLoadingImage(true);
+    uploadProfileImage(imageToPost)
+      .then((_) => {
+        getCurrentUser();
+        setImageToPost(null);
+        setImageName('');
+        setLoadingImage(false);
+        successToast(t('image-uploaded-successfully'));
+      })
+      .catch((e) => {
+        setImageToPost(null);
+        setImageName('');
+        setLoadingImage(false);
+        errorToast(e.response.data.image[0]);
       });
   };
 
@@ -109,47 +149,90 @@ function Settings({
       <CustomHeading text={t('settings')} />
 
       <Flex
-        align='center'
-        gap={5}
+        align={{ base: 'flex-start', md: 'center', lg: 'center' }}
         w='full'
         bg='white'
         p={10}
         borderRadius={20}
         mt={5}
+        justifyContent='space-between'
+        flexDir={{ base: 'column', md: 'row', lg: 'row' }}
+        gap={5}
       >
-        <Box
-          _hover={{ cursor: 'pointer' }}
-          onMouseEnter={() => setShowAvatarHover(true)}
-          onMouseLeave={() => setShowAvatarHover(false)}
-          position='relative'
-          onClick={handleUploadImage}
-        >
+        <Flex align='center' gap={5}>
+          <Input
+            type='file'
+            name='image'
+            onChange={handleChangeImage}
+            id='post-image'
+            accept='image/*'
+            ref={(input) => setImageInputRef(input)}
+            hidden
+          />
           <Box
-            position='absolute'
-            top={0}
-            left={0}
-            bg={COLORS.greyTransparent}
-            w='full'
-            h='full'
-            borderRadius='full'
-            display={showAvatarHover ? 'flex' : 'none'}
-            zIndex={5}
-            justifyContent='center'
-            alignItems='center'
+            _hover={{ cursor: 'pointer' }}
+            onMouseEnter={() => setShowAvatarHover(true)}
+            onMouseLeave={() => setShowAvatarHover(false)}
+            position='relative'
+            onClick={handleSelectImage}
           >
-            <CameraIcon color='white' />
+            <Box
+              position='absolute'
+              top={0}
+              left={0}
+              bg={COLORS.greyTransparent}
+              w='full'
+              h='full'
+              borderRadius='full'
+              display={showAvatarHover ? 'flex' : 'none'}
+              zIndex={5}
+              justifyContent='center'
+              alignItems='center'
+            >
+              <CameraIcon color='white' />
+            </Box>
+            <CustomAvatar name={userName} src={imageUrl} size='xl' />
           </Box>
-          <CustomAvatar name={userName} src={imageUrl} size='xl' />
-        </Box>
-        <Box>
-          <Text fontWeight='bold' fontSize={30} color='secondary.300'>
-            {userName}
-          </Text>
-          <Text fontSize={18}>{email}</Text>
-        </Box>
+          <Box>
+            <Text fontWeight='bold' fontSize={30} color='secondary.300'>
+              {userName}
+            </Text>
+            <Text fontSize={18}>{email}</Text>
+          </Box>
+        </Flex>
+
+        {imageToPost && (
+          <Flex w='30%' justifyContent='flex-end' alignSelf='flex-end'>
+            {loadingImage && (
+              <Box w='100px'>
+                <LoadingAnimation />
+              </Box>
+            )}
+            <Flex flexDir='row' alignItems='center' justifyContent='flex-end'>
+              <Flex flexDir='column' alignItems='flex-end' gap={1}>
+                <CustomButton text={t('upload')} onClick={handleUploadImage} />
+                <Text
+                  noOfLines={1}
+                  textAlign='end'
+                  fontSize={14}
+                  color='primary.500'
+                >
+                  {imageName}
+                </Text>
+              </Flex>
+            </Flex>
+          </Flex>
+        )}
       </Flex>
 
-      <Flex gap={5}>
+      <Flex
+        gap={5}
+        flexDir={{
+          base: 'column',
+          md: 'row',
+          lg: 'row',
+        }}
+      >
         <Box w='full' bg='white' p={10} borderRadius={20} mt={5}>
           <Flex align='center' mb={5} gap={5}>
             <UserIcon size='16pt' color={COLORS.secondary} />
@@ -184,16 +267,6 @@ function Settings({
               onChange={(e) => handleChangeValue(e, 'email')}
               label={t('email')}
             />
-            {userInfoError && (
-              <Text fontSize={14} color='primary.500' textAlign='center'>
-                {userInfoError}
-              </Text>
-            )}
-            {userInfoSuccess && (
-              <Text fontSize={14} color='green.500' textAlign='center'>
-                {userInfoSuccess}
-              </Text>
-            )}
             <CustomButton text={t('save')} onClick={handleChangeUserInfo} />
             {userInfoLoading && (
               <Flex h='100px' justifyContent='center' dir='row'>
@@ -247,16 +320,6 @@ function Settings({
               type='password'
               autoComplete='new-password'
             />
-            {passwordError && (
-              <Text fontSize={14} color='primary.500' textAlign='center'>
-                {passwordError}
-              </Text>
-            )}
-            {passwordSuccess && (
-              <Text fontSize={14} color='green.500' textAlign='center'>
-                {passwordSuccess}
-              </Text>
-            )}
             <CustomButton text={t('save')} onClick={handleChangePassword} />
             {passwordLoading && (
               <Flex h='100px' justifyContent='center' dir='row'>
@@ -280,6 +343,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updatePassword: (obj) => dispatch(updatePasswordAction(obj)),
     updateUserInfo: (obj) => dispatch(updateUserInfoAction(obj)),
+    uploadProfileImage: (image) => dispatch(uploadProfileImageAction(image)),
     getCurrentUser: () => dispatch(getCurrentUserAction()),
   };
 };

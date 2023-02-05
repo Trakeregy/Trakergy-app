@@ -3,10 +3,56 @@ import re
 
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 from rest_framework_simplejwt.tokens import AccessToken
+import os
+from django.conf import settings
 
 from .serializers import *
+
+
+class UserAvatarUpload(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            try:
+                serializer = MediaItemSerializer(data=request.data)
+                if serializer.is_valid():
+                    image_folder = settings.MEDIA_ROOT + '/images'
+                    dir_content = os.scandir(image_folder)
+                    dir_content = [file for file in dir_content if file.is_file()]
+                    dir_content = filter(lambda x: x.name[0] == str(user_id)[0], dir_content)
+
+                    start_with = f'images/{user_id}--'
+                    media_list = MediaItem.objects.filter(image__istartswith=start_with)
+                    for media in media_list:
+                        media.delete()
+
+                    for file in dir_content:
+                        filename_userid = file.name.split('-')[0]
+                        if int(filename_userid) == int(user_id):
+                            os.remove(file.path)
+
+                    serializer.save()
+                    user.image_url = serializer.data['image']
+                    user.save()
+                    return Response(data=serializer.data, status=status.HTTP_200_OK)
+                else:
+                    return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                return Response(data={'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            return Response(data={'message': 'Invalid token'}, status=status.HTTP_403_FORBIDDEN)
+
 
 
 # Register API
@@ -63,22 +109,11 @@ class EditUserInfoAPI(generics.GenericAPIView):
             user_id = access_token_obj['user_id']
             user = CustomUser.objects.get(id=user_id)
             try:
-                if 'firstName' in request.data:
-                    first_name = request.data['firstName']
-                else:
-                    first_name = None
-                if 'lastName' in request.data:
-                    last_name = request.data['lastName']
-                else:
-                    last_name = None
-                if 'username' in request.data:
-                    username = request.data['username']
-                else:
-                    username = None
-                if 'email' in request.data:
-                    email = request.data['email']
-                else:
-                    email = None
+                first_name = request.data['firstName'] if 'firstName' in request.data else None
+                last_name = request.data['lastName'] if 'lastName' in request.data else None
+                username = request.data['username'] if 'username' in request.data else None
+                email = request.data['email'] if 'email' in request.data else None
+                image_url = request.data['imageUrl'] if 'imageUrl' in request.data else None
 
                 min_chars = 3
                 max_chars = 50
@@ -106,6 +141,8 @@ class EditUserInfoAPI(generics.GenericAPIView):
                     if not self.validate_email(email):
                         raise Exception("Wrong email address")
                     user.email = email
+                if image_url:
+                    user.image_url = image_url
 
                 user.save()
                 return Response(data={'message': 'Information successfully updated.'}, status=status.HTTP_200_OK)

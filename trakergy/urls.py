@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from trakergy.views import (
     RegisterAPI,
@@ -31,7 +33,8 @@ from trakergy.views import (
     CreateTripAPI,
     AddUsersToTrip,
     TripAPI,
-    EditUserInfoAPI
+    EditUserInfoAPI,
+    UserAvatarUpload
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -47,6 +50,7 @@ urlpatterns = [
     path('users/edit/personal_info', EditUserInfoAPI.as_view(), name='edit_user_info'),
     path('users/edit/password', EditPasswordAPI.as_view(), name='edit_password'),
     path('users/view/current_user', SeeCurrentUserAPI.as_view(), name='see_current_user'),
+    path('users/upload_profile_image', UserAvatarUpload.as_view(), name='upload_profile_image'),
     # reports
     path('reports/personal/all_years', PersonalExpensesYearsAPI.as_view(), name='personal_exp_years'),
     path('reports/personal/sum_by_type', PersonalExpensesByTypeAPI.as_view(), name='personal_exp_sum_by_type'),
@@ -61,4 +65,4 @@ urlpatterns = [
     # expenses
     path('expenses/specific_trips', ExpensesForSpecificTrips.as_view(), name='expenses_for_specific_trips'),
     path('', admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

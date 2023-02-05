@@ -28,7 +28,7 @@ const updatePassword =
   };
 
 const updateUserInfo =
-  ({ firstName, lastName, email, username }) =>
+  ({ firstName, lastName, email, username, imageUrl }) =>
   async (dispatch) => {
     const res = await axios.patch(
       `${BASE_URL}/users/edit/personal_info`,
@@ -37,6 +37,7 @@ const updateUserInfo =
         lastName,
         email,
         username,
+        imageUrl,
       },
       {
         headers: {
@@ -53,4 +54,29 @@ const updateUserInfo =
     });
   };
 
-export { updatePassword, updateUserInfo };
+const uploadProfileImage = (image) => async (dispatch) => {
+  if (!image) return;
+
+  const formData = new FormData();
+  formData.append('image', image);
+
+  const res = await axios.post(
+    `${BASE_URL}/users/upload_profile_image`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEYS.AUTH_TOKEN
+        )}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  );
+
+  dispatch({
+    type: USER_ACTION_TYPES.UPLOAD_IMAGE,
+    payload: res.data,
+  });
+};
+
+export { updatePassword, updateUserInfo, uploadProfileImage };
