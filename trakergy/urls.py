@@ -29,7 +29,7 @@ from trakergy.views import (
     PersonalExpensesForUserYearsAPI,
     PersonalExpensesPerCountryAPI,
     UserTripsAPI,
-    ExpensesForSpecificTrips, CreateTripAPI, AddUsersToTrip, TripAPI
+    ExpensesForSpecificTrips, CreateTripAPI, AddUsersToTrip, TripAPI, ExpenseAPI
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -59,6 +59,7 @@ urlpatterns = [
     path('trips/add', CreateTripAPI.as_view(), name='handle_trips'),  # post trip
     path('trips/add_user/<int:trip_id>', AddUsersToTrip.as_view(), name='users_to_trip'),  # post, delete
     # expenses
-    path('expenses/specific_trips', ExpensesForSpecificTrips.as_view(), name='expenses_for_specific_trips'),
+    path('expenses/specific_trips', ExpensesForSpecificTrips.as_view(), name='expenses_for_specific_trips'), #get
+    path('expenses/<int:trip_id>', ExpenseAPI.as_view(), name='add_update_expenses'), # post, delete, patch
     path('', admin.site.urls),
 ]

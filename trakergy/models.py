@@ -46,4 +46,4 @@ class Expense(models.Model):
     users_to_split = models.ManyToManyField(CustomUser, related_name='expenses', blank=True)
 
     def __str__(self):
-        return str(self.amount) + ' ' + str(self.date) + ' ' + str(self.tag.name) + ' ' + str(self.payer.id)
+        return str(self.amount) + ' ' + str(self.date)
