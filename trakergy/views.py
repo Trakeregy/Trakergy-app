@@ -5,17 +5,18 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 from rest_framework_simplejwt.tokens import AccessToken
-
+from .SendEmailNotification import Emailer
+from .mails.Email import EmailFactory
 from .models import *
 from .serializers import *
 
 
 # Register API
 
-
 class RegisterAPI(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = RegisterSerializer
+    emailer = Emailer.get_instance()
 
     def post(self, request):
         serialized = RegisterSerializer(request.data)
@@ -25,6 +26,8 @@ class RegisterAPI(generics.GenericAPIView):
         except Exception as e:
             content = {'message': f'Register error. {e}'}
             return Response(data=content, status=status.HTTP_406_NOT_ACCEPTABLE)
+        notification = EmailFactory.createRegisterNotification([request.data['email']], request.data['username'])
+        self.emailer.sendEmail(notification)
         content = {'message': 'User successfully added.'}
         return Response(data=content, status=status.HTTP_201_CREATED)
 
@@ -621,6 +624,8 @@ class AddUsersToTrip(generics.GenericAPIView):
 
 
 class ExpenseAPI(generics.GenericAPIView):
+    emailer = Emailer.get_instance()
+
     def post(self, request, trip_id):
         """
         Current logged in user adds an expense.
@@ -629,7 +634,7 @@ class ExpenseAPI(generics.GenericAPIView):
         token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
         access_token_obj = AccessToken(token)
         user_id = access_token_obj['user_id']  # current user adds an expense
-        user = CustomUser.objects.get(id=user_id)
+        logged_in_user = CustomUser.objects.get(id=user_id)
         if trip_id is None:
             return Response(data={'message': "Missing parameter trip_id"}, status=status.HTTP_400_BAD_REQUEST)
         try:
@@ -650,6 +655,7 @@ class ExpenseAPI(generics.GenericAPIView):
             start_date = trip.from_date.strftime("%Y-%m-%d")
             end_date = trip.to_date.strftime("%Y-%m-%d")
             members = []
+            emails = []
             if data['date'] < start_date or data['date'] > end_date:
                 return Response(data={'message': f"Incorrect date must be after {start_date} and before {end_date}"},
                                 status=status.HTTP_400_BAD_REQUEST)
@@ -664,17 +670,24 @@ class ExpenseAPI(generics.GenericAPIView):
                     if member_id == user_id:
                         continue
                     members.append(user)
+                    emails.append(user.email)
             # create expense
             description = '' if 'description' not in data else data['description']
             tag = Tag.objects.get(id=data['tag'])
             new_expense = Expense(amount=data['amount'], date=data['date'], trip=trip, description=description, tag=tag)
             new_expense.save()
             if len(members) == 0:
-                new_expense.payer = user
+                new_expense.payer = logged_in_user
             else:
                 new_expense.users_to_split.set(members)
+                # send email notification
+                notification = EmailFactory.createNotification(emails, logged_in_user .username,
+                                                               logged_in_user .first_name + ' ' + logged_in_user.last_name,
+                                                               trip.name, data['amount'], tag.name, description)
+                self.emailer.sendEmail(notification)
             new_expense.save()
             details = ExpenseDetailsSerializer(new_expense)
             return Response(data=details.data, status=status.HTTP_201_CREATED)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     # TODO Radu -- add delete/update expense
