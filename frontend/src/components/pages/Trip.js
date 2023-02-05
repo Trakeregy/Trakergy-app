@@ -355,6 +355,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
               bg='white'
               p={5}
               pl='12'
+              overflowY='scroll'
               borderTopRightRadius='12'
               borderBottomRightRadius='12'
               h='100%'
