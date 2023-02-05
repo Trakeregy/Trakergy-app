@@ -64,5 +64,13 @@
   "page-not-found": "Whoops... Looks like you're lost.",
   "page-not-found-descr": "Sorry, the page you requested could not be found. Please go back to your trips.",
   "group-expenses": "Group expenses",
-  "personal-expenses": "Personal expenses"
+  "personal-expenses": "Personal expenses",
+  "personal-info": "Personal information",
+  "password-and-security": "Password and security",
+  "old-password": "Old password",
+  "new-password": "New password",
+  "confirm-new-password": "Confirm new password",
+  "save": "Save",
+  "password-updated-successfully": "Password updated successfully",
+  "user-updated-successfully": "User updated successfully"
 }

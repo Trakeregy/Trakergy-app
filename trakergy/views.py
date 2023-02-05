@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 from rest_framework_simplejwt.tokens import AccessToken
 
-from .models import *
 from .serializers import *
 
 
@@ -56,7 +55,7 @@ class SeeCurrentUserAPI(generics.GenericAPIView):
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
 
 
-class EditUsernameAPI(generics.GenericAPIView):
+class EditUserInfoAPI(generics.GenericAPIView):
     def patch(self, request):
         try:
             token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
@@ -64,44 +63,58 @@ class EditUsernameAPI(generics.GenericAPIView):
             user_id = access_token_obj['user_id']
             user = CustomUser.objects.get(id=user_id)
             try:
-                username = request.data['username']
-                min_chars = 3
-                if len(username) > min_chars:
-                    user.username = username
-                    user.save()
-                    content = {'message': 'Username successfully updated.'}
-                    return Response(data=content, status=status.HTTP_200_OK)
+                if 'firstName' in request.data:
+                    first_name = request.data['firstName']
                 else:
-                    content = {'message': f"Username too short. At least {min_chars} characters required."}
-                    return Response(data=content, status=status.HTTP_400_BAD_REQUEST)
-            except Exception:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-        except Exception:
-            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+                    first_name = None
+                if 'lastName' in request.data:
+                    last_name = request.data['lastName']
+                else:
+                    last_name = None
+                if 'username' in request.data:
+                    username = request.data['username']
+                else:
+                    username = None
+                if 'email' in request.data:
+                    email = request.data['email']
+                else:
+                    email = None
 
+                min_chars = 3
+                max_chars = 50
+                if first_name:
+                    if len(first_name) < min_chars:
+                        raise Exception(f"First name too short. At least {min_chars} characters required")
+                    if len(first_name) > max_chars:
+                        raise Exception(f"First name too long. At most {max_chars} characters required")
+                    if not first_name.isalpha():
+                        raise Exception("First name should contain only letters.")
+                    user.first_name = first_name
+                if last_name:
+                    if not last_name.isalpha():
+                        raise Exception("Last name should contain only letters.")
+                    user.last_name = last_name
+                if username:
+                    if len(username) < min_chars:
+                        raise Exception(f"Username too short. At least {min_chars} characters required")
+                    if len(username) > max_chars:
+                        raise Exception(f"Username too long. At most {max_chars} characters required")
+                    if not str(username[0]).isalpha():
+                        raise Exception("Username should start with letter")
+                    user.username = username
+                if email:
+                    if not self.validate_email(email):
+                        raise Exception("Wrong email address")
+                    user.email = email
 
-class EditEmailAPI(generics.GenericAPIView):
-    def patch(self, request):
-        try:
-            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
-            access_token_obj = AccessToken(token)
-            user_id = access_token_obj['user_id']
-            user = CustomUser.objects.get(id=user_id)
-            try:
-                email = request.data['email']
-                if not self.validateEmail(email):
-                    content = {'message': 'Wrong email address'}
-                    return Response(data=content, status=status.HTTP_400_BAD_REQUEST)
-                user.email = email
                 user.save()
-                content = {'message': 'Email successfully updated.'}
-                return Response(data=content, status=status.HTTP_200_OK)
-            except Exception:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response(data={'message': 'Information successfully updated.'}, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response(data={'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
 
-    def validateEmail(self, email):
+    def validate_email(self, email):
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
         if re.fullmatch(regex, email):
             return True
@@ -115,22 +128,26 @@ class EditPasswordAPI(generics.GenericAPIView):
             access_token_obj = AccessToken(token)
             user_id = access_token_obj['user_id']
             user = CustomUser.objects.get(id=user_id)
+
             try:
-                password1 = request.data['password1']
-                password2 = request.data['password2']
-                if password1 == password2:
+                old_password = request.data['oldPassword']
+                new_password = request.data['newPassword']
+                confirm_new_password = request.data['confirmNewPassword']
+                if not user.check_password(old_password):
+                    return Response(data={'message': 'Wrong password'}, status=status.HTTP_400_BAD_REQUEST)
+
+                if new_password and confirm_new_password and new_password == confirm_new_password:
                     try:
-                        validate_password(password1)
-                        user.set_password(password1)
+                        user = CustomUser.objects.get(id=user.id)
+                        validate_password(new_password)
+                        user.set_password(new_password)
                         user.save()
                         content = {'message': 'Password successfully updated.'}
                         return Response(data=content, status=status.HTTP_200_OK)
                     except Exception as e:
-                        content = {'message': e}
-                        return Response(data=content, status=status.HTTP_400_BAD_REQUEST)
+                        return Response(data={'message': e}, status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    content = {'message': 'Passwords don\'t match'}
-                    return Response(data=content, status=status.HTTP_400_BAD_REQUEST)
+                    return Response(data={'message': 'Passwords don\'t match'}, status=status.HTTP_400_BAD_REQUEST)
             except Exception:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception:

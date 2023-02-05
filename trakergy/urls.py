@@ -19,8 +19,6 @@ from django.urls import path
 from trakergy.views import (
     RegisterAPI,
     LogoutAPI,
-    EditUsernameAPI,
-    EditEmailAPI,
     EditPasswordAPI,
     SeeCurrentUserAPI,
     PersonalExpensesByTypeAPI,
@@ -29,7 +27,11 @@ from trakergy.views import (
     PersonalExpensesForUserYearsAPI,
     PersonalExpensesPerCountryAPI,
     UserTripsAPI,
-    ExpensesForSpecificTrips, CreateTripAPI, AddUsersToTrip, TripAPI
+    ExpensesForSpecificTrips,
+    CreateTripAPI,
+    AddUsersToTrip,
+    TripAPI,
+    EditUserInfoAPI
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -42,8 +44,7 @@ urlpatterns = [
     path('users/login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('users/logout', LogoutAPI.as_view(), name='logout_user'),
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
-    path('users/edit/username', EditUsernameAPI.as_view(), name='edit_username'),  # edit current logged in user id
-    path('users/edit/email', EditEmailAPI.as_view(), name='edit_email'),
+    path('users/edit/personal_info', EditUserInfoAPI.as_view(), name='edit_user_info'),
     path('users/edit/password', EditPasswordAPI.as_view(), name='edit_password'),
     path('users/view/current_user', SeeCurrentUserAPI.as_view(), name='see_current_user'),
     # reports
@@ -53,8 +54,7 @@ urlpatterns = [
     path('reports/personal/daily_all_years', PersonalExpensesForUserYearsAPI.as_view(), name='personal_exp_daily_all_years'),
     path('reports/personal/sum_per_country', PersonalExpensesPerCountryAPI.as_view(), name='personal_exp_per_country'),
     # trips
-    path('trips/get_all_info/<int:trip_id>', TripAPI.as_view(), name='trip_information'),  # get, put,
-                                                                                           # delete trip
+    path('trips/get_all_info/<int:trip_id>', TripAPI.as_view(), name='trip_information'),  # get, put, delete trip
     path('trips', UserTripsAPI.as_view(), name='user_trips'),
     path('trips/add', CreateTripAPI.as_view(), name='handle_trips'),  # post trip
     path('trips/add_user/<int:trip_id>', AddUsersToTrip.as_view(), name='users_to_trip'),  # post, delete
