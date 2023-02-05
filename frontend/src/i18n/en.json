@@ -86,5 +86,10 @@
   "trip-edit-subtitle": "Get ready to make the best out of your trip.",
   "trip-edit-title": "Edit trip",
   "members-access-title": "Member access",
-  "member-access-subtitle": "Add or remove users for this trip"
+  "member-access-subtitle": "Add or remove users for this trip",
+  "next": "Next",
+  "edit-trip": "Edit trip",
+  "dismiss": "Dismiss",
+  "manage-members": "Manage members",
+  "delete-trip": "Delete trip"
 }
