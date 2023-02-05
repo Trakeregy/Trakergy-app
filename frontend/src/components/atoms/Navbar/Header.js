@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Flex, HStack, IconButton, Text } from '@chakra-ui/react';
-import { BellIcon, MenuIcon } from '../icons';
+import { Box, Flex, IconButton, Tooltip } from '@chakra-ui/react';
+import { MenuIcon } from '../icons';
 import { connect } from 'react-redux';
 import { CustomAvatar } from '../CustomBasicComponents';
 
@@ -13,41 +13,38 @@ function Header({ onOpen, currentUser }) {
   const userName = firstName + ' ' + lastName;
 
   return (
-    <Box pos='fixed' right='5' top='5' zIndex={5}>
-      <Flex
-        ml={{ base: 0, md: 116 }}
-        px={{ base: 6, md: 6 }}
-        borderRadius={16}
-        h='full'
-        alignItems='center'
-        bg='white'
-        justifyContent={{ base: 'space-between', md: 'flex-end' }}
-        py='2'
-      >
-        <IconButton
-          display={{ base: 'flex', md: 'none' }}
-          onClick={onOpen}
-          variant='outline'
-          aria-label='open menu'
-          icon={<MenuIcon />}
-        />
-
-        <HStack spacing={{ base: 0, md: 6 }}>
+    <>
+      <Box pos='fixed' right='5' top='5' zIndex={5}>
+        <Flex
+          ml={{ base: 0, md: 116 }}
+          px={{ base: 6, md: 6 }}
+          borderRadius={16}
+          h='full'
+          alignItems='center'
+          justifyContent={{ base: 'space-between', md: 'flex-end' }}
+          py='2'
+        >
           <IconButton
-            size='md'
-            variant='solid'
+            display={{ base: 'flex', md: 'none' }}
+            onClick={onOpen}
+            variant='outline'
             aria-label='open menu'
-            icon={<BellIcon size='15pt' />}
+            icon={<MenuIcon />}
           />
-          <Flex alignItems={'center'}>
-            <Text fontSize='md' mx={5}>
-              {userName}
-            </Text>
-            <CustomAvatar src={imageUrl} name={userName} />
-          </Flex>
-        </HStack>
-      </Flex>
-    </Box>
+        </Flex>
+      </Box>
+      <Tooltip label={userName}>
+        <Box pos='fixed' right='10' bottom='10' zIndex={5}>
+          <CustomAvatar
+            src={imageUrl}
+            name={userName}
+            h='60px'
+            w='60px'
+            shadow='dark-lg'
+          />
+        </Box>
+      </Tooltip>
+    </>
   );
 }
 

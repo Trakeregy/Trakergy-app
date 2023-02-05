@@ -15,6 +15,7 @@ import ArrowLeftShortIcon from './ArrowLeftShortIcon';
 import EditIcon from './EditIcon';
 import UserGroupIcon from './UserGroupIcon';
 import TrashIcon from './TrashIcon';
+import OptionsVerticalIcon from './OptionsVerticalIcon';
 
 export {
   ArrowsUpDownIcon,
@@ -29,6 +30,7 @@ export {
   MapIcon,
   MoneyIcon,
   MenuIcon,
+  OptionsVerticalIcon,
   SettingsIcon,
   TrashIcon,
   TripIcon,

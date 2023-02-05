@@ -19,7 +19,7 @@ function Trips({ getUserTrips, trips }) {
   // show trip list
   return (
     <AuthPage>
-      <Flex direction='row' gap='2' alignItems='center'>
+      <Flex direction='row' gap='2' mt='2' alignItems='center'>
         <CustomHeading text={t('trips')} />
         <IconButton
           size='sm'

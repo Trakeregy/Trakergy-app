@@ -7,6 +7,10 @@ import {
   IconButton,
   Image,
   Heading,
+  Menu,
+  MenuList,
+  MenuItem,
+  MenuButton,
   Tab,
   TabList,
   TabPanel,
@@ -22,6 +26,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { AuthPage } from '.';
 import {
+  deleteTrip,
   getTripInfo as getTripInfoAction,
   getUserTrips as getUserTripsAction,
 } from '../../state/actions/trips';
@@ -36,16 +41,23 @@ import {
   CalendarIcon,
   MapIcon,
   UserGroupIcon,
+  OptionsVerticalIcon,
+  TrashIcon,
 } from '../atoms/icons';
 import TripCreate from '../atoms/TripCreate';
 import MemberAccess from '../atoms/MemberAccess';
 
-function Trip({ getTripInfo, tripInfo, trips, currentUser }) {
+function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
   const { tripId } = useParams();
   const { id: userId } = currentUser;
   const [forbidden, setForbidden] = useState(false);
   const [tripData, setTripData] = useState({});
   const navigate = useNavigate();
+
+  const handleDeleteTrip = () => {
+    deleteTrip(tripId);
+    navigate(ROUTES.TRIPS);
+  };
 
   useEffect(() => {
     if (trips && tripId) {
@@ -90,6 +102,8 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser }) {
     members,
     expenses,
   } = tripData;
+
+  const isAdmin = tripData?.admin?.id === userId;
 
   const tripPeriod = startDate
     ? `${format(new Date(startDate), 'E, LLL d')} - ${format(
@@ -320,7 +334,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser }) {
               h='100%'
               borderTopLeftRadius='10'
               borderBottomLeftRadius='10'
-              w='600px'
+              w='40vw'
               objectFit='cover'
               src={image_url ?? DEFAULT_TRIP_COVER_URL}
               alt={location?.country}
@@ -350,24 +364,48 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser }) {
                   <Heading fontSize='36px' mb='5'>
                     {tripName}
                   </Heading>
-                  <IconButton
-                    size='sm'
-                    borderRadius='full'
-                    colorScheme='primary'
-                    variant='ghost'
-                    icon={<EditIcon size='16pt' />}
-                    onClick={() => setOpenEditTrip(true)}
-                  ></IconButton>
-                  <IconButton
-                    size='sm'
-                    borderRadius='full'
-                    colorScheme='primary'
-                    variant='ghost'
-                    icon={<UserGroupIcon size='16pt' />}
-                    onClick={() => setOpenMemberAccess(true)}
-                  ></IconButton>
+                  <Menu>
+                    <MenuButton
+                      as={IconButton}
+                      aria-label='Options'
+                      borderRadius='full'
+                      colorScheme='primary'
+                      icon={<OptionsVerticalIcon size='12pt' />}
+                      variant='ghost'
+                    />
+                    <MenuList>
+                      {isAdmin && (
+                        <MenuItem
+                          colorScheme='primary'
+                          fontSize='16px'
+                          onClick={() => setOpenEditTrip(true)}
+                          icon={<EditIcon size='16pt' />}
+                        >
+                          Edit trip
+                        </MenuItem>
+                      )}
+                      <MenuItem
+                        fontSize='16px'
+                        icon={<UserGroupIcon size='16pt' />}
+                        onClick={() => setOpenMemberAccess(true)}
+                      >
+                        Manage members
+                      </MenuItem>
+                      {isAdmin && (
+                        <MenuItem
+                          fontSize='16px'
+                          icon={
+                            <Icon as={TrashIcon} size='16pt' color='red.500' />
+                          }
+                          onClick={handleDeleteTrip}
+                        >
+                          Delete trip
+                        </MenuItem>
+                      )}
+                    </MenuList>
+                  </Menu>
                 </Flex>
-                <Flex direction='row' alignItems='center' gap='1'>
+                <Flex direction='row' alignItems='center' gap='1' mb='2'>
                   <Icon size='18pt' as={CalendarIcon} />
                   <Text fontSize='md'>{tripPeriod}</Text>
                 </Flex>
@@ -410,7 +448,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser }) {
                         p='5'
                         direction='column'
                       >
-                        <Heading fontSize='md'>{t('about')}</Heading>
+                        {/* <Heading fontSize='md'>{t('about')}</Heading> */}
                         <Text fontSize='md'>{description}</Text>
                       </Flex>
                     </TabPanel>
@@ -514,6 +552,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getTripInfo: (id) => dispatch(getTripInfoAction(id)),
     getUserTrips: () => dispatch(getUserTripsAction()),
+    deleteTrip: (id) => dispatch(deleteTrip(id)),
   };
 };
 

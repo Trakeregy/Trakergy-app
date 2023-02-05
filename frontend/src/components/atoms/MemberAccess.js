@@ -26,6 +26,8 @@ const MemberAccess = ({ isOpen, close, trip, updateMembers }) => {
   const [members, setMembers] = useState([]);
   const [value, setValue] = useState(null);
 
+  const isAdmin = (userId) => userId === trip?.admin?.id;
+
   useEffect(() => {
     async function fetchUsers() {
       const response = await getAllUsers();
@@ -118,15 +120,17 @@ const MemberAccess = ({ isOpen, close, trip, updateMembers }) => {
                   name={member.label}
                 />
                 <div>{member.label}</div>
-                <IconButton
-                  ml='auto'
-                  size='sm'
-                  borderRadius='full'
-                  colorScheme='red'
-                  variant='ghost'
-                  icon={<TrashIcon size='16pt' />}
-                  onClick={() => removeMember(member)}
-                ></IconButton>
+                {!isAdmin(member.value) && (
+                  <IconButton
+                    ml='auto'
+                    size='sm'
+                    borderRadius='full'
+                    colorScheme='red'
+                    variant='ghost'
+                    icon={<TrashIcon size='16pt' />}
+                    onClick={() => removeMember(member)}
+                  ></IconButton>
+                )}
               </Flex>
             ))}
           </Flex>
