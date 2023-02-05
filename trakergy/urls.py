@@ -29,6 +29,8 @@ from trakergy.views import (
     PersonalExpensesForUserYearsAPI,
     PersonalExpensesPerCountryAPI,
     UserTripsAPI,
+    LocationsAPI,
+    UsersAPI,
     ExpensesForSpecificTrips, CreateTripAPI, AddUsersToTrip, TripAPI, ExpenseAPI
 )
 from rest_framework_simplejwt.views import (
@@ -45,6 +47,7 @@ urlpatterns = [
     path('users/edit/username', EditUsernameAPI.as_view(), name='edit_username'),  # edit current logged in user id
     path('users/edit/email', EditEmailAPI.as_view(), name='edit_email'),
     path('users/edit/password', EditPasswordAPI.as_view(), name='edit_password'),
+    path('users', UsersAPI.as_view(), name="users"),
     path('users/view/current_user', SeeCurrentUserAPI.as_view(), name='see_current_user'),
     # reports
     path('reports/personal/all_years', PersonalExpensesYearsAPI.as_view(), name='personal_exp_years'),
@@ -58,6 +61,8 @@ urlpatterns = [
     path('trips', UserTripsAPI.as_view(), name='user_trips'),
     path('trips/add', CreateTripAPI.as_view(), name='handle_trips'),  # post trip
     path('trips/add_user/<int:trip_id>', AddUsersToTrip.as_view(), name='users_to_trip'),  # post, delete
+    # locations
+    path('locations', LocationsAPI.as_view(), name='locations'),
     # expenses
     path('expenses/specific_trips', ExpensesForSpecificTrips.as_view(), name='expenses_for_specific_trips'), #get
     path('expenses/<int:trip_id>', ExpenseAPI.as_view(), name='add_update_expenses'), # post, delete, patch

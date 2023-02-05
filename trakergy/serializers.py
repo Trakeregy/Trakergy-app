@@ -68,7 +68,7 @@ class LocationSerializer(serializers.ModelSerializer):
 class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
-        fields = ('id', 'name', 'from_date', 'to_date', 'location', 'admin', 'members')
+        fields = ('id', 'name', 'image_url', 'from_date', 'to_date', 'location', 'description', 'admin', 'members')
 
 
 class TripUpsertSerializer(serializers.ModelSerializer):
@@ -76,7 +76,7 @@ class TripUpsertSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trip
-        fields = ('name', 'from_date', 'to_date', 'location', 'members')
+        fields = ('name', 'image_url', 'from_date', 'to_date', 'location', 'description', 'members')
 
     def validate(self, data):
         """
@@ -122,7 +122,7 @@ class TripDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trip
-        fields = ['id', 'name', 'location', 'from_date', 'to_date', 'admin', 'members', 'members_count']
+        fields = ['id', 'name', 'image_url', 'description', 'location', 'from_date', 'to_date', 'admin', 'members', 'members_count']
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
