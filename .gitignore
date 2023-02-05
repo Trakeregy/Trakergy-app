@@ -57,3 +57,4 @@ drf_example
 *.sqlite3
 
 media
+.env
