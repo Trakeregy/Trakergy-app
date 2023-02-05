@@ -15,4 +15,9 @@
 body {
   margin: 0;
   font-size: 15pt;
+  height: 100%;
+}
+
+html {
+  height: 100%;
 }

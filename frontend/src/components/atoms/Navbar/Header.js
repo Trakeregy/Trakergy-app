@@ -13,15 +13,16 @@ function Header({ onOpen, currentUser }) {
   const userName = firstName + ' ' + lastName;
 
   return (
-    <Box p={6} h={120} pos='fixed' w='full' bg='grey.100' zIndex={5}>
+    <Box pos='fixed' right='5' top='5' zIndex={5}>
       <Flex
         ml={{ base: 0, md: 116 }}
         px={{ base: 6, md: 6 }}
-        borderRadius={20}
+        borderRadius={16}
         h='full'
         alignItems='center'
         bg='white'
         justifyContent={{ base: 'space-between', md: 'flex-end' }}
+        py='2'
       >
         <IconButton
           display={{ base: 'flex', md: 'none' }}

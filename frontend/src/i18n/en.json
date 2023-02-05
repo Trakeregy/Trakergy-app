@@ -64,5 +64,17 @@
   "page-not-found": "Whoops... Looks like you're lost.",
   "page-not-found-descr": "Sorry, the page you requested could not be found. Please go back to your trips.",
   "group-expenses": "Group expenses",
-  "personal-expenses": "Personal expenses"
+  "personal-expenses": "Personal expenses",
+  "members-label": "Members",
+  "location-label": "Destination",
+  "end-date-label": "To",
+  "start-date-label": "From",
+  "trip-description-label": "Description",
+  "trip-name-label": "Name",
+  "trip-create-subtitle": "Get ready to make the best out of your trip.",
+  "trip-create-title": "Create a trip",
+  "trip-edit-subtitle": "Get ready to make the best out of your trip.",
+  "trip-edit-title": "Edit trip",
+  "members-access-title": "Member access",
+  "member-access-subtitle": "Add or remove users for this trip"
 }

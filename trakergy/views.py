@@ -531,7 +531,8 @@ class CreateTripAPI(generics.GenericAPIView):
             if serializer.is_valid():
                 # create trip
                 data = serializer.data
-                new_trip = Trip.objects.create(name=data['name'], from_date=data['from_date'], to_date=data['to_date'])
+                new_trip = Trip.objects.create(name=data['name'], from_date=data['from_date'], description=data['description'], 
+                                               image_url=data['image_url'], to_date=data['to_date'])
                 new_trip.location = Location.objects.get(id=data['location'])
                 new_trip.admin = user
                 new_trip.members.add(user)
@@ -612,4 +613,51 @@ class AddUsersToTrip(generics.GenericAPIView):
             return Response(data=serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception:
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)  
+        
+class LocationsAPI(generics.ListAPIView):
+    """
+    Handles the read of Location objects.
+    """
+    def list(self, request, *args, **kwargs):
+        """
+        Reads the locations.
+        """
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+
+            try:
+               queryset = Location.objects.all()
+               serializer = LocationSerializer(queryset, many=True)
+               return Response(data = serializer.data, status=status.HTTP_200_OK)
+            except Exception:
+                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+        
+class UsersAPI(generics.ListAPIView):
+    """
+    Handles the read of User objects.
+    """
+    def list(self, request, *args, **kwargs):
+        """
+        Reads the users.
+        """
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+
+            try:
+               queryset = CustomUser.objects.all()
+               serializer = CustomUserSerializer(queryset, many=True)
+               return Response(data = serializer.data, status=status.HTTP_200_OK)
+            except Exception:
+                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+  
