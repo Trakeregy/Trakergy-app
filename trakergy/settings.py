@@ -138,7 +138,5 @@ CORS_ORIGIN_ALLOW_ALL = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_PORT = '465'
-EMAIL_HOST_USER = 'tarkergy.app@yahoo.com'
-EMAIL_HOST_PASSWORD = 'CucwntneMk2Ub?b'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
