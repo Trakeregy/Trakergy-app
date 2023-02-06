@@ -48,7 +48,7 @@ function Debt({ debt, currentUser, completePayment }) {
 
   const payerName = `${payerFirstName} ${payerLastName}`;
   const userToPayName = `${userToPayFirstName} ${userToPayLastName}`;
-  const expenseDate = date ? `${format(new Date(date), 'E, LLL d yyyy')}` : '';
+  const expenseDate = date ? `${format(new Date(date), 'E, LLL d, yyyy')}` : '';
 
   const mustPay = payerId !== userId;
 

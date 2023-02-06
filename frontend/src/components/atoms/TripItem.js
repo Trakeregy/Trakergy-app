@@ -15,6 +15,13 @@ const TripItem = ({ trip }) => {
       overflow='hidden'
       w='350px'
       onClick={() => navigate(ROUTES.TRIPS + '/' + trip.id)}
+      style={{
+        transition: 'transform .2s',
+      }}
+      _hover={{
+        cursor: 'pointer',
+        transform: 'scale(1.02)',
+      }}
     >
       <Image
         h='250px'
@@ -23,7 +30,7 @@ const TripItem = ({ trip }) => {
         src={trip.image_url ?? DEFAULT_TRIP_COVER_URL}
         alt={trip.location?.country}
       />
-      <Flex direction='column' m='6' gap='2'>
+      <Flex direction='column' m={6} gap={2}>
         <Heading fontSize='21px'> {trip.name}</Heading>
         {trip.description && <Text fontSize='md'>{trip.description}</Text>}
       </Flex>

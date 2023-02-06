@@ -43,7 +43,7 @@ function Debts({ getUserDebts, userDebts, currentUser }) {
       <CustomHeading text={t('debts')} />
 
       <Tabs variant='soft-rounded' colorScheme='primary'>
-        <TabList my={5}>
+        <TabList my={5} gap={5} mb={5}>
           <Tab>{t('to-pay')}</Tab>
           <Tab>{t('to-receive')}</Tab>
           <Tab>{t('completed')}</Tab>

@@ -9,10 +9,8 @@ import CustomAvatar from './CustomAvatar';
 const ExpandedComponent = ({ data }) => {
   const { t } = useTranslation();
   return (
-    <Flex align='flex-start' flexDir='column' mx={10}>
-      <Text fontWeight='bold'>
-        {t('users-to-split')}:
-      </Text>
+    <Flex align='flex-start' flexDir='column' mx={10} mb={5}>
+      <Text fontWeight='bold'>{t('users-to-split')}:</Text>
       <Flex flexWrap='wrap' w='100%' gap={3}>
         {data.usersToPay.map((item, i) => (
           <CustomAvatar

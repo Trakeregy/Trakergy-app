@@ -796,10 +796,9 @@ class ExpenseAPI(generics.GenericAPIView):
                     if count == 0:
                         return Response(data={'message': "User is not part of the trip"},
                                         status=status.HTTP_400_BAD_REQUEST)
-                    if member_id == payer.id:
-                        continue
+                    if member_id != payer.id:
+                        emails.append(user.email)
                     members.append(user)
-                    emails.append(user.email)
             # create expense
             description = '' if 'description' not in data else data['description']
             tag = Tag.objects.get(id=data['tag'])
