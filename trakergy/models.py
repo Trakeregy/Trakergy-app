@@ -74,3 +74,7 @@ class Payment(models.Model):
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     is_paid = models.BooleanField(default=False, blank=False, null=False)
+    payment_date = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('expense', 'user')

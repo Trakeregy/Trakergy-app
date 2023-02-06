@@ -11,6 +11,7 @@ from .SendEmailNotification import Emailer
 from .mails.Email import EmailFactory
 import os
 from django.conf import settings
+from django.utils import timezone
 
 from .serializers import *
 
@@ -885,6 +886,34 @@ class PaymentsAPI(generics.GenericAPIView):
                                         'trip': trip_serializer.data
                                     })
                 return Response(data=res, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
+
+        except Exception as e:
+            return Response(data={'message': f'Missing authorization header {str(e)}'}, status=status.HTTP_403_FORBIDDEN)
+
+    def patch(self, request):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            try:
+                expense_id = request.data['expenseId'] if 'expenseId' in request.data else None
+                user_id = request.data['userId'] if 'userId' in request.data else None
+
+                if expense_id is None or user_id is None:
+                    return Response(data={'message': 'Missing expenseId or userId'}, status=status.HTTP_400_BAD_REQUEST)
+
+                payment = Payment.objects.get(expense_id=expense_id, user_id=user_id)
+                is_paid = request.data['isPaid'] if 'isPaid' in request.data else None
+                if is_paid is not None:
+                    payment.is_paid = is_paid
+                    payment.payment_date = timezone.now() if is_paid else None
+                    payment.save()
+
+                return Response(data={'message': 'Payment updated successfully'}, status=status.HTTP_200_OK)
             except Exception as e:
                 return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
 

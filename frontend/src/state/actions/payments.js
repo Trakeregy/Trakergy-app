@@ -23,4 +23,31 @@ const getUserDebts = () => async (dispatch) => {
     .catch((e) => console.error(e.message));
 };
 
-export { getUserDebts };
+const completePayment =
+  ({ expenseId, userId, isPaid }) =>
+  async (dispatch) => {
+    const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+    axios
+      .patch(
+        `${BASE_URL}/debts`,
+        {
+          expenseId,
+          userId,
+          isPaid: isPaid !== undefined && isPaid !== null ? isPaid : true,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status === 201 || res.status === 200) {
+          dispatch(getUserDebts());
+        }
+      })
+      .catch((e) => console.error(e.message));
+  };
+
+export { getUserDebts, completePayment };

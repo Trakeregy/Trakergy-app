@@ -28,6 +28,7 @@ function Header({ onOpen, currentUser }) {
             display={{ base: 'flex', md: 'none' }}
             onClick={onOpen}
             variant='outline'
+            bg='white'
             aria-label='open menu'
             icon={<MenuIcon />}
           />
