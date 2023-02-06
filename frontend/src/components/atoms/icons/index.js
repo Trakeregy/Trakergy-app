@@ -1,39 +1,45 @@
-import ArrowsUpDownIcon from './ArrowsUpDownIcon';
+import ArrowLeftShortIcon from './ArrowLeftShortIcon';
 import ArrowsRightLeftIcon from './ArrowsRightLeftIcon';
+import ArrowsUpDownIcon from './ArrowsUpDownIcon';
 import BellIcon from './BellIcon';
 import CalendarIcon from './CalendarIcon';
+import CameraIcon from './CameraIcon';
 import ChartIcon from './ChartIcon';
+import EditIcon from './EditIcon';
+import LockIcon from './LockIcon';
 import LogOutIcon from './LogOutIcon';
 import MapIcon from './MapIcon';
 import MenuIcon from './MenuIcon';
 import MoneyIcon from './MoneyIcon';
+import OptionsVerticalIcon from './OptionsVerticalIcon';
 import PlusIcon from './PlusIcon';
 import SettingsIcon from './SettingsIcon';
-import TripIcon from './TripIcon';
-import ZoomIcon from './ZoomIcon';
-import ArrowLeftShortIcon from './ArrowLeftShortIcon';
-import EditIcon from './EditIcon';
-import UserGroupIcon from './UserGroupIcon';
 import TrashIcon from './TrashIcon';
-import OptionsVerticalIcon from './OptionsVerticalIcon';
+import TripIcon from './TripIcon';
+import UserGroupIcon from './UserGroupIcon';
+import UserIcon from './UserIcon';
+import ZoomIcon from './ZoomIcon';
 
 export {
-  ArrowsUpDownIcon,
   ArrowLeftShortIcon,
   ArrowsRightLeftIcon,
+  ArrowsUpDownIcon,
   BellIcon,
   CalendarIcon,
+  CameraIcon,
   ChartIcon,
   EditIcon,
+  LockIcon,
   LogOutIcon,
-  PlusIcon,
   MapIcon,
-  MoneyIcon,
   MenuIcon,
+  MoneyIcon,
   OptionsVerticalIcon,
+  PlusIcon,
   SettingsIcon,
   TrashIcon,
   TripIcon,
   UserGroupIcon,
+  UserIcon,
   ZoomIcon,
 };

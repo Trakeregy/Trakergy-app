@@ -1,5 +1,4 @@
 import {
-  Avatar,
   AvatarGroup,
   Box,
   Flex,
@@ -336,7 +335,8 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
         )}
         <Flex
           direction='row'
-          h='calc(100vh - 40px)'
+          h='calc(100vh - 48px)'
+          borderRadius={20}
           position='relative'
           overflow='hidden'
         >
@@ -349,7 +349,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
               h='100%'
               borderTopLeftRadius='10'
               borderBottomLeftRadius='10'
-              w='40vw'
+              w='100%'
               objectFit='cover'
               src={image_url ?? DEFAULT_TRIP_COVER_URL}
               alt={location?.country}
@@ -365,7 +365,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
               onClick={() => navigate(ROUTES.TRIPS)}
             ></IconButton>
           </Box>
-          <Flex direction='column' flexGrow='1'>
+          <Flex direction='column' w='60%'>
             <Box
               bg='white'
               p={5}
@@ -404,7 +404,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                           onClick={() => setOpenEditTrip(true)}
                           icon={<EditIcon size='16pt' />}
                         >
-                          Edit trip
+                          {t('edit-trip')}
                         </MenuItem>
                       )}
                       <MenuItem
@@ -412,7 +412,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                         icon={<UserGroupIcon size='16pt' />}
                         onClick={() => setOpenMemberAccess(true)}
                       >
-                        Manage members
+                        {t('manage-members')}
                       </MenuItem>
                       {isAdmin && (
                         <MenuItem
@@ -421,8 +421,9 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                             <Icon as={TrashIcon} size='16pt' color='red.500' />
                           }
                           onClick={handleDeleteTrip}
+                          color='red.500'
                         >
-                          Delete trip
+                          {t('delete-trip')}
                         </MenuItem>
                       )}
                     </MenuList>
@@ -527,13 +528,15 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                           percentage={true}
                         />
                       </Flex>
-                      <Flex my={5} gap={5}>
+                      <Flex my={5} gap={5} w='full' justifyContent='center'>
                         <TimerangeChart
                           data={totalByDay}
                           title={t('total-by-day')}
                           from={startDate}
                           to={endDate}
                         />
+                      </Flex>
+                      <Flex my={5} gap={5}>
                         <LineChart
                           data={totalByTypeByDay}
                           title={t('total-by-day-by-type')}

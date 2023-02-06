@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, Input, Text } from '@chakra-ui/react';
+import { Box, FormControl, Input, Text } from '@chakra-ui/react';
 
 function CustomInput({
   id,
@@ -9,9 +9,16 @@ function CustomInput({
   value,
   onChange,
   errorLabelText,
+  label,
+  ...otherProps
 }) {
   return (
-    <>
+    <Box flex={1}>
+      {label && (
+        <Text fontSize={14} ml={5} color='grey.500'>
+          {label}
+        </Text>
+      )}
       <FormControl id={id} isRequired={isRequired}>
         <Input
           size='md'
@@ -25,6 +32,7 @@ function CustomInput({
           value={value}
           onChange={onChange}
           type={type}
+          {...otherProps}
         />
         {errorLabelText && (
           <Text fontSize='sm' color='primary.500' px='6'>
@@ -32,7 +40,7 @@ function CustomInput({
           </Text>
         )}
       </FormControl>
-    </>
+    </Box>
   );
 }
 

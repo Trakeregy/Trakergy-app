@@ -130,7 +130,7 @@ function LogIn({ logIn }) {
               <Text fontSize={'md'} m='0' color={'gray.600'} textAlign='center'>
                 {t('dont-have-account')}{' '}
                 <Link
-                  color={'primary.300'}
+                  color={'primary.500'}
                   href={ROUTES.SIGN_UP}
                   fontWeight='bold'
                 >

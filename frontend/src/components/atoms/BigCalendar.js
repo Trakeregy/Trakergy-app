@@ -9,7 +9,7 @@ const localizer = momentLocalizer(moment);
 
 function BigCalendar({ events = [] }) {
   return (
-    <Box bg='white' p={5} borderRadius={20}>
+    <Box bg='white' p={5} borderRadius={20} mt={5}>
       <Calendar
         localizer={localizer}
         defaultDate={new Date()}

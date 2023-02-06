@@ -19,21 +19,7 @@ const logIn = (newUser) => async (dispatch) => {
   const payload = res.data;
   if (payload?.access) {
     localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, payload.access);
-    const userResponse = await axios.get(
-      `${BASE_URL}/users/view/current_user`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            LOCAL_STORAGE_KEYS.AUTH_TOKEN
-          )}`,
-        },
-      }
-    );
-
-    dispatch({
-      type: AUTH_ACTION_TYPES.LOG_IN,
-      payload: userResponse.data,
-    });
+    dispatch(getCurrentUser());
   }
 };
 
@@ -53,4 +39,19 @@ const logOut = () => async (dispatch) => {
   });
 };
 
-export { logIn, signUp, logOut };
+const getCurrentUser = () => async (dispatch) => {
+  const userResponse = await axios.get(`${BASE_URL}/users/view/current_user`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem(
+        LOCAL_STORAGE_KEYS.AUTH_TOKEN
+      )}`,
+    },
+  });
+
+  dispatch({
+    type: AUTH_ACTION_TYPES.GET_CURRENT_USER,
+    payload: userResponse.data,
+  });
+};
+
+export { logIn, signUp, logOut, getCurrentUser };

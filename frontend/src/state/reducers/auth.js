@@ -6,16 +6,16 @@ export const AuthState = {
 };
 
 const authReducer = (state = AuthState, action) => {
-  if (action.type === AUTH_ACTION_TYPES.LOG_IN) {
+  if (action.type === AUTH_ACTION_TYPES.LOG_OUT) {
+    return {
+      authenticated: false,
+      currentUser: undefined,
+    };
+  } else if (action.type === AUTH_ACTION_TYPES.GET_CURRENT_USER) {
     return {
       ...state,
       authenticated: true,
       currentUser: action.payload,
-    };
-  } else if (action.type === AUTH_ACTION_TYPES.LOG_OUT) {
-    return {
-      authenticated: false,
-      currentUser: undefined,
     };
   }
   return state;
