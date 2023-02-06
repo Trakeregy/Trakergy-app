@@ -8,28 +8,28 @@ import {
   MenuList,
   MenuItem,
   MenuButton,
-} from "@chakra-ui/react";
-import { t } from "i18next";
-import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
-import { AuthPage } from ".";
+} from '@chakra-ui/react';
+import { t } from 'i18next';
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { AuthPage } from '.';
 import {
   deleteExpense,
   getExpenseInfo as getExpenseInfoAction,
   getUserExpenses as getUserExpensesAction,
-} from "../../state/actions/expenses";
-import ROUTES from "../../utils/routes";
-import { Forbidden } from "../atoms";
+} from '../../state/actions/expenses';
+import ROUTES from '../../utils/routes';
+import { Forbidden } from '../atoms';
 import {
   EditIcon,
   PlusIcon,
   UserGroupIcon,
   OptionsVerticalIcon,
   TrashIcon,
-} from "../atoms/icons";
-import ExpenseCreate from "../atoms/ExpenseCreate";
+} from '../atoms/icons';
+import ExpenseCreate from '../atoms/ExpenseCreate';
 
 function Expense({
   getExpenseInfo,
@@ -103,69 +103,69 @@ function Expense({
           />
         )}
         <Flex
-          direction="row"
-          h="calc(100vh - 48px)"
+          direction='row'
+          h='calc(100vh - 48px)'
           borderRadius={20}
-          position="relative"
-          overflow="hidden"
+          position='relative'
+          overflow='hidden'
         >
-          <Flex direction="column" w="60%">
+          <Flex direction='column' w='60%'>
             <Box
-              bg="white"
+              bg='white'
               p={5}
-              pl="12"
-              overflowY="auto"
-              borderTopRightRadius="12"
-              borderBottomRightRadius="12"
-              h="100%"
+              pl='12'
+              overflowY='auto'
+              borderTopRightRadius='12'
+              borderBottomRightRadius='12'
+              h='100%'
             >
-              <Box my="auto" mt="16">
-                <Flex direction="row" align="center" mb="5" gap="2">
-                  <Heading fontSize="36px">{expenseName}</Heading>
+              <Box my='auto' mt='16'>
+                <Flex direction='row' align='center' mb='5' gap='2'>
+                  <Heading fontSize='36px'>{expenseName}</Heading>
                   <IconButton
-                    size="sm"
-                    borderRadius="full"
-                    colorScheme="primary"
-                    icon={<PlusIcon size="18pt" />}
+                    size='sm'
+                    borderRadius='full'
+                    colorScheme='primary'
+                    icon={<PlusIcon size='18pt' />}
                     onClick={() => setOpenExpenseCreate(true)}
                   ></IconButton>
                   <Menu>
                     <MenuButton
-                      size="sm"
+                      size='sm'
                       as={IconButton}
-                      aria-label="Options"
-                      borderRadius="full"
-                      colorScheme="primary"
-                      icon={<OptionsVerticalIcon size="12pt" />}
+                      aria-label='Options'
+                      borderRadius='full'
+                      colorScheme='primary'
+                      icon={<OptionsVerticalIcon size='12pt' />}
                     />
                     <MenuList>
                       {isAdmin && (
                         <MenuItem
-                          colorScheme="primary"
-                          fontSize="16px"
+                          colorScheme='primary'
+                          fontSize='16px'
                           onClick={() => setOpenEditExpense(true)}
-                          icon={<EditIcon size="16pt" />}
+                          icon={<EditIcon size='16pt' />}
                         >
-                          {t("edit-expense")}
+                          {t('edit-expense')}
                         </MenuItem>
                       )}
                       <MenuItem
-                        fontSize="16px"
-                        icon={<UserGroupIcon size="16pt" />}
+                        fontSize='16px'
+                        icon={<UserGroupIcon size='16pt' />}
                         onClick={() => setOpenMemberAccess(true)}
                       >
-                        {t("manage-members")}
+                        {t('manage-members')}
                       </MenuItem>
                       {isAdmin && (
                         <MenuItem
-                          fontSize="16px"
+                          fontSize='16px'
                           icon={
-                            <Icon as={TrashIcon} size="16pt" color="red.500" />
+                            <Icon as={TrashIcon} size='16pt' color='red.500' />
                           }
                           onClick={handleDeleteExpense}
-                          color="red.500"
+                          color='red.500'
                         >
-                          {t("delete-expense")}
+                          {t('delete-expense')}
                         </MenuItem>
                       )}
                     </MenuList>

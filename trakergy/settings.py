@@ -147,8 +147,8 @@ EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_PORT = '465'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-EMAIL_HOST_USER = 'env(EMAIL_HOST)'
-EMAIL_HOST_PASSWORD = 'env(EMAIL_HOST_PASS)'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 # Actual directory user files go to
 MEDIA_ROOT = os.path.join(BASE_DIR, 'frontend/public/media')
