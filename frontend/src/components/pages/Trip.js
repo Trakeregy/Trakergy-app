@@ -213,7 +213,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
 
     const res = Object.keys(data).map((k) => {
       const user = members.find((m) => m.id === parseInt(k));
-      const userName = user.first_name + ' ' + user.last_name;
+      const userName = user?.first_name + ' ' + user?.last_name;
 
       return {
         user: userName,

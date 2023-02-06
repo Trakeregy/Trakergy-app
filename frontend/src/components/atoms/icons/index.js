@@ -5,6 +5,7 @@ import BellIcon from './BellIcon';
 import CalendarIcon from './CalendarIcon';
 import CameraIcon from './CameraIcon';
 import ChartIcon from './ChartIcon';
+import DoneIcon from './DoneIcon';
 import EditIcon from './EditIcon';
 import LockIcon from './LockIcon';
 import LogOutIcon from './LogOutIcon';
@@ -28,6 +29,7 @@ export {
   CalendarIcon,
   CameraIcon,
   ChartIcon,
+  DoneIcon,
   EditIcon,
   LockIcon,
   LogOutIcon,

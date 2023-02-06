@@ -248,11 +248,12 @@ class PersonalExpensesByTypeAPI(generics.GenericAPIView):
                         curr_e_amount = e.amount
 
                         # get the ids of the users that must pay the current expense
-                        users_to_split = CustomUser.objects.filter(expenses__in=user_expenses.filter(id=curr_eid))
+                        payments = Payment.objects.filter(expense_id=curr_eid)
+                        users_to_split = [p.user for p in payments]
                         users_to_split_ids = [u.id for u in users_to_split]
 
                         # calculate how many users must pay the expense
-                        split_into = users_to_split.count()
+                        split_into = len(users_to_split)
 
                         tag_name = Tag.objects.get(id=e.tag_id).name
 
@@ -315,11 +316,12 @@ class PersonalExpensesByTypeByMonthAPI(generics.GenericAPIView):
                         curr_e_amount = e.amount
 
                         # get the ids of the users that must pay the current expense
-                        users_to_split = CustomUser.objects.filter(expenses__in=user_expenses.filter(id=curr_eid))
+                        payments = Payment.objects.filter(expense_id=curr_eid)
+                        users_to_split = [p.user for p in payments]
                         users_to_split_ids = [u.id for u in users_to_split]
 
                         # calculate how many users must pay the expense
-                        split_into = users_to_split.count()
+                        split_into = len(users_to_split)
 
                         tag_name = Tag.objects.get(id=e.tag_id).name
 
@@ -383,15 +385,15 @@ class PersonalExpensesForUserYearsAPI(generics.GenericAPIView):
                         if expense_date not in grouped_by_day:
                             grouped_by_day[expense_date] = 0
 
-                        users_to_split = CustomUser.objects.filter(expenses__in=user_expenses.filter(id=expense_id))
-
-                        split_into = users_to_split.count()
+                        payments = Payment.objects.filter(expense_id=expense_id)
+                        users_to_split = [p.user for p in payments]
+                        split_into = len(users_to_split)
                         grouped_by_day[expense_date] += expense.amount / split_into
 
                 return Response(data=grouped_by_day, status=status.HTTP_200_OK)
 
-            except Exception:
-                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                return Response(data={'message': f'Bad request. {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
@@ -412,8 +414,9 @@ class PersonalExpensesPerCountryAPI(generics.GenericAPIView):
 
                 for exp in expenses:
                     eid = exp.id
-                    users_to_split = CustomUser.objects.filter(expenses__in=expenses.filter(id=eid))
-                    split_into = users_to_split.count()
+                    payments = Payment.objects.filter(expense_id=eid)
+                    users_to_split = [p.user for p in payments]
+                    split_into = len(users_to_split)
 
                     # expense amount
                     amount = exp.amount / split_into
@@ -425,8 +428,8 @@ class PersonalExpensesPerCountryAPI(generics.GenericAPIView):
                     res[country_code] += amount
 
                 return Response(data=res, status=status.HTTP_200_OK)
-            except Exception:
-                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                return Response(data={'message': f'Bad request. {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
@@ -722,7 +725,8 @@ class UsersAPI(generics.ListAPIView):
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
-  
+
+
 class ExpenseAPI(generics.GenericAPIView):
     emailer = Emailer.get_instance()
 
@@ -792,3 +796,73 @@ class ExpenseAPI(generics.GenericAPIView):
 
     # TODO Radu -- add delete/update expense
 
+
+class PaymentsAPI(generics.GenericAPIView):
+    def get(self, request):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            res = []
+
+            try:
+                all_user_trips = Trip.objects.filter(members__in=[user_id])
+                for trip in all_user_trips:
+                    trip_id = trip.id
+                    trip_expenses = Expense.objects.filter(trip_id=trip_id)
+
+                    for expense in trip_expenses:
+                        payer_id = expense.payer_id
+                        payer = expense.payer
+                        expense_id = expense.id
+                        payments = Payment.objects.filter(expense_id=expense_id)
+                        number_of_payments = payments.count()
+                        amount = expense.amount / number_of_payments if number_of_payments > 0 else 0
+                        amount = int(amount * 100) / 100
+
+                        # find payments to be paid to the current user
+                        if payer_id == user_id:
+                            if number_of_payments == 1 and payments[0].user.id == user_id:
+                                continue
+                            for payment in payments:
+                                user_to_pay = payment.user
+                                is_paid = payment.is_paid
+                                if user_to_pay.id != user_id:
+                                    exp_serializer = ExpenseSerializer(expense)
+                                    payer_serializer = CustomUserSerializer(user)
+                                    user_serializer = CustomUserSerializer(user_to_pay)
+                                    trip_serializer = TripSerializer(trip)
+                                    res.append({
+                                        'expense': exp_serializer.data,
+                                        'from': user_serializer.data,
+                                        'to': payer_serializer.data,
+                                        'amount': amount,
+                                        'is_paid': is_paid,
+                                        'trip': trip_serializer.data
+                                    })
+                        # find payments to be paid to another user by the current user
+                        else:
+                            for payment in payments:
+                                user_to_pay = payment.user
+                                is_paid = payment.is_paid
+                                if user_to_pay.id == user_id:
+                                    exp_serializer = ExpenseSerializer(expense)
+                                    payer_serializer = CustomUserSerializer(payer)
+                                    user_serializer = CustomUserSerializer(user)
+                                    trip_serializer = TripSerializer(trip)
+                                    res.append({
+                                        'expense': exp_serializer.data,
+                                        'from': user_serializer.data,
+                                        'to': payer_serializer.data,
+                                        'amount': amount,
+                                        'is_paid': is_paid,
+                                        'trip': trip_serializer.data
+                                    })
+                return Response(data=res, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
+
+        except Exception as e:
+            return Response(data={'message': f'Missing authorization header {str(e)}'}, status=status.HTTP_403_FORBIDDEN)

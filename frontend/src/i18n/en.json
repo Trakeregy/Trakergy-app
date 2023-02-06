@@ -59,7 +59,7 @@
   "description": "Description",
   "payer": "Payer",
   "tag": "Tag",
-  "no-data": "No data to show",
+  "no-data": "Nothing to show",
   "users-to-split": "Users to pay",
   "page-not-found": "Whoops... Looks like you're lost.",
   "page-not-found-descr": "Sorry, the page you requested could not be found. Please go back to your trips.",
@@ -92,5 +92,14 @@
   "dismiss": "Dismiss",
   "manage-members": "Manage members",
   "delete-trip": "Delete trip",
-  "create": "Create"
+  "create": "Create",
+  "to-pay": "To pay",
+  "to-receive": "To receive",
+  "completed": "Completed",
+  "must-pay-to": "Must pay to",
+  "must-receive-from": "Must receive from",
+  "complete-payment": "Complete payment",
+  "remind": "Remind",
+  "to": "to",
+  "from": "from"
 }

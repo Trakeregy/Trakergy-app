@@ -62,14 +62,15 @@ class Expense(models.Model):
     description = models.TextField(null=False, default='')
     date = models.DateField()
     tag = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True)
-    payer = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    payer = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='expense_payer')
     trip = models.ForeignKey(Trip, on_delete=models.SET_NULL, null=True)
-    users_to_split = models.ManyToManyField(CustomUser, related_name='expenses', blank=True)
+    users_to_split = models.ManyToManyField(CustomUser, through='Payment', related_name='expense_users')
 
     def __str__(self):
         return str(self.amount) + ' ' + str(self.date)
 
 
-
-
-
+class Payment(models.Model):
+    expense = models.ForeignKey(Expense, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    is_paid = models.BooleanField(default=False, blank=False, null=False)
