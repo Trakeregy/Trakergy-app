@@ -340,11 +340,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
           position='relative'
           overflow='hidden'
         >
-          <Box
-            position='relative'
-            flexShrink='0'
-            style={{ transition: 'all .3s ease-in' }}
-          >
+          <Box position='relative' w='40%'>
             <Image
               h='100%'
               borderTopLeftRadius='10'
@@ -376,12 +372,10 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
               h='100%'
             >
               <Box my='auto' mt='16'>
-                <Flex direction='row' gap='1'>
-                  <Heading fontSize='36px' mb='5'>
-                    {tripName}
-                  </Heading>
+                <Flex direction='row' align='center' mb='5' gap='2'>
+                  <Heading fontSize='36px'>{tripName}</Heading>
                   <IconButton
-                    size='md'
+                    size='sm'
                     borderRadius='full'
                     colorScheme='primary'
                     icon={<PlusIcon size='18pt' />}
@@ -389,12 +383,12 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                   ></IconButton>
                   <Menu>
                     <MenuButton
+                      size='sm'
                       as={IconButton}
                       aria-label='Options'
                       borderRadius='full'
                       colorScheme='primary'
                       icon={<OptionsVerticalIcon size='12pt' />}
-                      variant='ghost'
                     />
                     <MenuList>
                       {isAdmin && (
