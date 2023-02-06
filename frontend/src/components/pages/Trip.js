@@ -31,7 +31,7 @@ import {
 } from '../../state/actions/trips';
 import ROUTES from '../../utils/routes';
 import { DEFAULT_TRIP_COVER_URL } from '../../utils/constants';
-import { Forbidden } from '../atoms';
+import { Forbidden, NoData } from '../atoms';
 import { PieChart, LineChart, TimerangeChart, BarChart } from '../atoms/Charts';
 import { CustomAvatar, CustomTable } from '../atoms/CustomBasicComponents';
 import {
@@ -217,7 +217,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
 
     const res = Object.keys(data).map((k) => {
       const user = members.find((m) => m.id === parseInt(k));
-      const userName = user.first_name + ' ' + user.last_name;
+      const userName = user?.first_name + ' ' + user?.last_name;
 
       return {
         user: userName,
@@ -301,6 +301,13 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
     const totalByUser = expenses ? computeTotalByUser(expenses) : [];
     const totalByTypeByDay = expenses ? computeTotalByTypeByDay(expenses) : [];
     const totalByDay = expenses ? computeTotalByDay(expenses) : [];
+
+    const dataExistsForStatistics =
+      totalByType.length > 0 &&
+      totalByDay.length > 0 &&
+      totalByTypeByDay.length > 0 &&
+      totalByTypeByUser.length > 0 &&
+      totalByUser.length > 0;
 
     const expensesTableCols = getExpensesCols();
     const expensesTableColNames = getExpensesColNames();
@@ -514,40 +521,51 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
 
                     {/* statistics */}
                     <TabPanel p={0} m={0}>
-                      <Flex borderRadius={20} gap={5}>
-                        <PieChart title={t('sum-by-type')} data={totalByType} />
-                        <PieChart
-                          title={t('percentage-by-type')}
-                          data={totalByType}
-                          percentage={true}
-                        />
-                      </Flex>
-                      <Flex my={5} gap={5} w='full' justifyContent='center'>
-                        <TimerangeChart
-                          data={totalByDay}
-                          title={t('total-by-day')}
-                          from={startDate}
-                          to={endDate}
-                        />
-                      </Flex>
-                      <Flex my={5} gap={5}>
-                        <LineChart
-                          data={totalByTypeByDay}
-                          title={t('total-by-day-by-type')}
-                        />
-                      </Flex>
-                      <Flex gap={5}>
-                        <BarChart
-                          title={t('total-by-type-by-user')}
-                          data={totalByTypeByUser}
-                          keyName='user'
-                        />
-                        <BarChart
-                          title={t('total-by-user')}
-                          data={totalByUser}
-                          keyName='user'
-                        />
-                      </Flex>
+                      {dataExistsForStatistics ? (
+                        <>
+                          <Flex borderRadius={20} gap={5}>
+                            <PieChart
+                              title={t('sum-by-type')}
+                              data={totalByType}
+                            />
+                            <PieChart
+                              title={t('percentage-by-type')}
+                              data={totalByType}
+                              percentage={true}
+                            />
+                          </Flex>
+                          <Flex my={5} gap={5} w='full' justifyContent='center'>
+                            <TimerangeChart
+                              data={totalByDay}
+                              title={t('total-by-day')}
+                              from={startDate}
+                              to={endDate}
+                            />
+                          </Flex>
+                          <Flex my={5} gap={5}>
+                            <LineChart
+                              data={totalByTypeByDay}
+                              title={t('total-by-day-by-type')}
+                            />
+                          </Flex>
+                          <Flex gap={5}>
+                            <BarChart
+                              title={t('total-by-type-by-user')}
+                              data={totalByTypeByUser}
+                              keyName='user'
+                            />
+                            <BarChart
+                              title={t('total-by-user')}
+                              data={totalByUser}
+                              keyName='user'
+                            />
+                          </Flex>
+                        </>
+                      ) : (
+                        <Flex justifyContent='center' flex={1}>
+                          <NoData />
+                        </Flex>
+                      )}
                     </TabPanel>
                   </TabPanels>
                 </Tabs>

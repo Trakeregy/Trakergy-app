@@ -171,7 +171,11 @@ const ExpenseCreate = ({
                       size='md'
                       type='date'
                       min={trip.from_date}
-                      max={trip.to_date}
+                      max={
+                        trip.to_date < new Date().toISOString().split('T')[0]
+                          ? trip.to_date
+                          : new Date().toISOString().split('T')[0]
+                      }
                       borderRadius='xl'
                       value={expense.date}
                       onChange={(e) =>
@@ -233,27 +237,23 @@ const ExpenseCreate = ({
                       value={expense.payer}
                     />
                   </FormControl>
-                  {!editMode && (
-                    <FormControl id='usersToSplit' isRequired>
-                      <FormLabel fontSize={'md'} color='gray.600'>
-                        {t('users-to-split-label')}
-                      </FormLabel>
-                      <Select
-                        isMulti
-                        aria-labelledby='aria-label'
-                        inputId='aria-user-to-split-input'
-                        name='aria-user-to-split'
-                        options={members.filter(
-                          (_member) => _member.value !== expense.payer?.value
-                        )}
-                        formatOptionLabel={memberOption}
-                        onChange={(newValue) =>
-                          setExpense({ ...expense, users_to_split: newValue })
-                        }
-                        value={expense.users_to_split}
-                      />
-                    </FormControl>
-                  )}
+                  <FormControl id='usersToSplit' isRequired>
+                    <FormLabel fontSize={'md'} color='gray.600'>
+                      {t('users-to-split-label')}
+                    </FormLabel>
+                    <Select
+                      isMulti
+                      aria-labelledby='aria-label'
+                      inputId='aria-user-to-split-input'
+                      name='aria-user-to-split'
+                      options={members}
+                      formatOptionLabel={memberOption}
+                      onChange={(newValue) =>
+                        setExpense({ ...expense, users_to_split: newValue })
+                      }
+                      value={expense.users_to_split}
+                    />
+                  </FormControl>
                 </>
               )}
             </Stack>
