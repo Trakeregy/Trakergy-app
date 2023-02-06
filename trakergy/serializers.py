@@ -126,9 +126,12 @@ class TripDetailSerializer(serializers.ModelSerializer):
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
+    trip_id = serializers.ReadOnlyField()
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = Expense
-        fields = ('id', 'amount', 'description', 'date', 'tag', 'payer', 'users_to_split')
+        fields = ('id', 'amount', 'description', 'date', 'tag', 'payer', 'users_to_split', 'trip_id')
 
 
 class TagSerializer(serializers.ModelSerializer):

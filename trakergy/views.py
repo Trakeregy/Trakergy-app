@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 from .models import *
 from .serializers import *
 
+from datetime import datetime
 
 # Register API
 
@@ -408,8 +409,8 @@ class TripAPI(generics.GenericAPIView):
                 details_serializer = TripDetailSerializer(trip)
                 return Response(data=details_serializer.data, status=status.HTTP_200_OK)
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Exception:
-            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+        except Exception as e:
+            return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
 
     def delete(self, request, trip_id):
         try:
@@ -468,8 +469,8 @@ class TripAPI(generics.GenericAPIView):
 
             return Response(data=trip_data, status=status.HTTP_200_OK)
 
-        except Exception:
-            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+        except Exception as e:
+            return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
 
 
 class UserTripsAPI(generics.GenericAPIView):
@@ -518,6 +519,140 @@ class ExpensesForSpecificTrips(generics.GenericAPIView):
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+
+class ExpensesAPI(generics.GenericAPIView):
+    def get(self, request):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            trip_id = request.data['trip_id']
+
+            if trip_id is None:
+                return Response(data={'message': "Missing parameter trip_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                trip = Trip.objects.get(id=trip_id)
+            except ObjectDoesNotExist:
+                return Response(data={'message': 'Trip does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+            expenses = Expense.objects.all().filter(trip=trip)
+
+            list_of_expenses = []
+
+            for exp in expenses:
+                serializer_expense = ExpenseSerializer(exp)
+                list_of_expenses.append(serializer_expense.data)
+
+            return Response(data={'data': list_of_expenses}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
+
+    def post(self, request):
+
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+            serializer = ExpenseSerializer(data=request.data)
+
+            if serializer.is_valid():
+
+                #Get context
+                amount = request.data['amount']
+                description = request.data['description']
+                trip = Trip.objects.get(id=request.data['id'])
+
+                #Create expense
+                new_expense = Expense.objects.create(amount = amount, description=description, trip=trip, date = "2023-03-10")
+
+                new_expense.save()
+                serializer_expense = ExpenseSerializer(new_expense)
+                return Response(data={'message': serializer_expense.data}, status=status.HTTP_201_CREATED)
+
+            print(serializer.errors)
+            return Response(data={'message': "Invalid Request"}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(data={'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, expense_id):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            if expense_id is None:
+                return Response(data={'message': "Missing parameter expense_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                expense = Expense.objects.get(id=expense_id)
+                trip = Trip.objects.get(id=expense.trip_id)
+
+                if user == trip.admin:
+                    expense.delete()
+                    return Response(data={'message': 'Expense succesfully deleted'}, status=status.HTTP_200_OK)
+
+                return Response(data={'message': 'Insufficient permission'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+            except ObjectDoesNotExist:
+                return Response(data={'message': 'Expense does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
+
+
+    def patch(self, request, expense_id):
+
+        if expense_id is None:
+            return Response(data={'message': "Missing parameter expense_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            print("Before Check 1")
+            #Check for expense
+            try:
+                print("INSIDE Check 1")
+                expense = Expense.objects.get(id=expense_id)
+                print("AFTER Check 1 EXPENSE ID")
+            except ObjectDoesNotExist:
+                return Response(data={'message': "Expense does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+            print("Before Check 2")
+            #Check for expense in trip
+            try:
+                Trip.objects.get(id=expense.trip_id)
+            except ObjectDoesNotExist:
+                return Response(data={'message': "No such expense in trip"}, status=status.HTTP_400_BAD_REQUEST)
+
+            print("Before Check 3")
+            #Update expense
+            try:
+                expense_id = request.data['expense_id']
+                expense = Expense.objects.get(id=expense_id)
+
+                new_description = request.data['description']
+                date_meta = datetime.now()
+
+                expense.description = new_description
+                expense.date= date_meta
+                expense.save()
+                return Response(data={'message': 'Expense successfully updated.'}, status=status.HTTP_200_OK)
+            except Exception:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
 
 
 class CreateTripAPI(generics.GenericAPIView):

@@ -39,7 +39,7 @@ class Trip(models.Model):
 class Expense(models.Model):
     amount = models.DecimalField(decimal_places=2, max_digits=10)
     description = models.TextField(null=False, default='')
-    date = models.DateField()
+    date = models.DateField(null=True)
     tag = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True)
     payer = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     trip = models.ForeignKey(Trip, on_delete=models.SET_NULL, null=True)
