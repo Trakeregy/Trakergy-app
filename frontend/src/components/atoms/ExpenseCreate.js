@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useInsertionEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
@@ -68,6 +68,19 @@ const ExpenseCreate = ({
       }))
     );
   }, trip.members);
+
+  useEffect(
+    () =>
+      ({
+        if(isOpen) {
+          if (expenseData) {
+            setExpense({
+              ...expenseData,
+            });
+          }
+        },
+      }[isOpen])
+  );
 
   const handleExpenseCreate = async () => {
     await addExpense({

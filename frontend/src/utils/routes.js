@@ -1,5 +1,4 @@
 const ROUTES = {
-  EXPENSES: '/expenses',
   TRIPS: '/trips',
   LANDING: '/',
   LOGIN: '/login',
