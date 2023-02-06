@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "26135576-62f4-4360-8409-a698a4ac6e23",
+		"name": "Trakergy-Expenses",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17433226"
+	},
+	"item": [
+		{
+			"name": "Get_Expense",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc1NjcxMDUxLCJpYXQiOjE2NzU2NjkyNTEsImp0aSI6ImMwNzEwOWMyM2VmODQyYTBiOTg3NDEyMzNkNjc2Mzk4IiwidXNlcl9pZCI6MX0.EEGiQB-Kry09kUfWF_WVuTS56tEzPr7g8G-9POuU17U",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"trip_id\" : 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/expenses",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"expenses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post-Expense",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc1NjQzMDM5LCJpYXQiOjE2NzU2NDEyMzksImp0aSI6IjViYmQ2MzEzODg5NTQ0ZTk4Zjk1MjNmOWViYmNlYWQ0IiwidXNlcl9pZCI6MX0.-Jk1oKs4Z_9nNNLUMIhgAfqpfybW32b9uz56Hz8-9W8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\" : 120,\n    \"description\" : \"Desc 1\",\n    \"id\" : 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/expenses/add",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"expenses",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Patch-Expense",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc1NjQxMzk3LCJpYXQiOjE2NzU2Mzk1OTcsImp0aSI6IjBkNGIzZTFkZTI3ZDQ1YzM4ZmQwZjA2MjJmMTQzNzFkIiwidXNlcl9pZCI6MX0.HVy4z1FMC1z-lqe2I1j7QWgn1hHyZ8nJBVdxoR8Swdo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n    \"amount\" : 120,\n    \"description\" : \"Desc 1\",\n    \"date\" : \"2023-10-02\",\n    \"id\" : 2\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/expenses/12",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"expenses",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_Expense",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/expenses/specific_trips/2",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"expenses",
+						"specific_trips",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
