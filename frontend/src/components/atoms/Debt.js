@@ -25,6 +25,7 @@ import {
 } from './icons';
 import { useTranslation } from 'react-i18next';
 import { completePayment as completePaymentAction } from '../../state/actions/payments';
+import COLORS from '../../theme/_colors.scss';
 
 function Debt({ debt, currentUser, completePayment }) {
   const { t } = useTranslation();
@@ -82,7 +83,7 @@ function Debt({ debt, currentUser, completePayment }) {
         h='full'
         w={2}
         borderRadius='full'
-        bg={mustPay ? 'red.500' : 'green.400'}
+        bg={mustPay ? COLORS.red : COLORS.green}
       />
 
       <Flex flex={1} pr={5} w='full' flexDir='column'>

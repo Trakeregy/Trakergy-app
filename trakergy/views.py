@@ -854,6 +854,7 @@ class PaymentsAPI(generics.GenericAPIView):
                             for payment in payments:
                                 user_to_pay = payment.user
                                 is_paid = payment.is_paid
+                                payment_date = payment.payment_date
                                 if user_to_pay.id != user_id:
                                     exp_serializer = ExpenseSerializer(expense)
                                     payer_serializer = CustomUserSerializer(user)
@@ -865,13 +866,15 @@ class PaymentsAPI(generics.GenericAPIView):
                                         'to': payer_serializer.data,
                                         'amount': amount,
                                         'is_paid': is_paid,
-                                        'trip': trip_serializer.data
+                                        'trip': trip_serializer.data,
+                                        'payment_date': payment_date
                                     })
                         # find payments to be paid to another user by the current user
                         else:
                             for payment in payments:
                                 user_to_pay = payment.user
                                 is_paid = payment.is_paid
+                                payment_date = payment.payment_date
                                 if user_to_pay.id == user_id:
                                     exp_serializer = ExpenseSerializer(expense)
                                     payer_serializer = CustomUserSerializer(payer)
@@ -883,7 +886,8 @@ class PaymentsAPI(generics.GenericAPIView):
                                         'to': payer_serializer.data,
                                         'amount': amount,
                                         'is_paid': is_paid,
-                                        'trip': trip_serializer.data
+                                        'trip': trip_serializer.data,
+                                        'payment_date': payment_date
                                     })
                 return Response(data=res, status=status.HTTP_200_OK)
             except Exception as e:
