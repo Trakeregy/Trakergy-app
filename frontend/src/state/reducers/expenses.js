@@ -17,6 +17,7 @@ const expensesReducer = (state = ExpenseState, action) => {
     const oldExpenses = state.tripExpenses[expense.trip.id] ?? [];
     return {
       ...state,
+      allExpensesCurrentUser: [...state.allExpensesCurrentUser, expense],
       tripExpenses: {
         ...state.tripExpenses,
         [expense.trip.id]: [...oldExpenses, expense],

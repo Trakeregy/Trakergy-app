@@ -131,7 +131,11 @@ const ExpenseCreate = ({ isOpen, close, trip, addExpense }) => {
                       size='md'
                       type='date'
                       min={trip.from_date}
-                      max={trip.to_date}
+                      max={
+                        trip.to_date < new Date().toISOString().split('T')[0]
+                          ? trip.to_date
+                          : new Date().toISOString().split('T')[0]
+                      }
                       borderRadius='xl'
                       value={expense.date}
                       onChange={(e) =>
@@ -202,9 +206,7 @@ const ExpenseCreate = ({ isOpen, close, trip, addExpense }) => {
                       aria-labelledby='aria-label'
                       inputId='aria-user-to-split-input'
                       name='aria-user-to-split'
-                      options={members.filter(
-                        (_member) => _member.value !== expense.payer?.value
-                      )}
+                      options={members}
                       formatOptionLabel={memberOption}
                       onChange={(newValue) =>
                         setExpense({ ...expense, users_to_split: newValue })

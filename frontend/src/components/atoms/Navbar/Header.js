@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, IconButton, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, IconButton } from '@chakra-ui/react';
 import { MenuIcon } from '../icons';
 import { connect } from 'react-redux';
 import { CustomAvatar } from '../CustomBasicComponents';
@@ -28,22 +28,21 @@ function Header({ onOpen, currentUser }) {
             display={{ base: 'flex', md: 'none' }}
             onClick={onOpen}
             variant='outline'
+            bg='white'
             aria-label='open menu'
             icon={<MenuIcon />}
           />
         </Flex>
       </Box>
-      <Tooltip label={userName}>
-        <Box pos='fixed' right='10' bottom='10' zIndex={5}>
-          <CustomAvatar
-            src={imageUrl}
-            name={userName}
-            h='60px'
-            w='60px'
-            shadow='dark-lg'
-          />
-        </Box>
-      </Tooltip>
+      <Box pos='fixed' right='10' bottom='10' zIndex={5}>
+        <CustomAvatar
+          src={imageUrl}
+          name={userName}
+          h='60px'
+          w='60px'
+          shadow='dark-lg'
+        />
+      </Box>
     </>
   );
 }
