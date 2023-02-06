@@ -31,6 +31,7 @@ from trakergy.views import (
     UserTripsAPI,
     LocationsAPI,
     UsersAPI,
+    TagAPI,
     ExpensesForSpecificTrips,
     CreateTripAPI,
     AddUsersToTrip,
@@ -74,5 +75,6 @@ urlpatterns = [
     path('expenses/<int:trip_id>', ExpenseAPI.as_view(), name='add_update_expenses'), # post, delete, patch
     # payments
     path('debts', PaymentsAPI.as_view(), name='debts'),
+    path('expenses/tags', TagAPI.as_view(), name='expense_tags'), # get all tags
     path('', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

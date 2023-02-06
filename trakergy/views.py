@@ -703,6 +703,29 @@ class LocationsAPI(generics.ListAPIView):
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
         
+class TagAPI(generics.ListAPIView):
+    """
+    Handles the read of Tag objects.
+    """
+    def list(self, request, *args, **kwargs):
+        """
+        Reads the tags.
+        """
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+
+            try:
+               queryset = Tag.objects.all()
+               serializer = TagSerializer(queryset, many=True)
+               return Response(data = serializer.data, status=status.HTTP_200_OK)
+            except Exception:
+                return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+        
 class UsersAPI(generics.ListAPIView):
     """
     Handles the read of User objects.
@@ -760,6 +783,7 @@ class ExpenseAPI(generics.GenericAPIView):
             end_date = trip.to_date.strftime("%Y-%m-%d")
             members = []
             emails = []
+            payer = CustomUser.objects.get(id=data['payer'])
             if data['date'] < start_date or data['date'] > end_date:
                 return Response(data={'message': f"Incorrect date must be after {start_date} and before {end_date}"},
                                 status=status.HTTP_400_BAD_REQUEST)
@@ -771,7 +795,7 @@ class ExpenseAPI(generics.GenericAPIView):
                     if count == 0:
                         return Response(data={'message': "User is not part of the trip"},
                                         status=status.HTTP_400_BAD_REQUEST)
-                    if member_id == user_id:
+                    if member_id == payer.id:
                         continue
                     members.append(user)
                     emails.append(user.email)
@@ -780,9 +804,9 @@ class ExpenseAPI(generics.GenericAPIView):
             tag = Tag.objects.get(id=data['tag'])
             new_expense = Expense(amount=data['amount'], date=data['date'], trip=trip, description=description, tag=tag)
             new_expense.save()
-            if len(members) == 0:
-                new_expense.payer = logged_in_user
-            else:
+            new_expense.payer = payer
+
+            if len(members) != 0:
                 new_expense.users_to_split.set(members)
                 # send email notification
                 notification = EmailFactory.createNotification(emails, logged_in_user .username,

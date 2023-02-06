@@ -39,11 +39,13 @@ import {
   EditIcon,
   CalendarIcon,
   MapIcon,
+  PlusIcon,
   UserGroupIcon,
   OptionsVerticalIcon,
   TrashIcon,
 } from '../atoms/icons';
 import TripCreate from '../atoms/TripCreate';
+import ExpenseCreate from '../atoms/ExpenseCreate';
 import MemberAccess from '../atoms/MemberAccess';
 
 function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
@@ -82,6 +84,8 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
   const onCloseTripEdit = () => setOpenEditTrip(false);
   const [openMemberAccess, setOpenMemberAccess] = useState(false);
   const onCloseMemberAccess = () => setOpenMemberAccess(false);
+  const [openExpenseCreate, setOpenExpenseCreate] = useState(false);
+  const onCloseExpenseCreate = () => setOpenExpenseCreate(false);
 
   if (forbidden) {
     return (
@@ -329,6 +333,13 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
             trip={tripData}
           />
         )}
+        {tripData.id && (
+          <ExpenseCreate
+            isOpen={openExpenseCreate}
+            close={onCloseExpenseCreate}
+            trip={tripData}
+          />
+        )}
         <Flex
           direction='row'
           h='calc(100vh - 48px)'
@@ -362,22 +373,29 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
               bg='white'
               p={5}
               pl='12'
-              overflowY='scroll'
+              overflowY='auto'
               borderTopRightRadius='12'
               borderBottomRightRadius='12'
               h='100%'
             >
               <Box my='auto' mt='16'>
-                <Flex direction='row' align='center' mb='5' gap={3}>
+                <Flex direction='row' align='center' mb='5' gap='2'>
                   <Heading fontSize='36px'>{tripName}</Heading>
+                  <IconButton
+                    size='sm'
+                    borderRadius='full'
+                    colorScheme='primary'
+                    icon={<PlusIcon size='18pt' />}
+                    onClick={() => setOpenExpenseCreate(true)}
+                  ></IconButton>
                   <Menu>
                     <MenuButton
+                      size='sm'
                       as={IconButton}
                       aria-label='Options'
                       borderRadius='full'
                       colorScheme='primary'
                       icon={<OptionsVerticalIcon size='12pt' />}
-                      variant='ghost'
                     />
                     <MenuList>
                       {isAdmin && (
@@ -452,7 +470,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                       <Flex
                         bg='white'
                         borderRadius={20}
-                        p='5'
+                        py='5'
                         direction='column'
                       >
                         {/* <Heading fontSize='md'>{t('about')}</Heading> */}
