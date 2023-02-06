@@ -76,5 +76,13 @@
   "trip-edit-subtitle": "Get ready to make the best out of your trip.",
   "trip-edit-title": "Edit trip",
   "members-access-title": "Member access",
-  "member-access-subtitle": "Add or remove users for this trip"
+  "member-access-subtitle": "Add or remove users for this trip",
+  "expense-create-title": "Add expense",
+  "expense-create-subtitle": "Add a personal or group expense to keep track of your spendings.",
+  "expense-amount-label": "Amount",
+  "date-label": "Date",
+  "tag-label": "Tag",
+  "expense-description-label": "Description",
+  "payer-label": "Who paid for this expense?",
+  "users-to-split-label": "With whom will the expense be split?"
 }

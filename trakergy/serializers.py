@@ -133,8 +133,6 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
 class ExpenseUpsertSerializer(serializers.ModelSerializer):
     users_to_split = serializers.ListField(required=False)
-    trip = serializers.Field(required=False)
-    payer = serializers.Field(required=False)
 
     class Meta:
         model = Expense

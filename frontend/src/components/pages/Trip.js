@@ -34,17 +34,19 @@ import ROUTES from '../../utils/routes';
 import { DEFAULT_TRIP_COVER_URL } from '../../utils/constants';
 import { Forbidden } from '../atoms';
 import { PieChart, LineChart, TimerangeChart, BarChart } from '../atoms/Charts';
-import { CustomTable } from '../atoms/CustomBasicComponents';
+import { CustomAvatar, CustomTable } from '../atoms/CustomBasicComponents';
 import {
   ArrowLeftShortIcon,
   EditIcon,
   CalendarIcon,
   MapIcon,
+  PlusIcon,
   UserGroupIcon,
   OptionsVerticalIcon,
   TrashIcon,
 } from '../atoms/icons';
 import TripCreate from '../atoms/TripCreate';
+import ExpenseCreate from '../atoms/ExpenseCreate';
 import MemberAccess from '../atoms/MemberAccess';
 
 function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
@@ -83,6 +85,8 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
   const onCloseTripEdit = () => setOpenEditTrip(false);
   const [openMemberAccess, setOpenMemberAccess] = useState(false);
   const onCloseMemberAccess = () => setOpenMemberAccess(false);
+  const [openExpenseCreate, setOpenExpenseCreate] = useState(false);
+  const onCloseExpenseCreate = () => setOpenExpenseCreate(false);
 
   if (forbidden) {
     return (
@@ -323,13 +327,24 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
             trip={tripData}
           />
         )}
+        {tripData.id && (
+          <ExpenseCreate
+            isOpen={openExpenseCreate}
+            close={onCloseExpenseCreate}
+            trip={tripData}
+          />
+        )}
         <Flex
           direction='row'
           h='calc(100vh - 40px)'
           position='relative'
           overflow='hidden'
         >
-          <Box position='relative'>
+          <Box
+            position='relative'
+            flexShrink='0'
+            style={{ transition: 'all .3s ease-in' }}
+          >
             <Image
               h='100%'
               borderTopLeftRadius='10'
@@ -355,16 +370,23 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
               bg='white'
               p={5}
               pl='12'
-              overflowY='scroll'
+              overflowY='auto'
               borderTopRightRadius='12'
               borderBottomRightRadius='12'
               h='100%'
             >
               <Box my='auto' mt='16'>
-                <Flex direction='row'>
+                <Flex direction='row' gap='1'>
                   <Heading fontSize='36px' mb='5'>
                     {tripName}
                   </Heading>
+                  <IconButton
+                    size='md'
+                    borderRadius='full'
+                    colorScheme='primary'
+                    icon={<PlusIcon size='18pt' />}
+                    onClick={() => setOpenExpenseCreate(true)}
+                  ></IconButton>
                   <Menu>
                     <MenuButton
                       as={IconButton}
@@ -420,7 +442,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                 {members?.length > 0 && (
                   <AvatarGroup mt='8' max={3}>
                     {members.map((member, i) => (
-                      <Avatar
+                      <CustomAvatar
                         ml='0'
                         height='42px'
                         width='42px'
@@ -446,7 +468,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                       <Flex
                         bg='white'
                         borderRadius={20}
-                        p='5'
+                        py='5'
                         direction='column'
                       >
                         {/* <Heading fontSize='md'>{t('about')}</Heading> */}

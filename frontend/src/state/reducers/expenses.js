@@ -2,6 +2,7 @@ import { EXPENSES_ACTION_TYPES } from '../types';
 
 export const ExpenseState = {
   allExpensesCurrentUser: [],
+  tripExpenses: {},
 };
 
 const expensesReducer = (state = ExpenseState, action) => {
@@ -10,6 +11,16 @@ const expensesReducer = (state = ExpenseState, action) => {
     return {
       ...state,
       allExpensesCurrentUser,
+    };
+  } else if (action.type === EXPENSES_ACTION_TYPES.ADD_EXPENSE) {
+    const expense = action.payload;
+    const oldExpenses = state.tripExpenses[expense.trip.id] ?? [];
+    return {
+      ...state,
+      tripExpenses: {
+        ...state.tripExpenses,
+        [expense.trip.id]: [...oldExpenses, expense],
+      },
     };
   }
   return state;
