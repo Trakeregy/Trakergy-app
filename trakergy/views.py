@@ -611,35 +611,6 @@ class ExpensesAPI(generics.GenericAPIView):
         except Exception as e:
             return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
 
-    def post(self, request):
-
-        try:
-            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
-            access_token_obj = AccessToken(token)
-            user_id = access_token_obj['user_id']
-            user = CustomUser.objects.get(id=user_id)
-            serializer = ExpenseSerializer(data=request.data)
-
-            if serializer.is_valid():
-
-                #Get context
-                amount = request.data['amount']
-                description = request.data['description']
-                trip = Trip.objects.get(id=request.data['id'])
-
-                #Create expense
-                new_expense = Expense.objects.create(amount = amount, description=description, trip=trip, date = "2023-03-10")
-
-                new_expense.save()
-                serializer_expense = ExpenseSerializer(new_expense)
-                return Response(data={'message': serializer_expense.data}, status=status.HTTP_201_CREATED)
-
-            print(serializer.errors)
-            return Response(data={'message': "Invalid Request"}, status=status.HTTP_400_BAD_REQUEST)
-
-        except Exception as e:
-            return Response(data={'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
     def delete(self, request, expense_id):
         try:
             token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
