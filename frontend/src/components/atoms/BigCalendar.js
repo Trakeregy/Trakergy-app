@@ -5,11 +5,17 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../../theme/calendar.scss';
 
+moment.locale('en-us', {
+  week: {
+    dow: 1, // Monday
+  },
+});
+
 const localizer = momentLocalizer(moment);
 
 function BigCalendar({ events = [] }) {
   return (
-    <Box bg='white' p={5} borderRadius={20}>
+    <Box bg='white' p={5} borderRadius={20} mt={5}>
       <Calendar
         localizer={localizer}
         defaultDate={new Date()}

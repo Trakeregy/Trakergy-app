@@ -28,4 +28,44 @@ const getExpensesSpecificTrips = (tripIds) => async (dispatch) => {
     .catch((e) => console.error(e.message));
 };
 
-export { getExpensesSpecificTrips };
+const getAllTags = () => {
+  const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+
+  return axios
+    .get(`${BASE_URL}/expenses/tags`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+    .then((res) => {
+      if (res.status === 201 || res.status === 200) {
+        return res.data;
+      }
+    })
+    .catch((e) => console.error(e.message));
+};
+
+const addExpense = (expense) => async (dispatch) => {
+  const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+  const tripId = expense.trip;
+
+  return axios
+    .post(`${BASE_URL}/expenses/${tripId}`, expense, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+    .then((res) => {
+      if (res.status === 201 || res.status === 200) {
+        Promise.resolve(
+          dispatch({
+            type: EXPENSES_ACTION_TYPES.ADD_EXPENSE,
+            payload: res.data,
+          })
+        ).then(() => dispatch(getExpensesSpecificTrips([tripId])));
+      }
+    });
+};
+
+export { addExpense, getAllTags, getExpensesSpecificTrips };

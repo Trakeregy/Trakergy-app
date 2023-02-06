@@ -53,6 +53,12 @@ class RegisterSerializer(serializers.ModelSerializer):
             print(e)
 
 
+class MediaItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MediaItem
+        fields = ('id', 'image')
+
+
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -68,7 +74,7 @@ class LocationSerializer(serializers.ModelSerializer):
 class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
-        fields = ('id', 'name', 'from_date', 'to_date', 'location', 'admin', 'members')
+        fields = ('id', 'name', 'image_url', 'from_date', 'to_date', 'location', 'description', 'admin', 'members')
 
 
 class TripUpsertSerializer(serializers.ModelSerializer):
@@ -76,7 +82,7 @@ class TripUpsertSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trip
-        fields = ('name', 'from_date', 'to_date', 'location', 'members')
+        fields = ('name', 'image_url', 'from_date', 'to_date', 'location', 'description', 'members')
 
     def validate(self, data):
         """
@@ -122,7 +128,7 @@ class TripDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trip
-        fields = ['id', 'name', 'location', 'from_date', 'to_date', 'admin', 'members', 'members_count']
+        fields = ['id', 'name', 'image_url', 'description', 'location', 'from_date', 'to_date', 'admin', 'members', 'members_count']
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
@@ -132,6 +138,44 @@ class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expense
         fields = ('id', 'amount', 'description', 'date', 'tag', 'payer', 'users_to_split', 'trip_id')
+
+
+class ExpenseUpsertSerializer(serializers.ModelSerializer):
+    users_to_split = serializers.ListField(required=False)
+
+    class Meta:
+        model = Expense
+        fields = ('id', 'amount', 'description', 'date', 'tag', 'users_to_split', 'trip', 'payer')
+
+
+class ExpenseDetailsSerializer(serializers.ModelSerializer):
+    payer = serializers.SerializerMethodField(method_name='get_payer')
+    trip = serializers.SerializerMethodField(method_name='get_trip')
+    tag = serializers.SerializerMethodField(method_name='get_tag')
+    users_to_split = serializers.SerializerMethodField(method_name='get_users_to_split')
+
+    def get_tag(self, obj):
+        serializer = TagSerializer(obj.tag)
+        return serializer.data
+
+    def get_trip(self, obj):
+        serializer = TripDetailSerializer(obj.trip)
+        return serializer.data
+
+    def get_payer(self, obj):
+        serializer = CustomUserSerializer(obj.payer)
+        return serializer.data
+
+    def get_users_to_split(self, obj):
+        data = []
+        for member in obj.users_to_split.all():
+            serializer = CustomUserSerializer(CustomUser.objects.get(id=member.id))
+            data.append(serializer.data)
+        return data
+
+    class Meta:
+        model = Expense
+        fields = ('id', 'amount', 'description', 'date', 'tag', 'users_to_split', 'trip', 'payer')
 
 
 class TagSerializer(serializers.ModelSerializer):

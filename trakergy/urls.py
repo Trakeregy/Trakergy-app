@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from trakergy.views import (
     RegisterAPI,
     LogoutAPI,
-    EditUsernameAPI,
-    EditEmailAPI,
     EditPasswordAPI,
     SeeCurrentUserAPI,
     PersonalExpensesByTypeAPI,
@@ -29,7 +29,18 @@ from trakergy.views import (
     PersonalExpensesForUserYearsAPI,
     PersonalExpensesPerCountryAPI,
     UserTripsAPI,
-    ExpensesForSpecificTrips, CreateTripAPI, AddUsersToTrip, TripAPI, ExpensesAPI
+    LocationsAPI,
+    UsersAPI,
+    TagAPI,
+    ExpensesForSpecificTrips,
+    CreateTripAPI,
+    AddUsersToTrip,
+    TripAPI,
+    ExpenseAPI,
+    ExpensesAPI,
+    EditUserInfoAPI,
+    UserAvatarUpload,
+    PaymentsAPI
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -42,10 +53,11 @@ urlpatterns = [
     path('users/login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('users/logout', LogoutAPI.as_view(), name='logout_user'),
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
-    path('users/edit/username', EditUsernameAPI.as_view(), name='edit_username'),  # edit current logged in user id
-    path('users/edit/email', EditEmailAPI.as_view(), name='edit_email'),
+    path('users/edit/personal_info', EditUserInfoAPI.as_view(), name='edit_user_info'),
     path('users/edit/password', EditPasswordAPI.as_view(), name='edit_password'),
+    path('users', UsersAPI.as_view(), name="users"),
     path('users/view/current_user', SeeCurrentUserAPI.as_view(), name='see_current_user'),
+    path('users/upload_profile_image', UserAvatarUpload.as_view(), name='upload_profile_image'),
     # reports
     path('reports/personal/all_years', PersonalExpensesYearsAPI.as_view(), name='personal_exp_years'),
     path('reports/personal/sum_by_type', PersonalExpensesByTypeAPI.as_view(), name='personal_exp_sum_by_type'),
@@ -53,17 +65,19 @@ urlpatterns = [
     path('reports/personal/daily_all_years', PersonalExpensesForUserYearsAPI.as_view(), name='personal_exp_daily_all_years'),
     path('reports/personal/sum_per_country', PersonalExpensesPerCountryAPI.as_view(), name='personal_exp_per_country'),
     # trips
-    path('trips/get_all_info/<int:trip_id>', TripAPI.as_view(), name='trip_information'),  # get, put,
-                                                                                           # delete trip
+    path('trips/get_all_info/<int:trip_id>', TripAPI.as_view(), name='trip_information'),  # get, put, delete trip
     path('trips', UserTripsAPI.as_view(), name='user_trips'),
     path('trips/add', CreateTripAPI.as_view(), name='handle_trips'),  # post trip
     path('trips/add_user/<int:trip_id>', AddUsersToTrip.as_view(), name='users_to_trip'),  # post, delete
+    # locations
+    path('locations', LocationsAPI.as_view(), name='locations'),
     # expenses
-    path('expenses/specific_trips', ExpensesForSpecificTrips.as_view(), name='expenses_for_specific_trips'),
-
-    path('expenses/add', ExpensesAPI.as_view(), name='expenses_for_specific_trips'), # post
-
-    path('expenses', ExpensesAPI.as_view(), name='expenses'), # get
-    path('expenses/<int:expense_id>', ExpensesAPI.as_view(), name='expenses_patch_delete'), # delete, patch
+    path('expenses/specific_trips', ExpensesForSpecificTrips.as_view(), name='expenses_for_specific_trips'),  # get
+    path('expenses/<int:trip_id>', ExpenseAPI.as_view(), name='add_update_expenses'),  # post, delete, patch
+    path('expenses/tags', TagAPI.as_view(), name='expense_tags'),  # get all tags
+    path('expenses', ExpensesAPI.as_view(), name='expenses'),  # get
+    path('expenses/<int:expense_id>', ExpensesAPI.as_view(), name='expenses_patch_delete'),  # delete, patch
+    # payments
+    path('debts', PaymentsAPI.as_view(), name='debts'),
     path('', admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -4,12 +4,16 @@ import authReducer from './auth.js';
 import expensesReducer from './expenses.js';
 import personalReportsReducer from './reports.js';
 import tripsReducer from './trips.js';
+import userReducer from './user.js';
+import paymentsReducer from './payments.js';
 
 const appReducer = combineReducers({
   auth: authReducer,
   personalReports: personalReportsReducer,
   trips: tripsReducer,
   expenses: expensesReducer,
+  user: userReducer,
+  payments: paymentsReducer,
 });
 
 const rootReducer = (state, action) => {
