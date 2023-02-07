@@ -106,6 +106,8 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
     expenses,
   } = tripData;
 
+  const canAddExpense = new Date(endDate) >= new Date();
+
   const isAdmin = tripData?.admin?.id === userId;
 
   const tripPeriod = startDate
@@ -333,7 +335,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
             trip={tripData}
           />
         )}
-        {tripData.id && (
+        {tripData.id && canAddExpense && (
           <ExpenseCreate
             isOpen={openExpenseCreate}
             close={onCloseExpenseCreate}

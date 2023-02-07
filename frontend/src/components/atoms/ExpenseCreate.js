@@ -21,6 +21,7 @@ import {
   Flex,
   Textarea,
   Stack,
+  useToast,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import { connect } from 'react-redux';
@@ -33,6 +34,7 @@ const ExpenseCreate = ({ isOpen, close, trip, addExpense }) => {
   const [expense, setExpense] = useState({});
   const [step, setStep] = useState(1);
   const [members, setMembers] = useState([]);
+  const toast = useToast();
 
   useEffect(() => {
     async function fetchTags() {
@@ -64,6 +66,17 @@ const ExpenseCreate = ({ isOpen, close, trip, addExpense }) => {
       tag: expense.tag.value,
       payer: expense.payer.value,
       users_to_split: expense.users_to_split.map((_user) => _user.value),
+    });
+    toast({
+      title: t('notify-expense-title'),
+      description: t('notify-expense-subtitle'),
+      status: 'success',
+      duration: 9000,
+      variant: 'subtle',
+      isClosable: true,
+      containerStyle: {
+        marginBottom: 6,
+      },
     });
     handleClose();
   };
@@ -131,11 +144,7 @@ const ExpenseCreate = ({ isOpen, close, trip, addExpense }) => {
                       size='md'
                       type='date'
                       min={trip.from_date}
-                      max={
-                        trip.to_date < new Date().toISOString().split('T')[0]
-                          ? trip.to_date
-                          : new Date().toISOString().split('T')[0]
-                      }
+                      max={trip.to_date}
                       borderRadius='xl'
                       value={expense.date}
                       onChange={(e) =>
