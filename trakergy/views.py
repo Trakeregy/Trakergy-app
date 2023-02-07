@@ -1025,10 +1025,11 @@ class EmailerAPI(generics.GenericAPIView):
 
             user_to_send = CustomUser.objects.get(id=to_user_id)
             email = user_to_send.email
+            print(email)
 
-            notification = EmailFactory.createNotification([email], user.username,
-                                                           user.first_name + ' ' + user.last_name,
-                                                           trip_name, amount, description)
+            notification = EmailFactory.createReminder([email], user.username,
+                                                       user.first_name + ' ' + user.last_name,
+                                                       trip_name, amount, description)
             self.emailer.sendEmail(notification)
 
             return Response(data={'message': 'Email sent successfully'}, status=status.HTTP_200_OK)
