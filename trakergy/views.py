@@ -579,6 +579,7 @@ class ExpensesForSpecificTrips(generics.GenericAPIView):
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
 
+
 class CreateTripAPI(generics.GenericAPIView):
     def post(self, request):
         try:
@@ -590,7 +591,8 @@ class CreateTripAPI(generics.GenericAPIView):
             if serializer.is_valid():
                 # create trip
                 data = serializer.data
-                new_trip = Trip.objects.create(name=data['name'], from_date=data['from_date'], description=data['description'], 
+                new_trip = Trip.objects.create(name=data['name'], from_date=data['from_date'],
+                                               description=data['description'],
                                                image_url=data['image_url'], to_date=data['to_date'])
                 new_trip.location = Location.objects.get(id=data['location'])
                 new_trip.admin = user
@@ -678,12 +680,14 @@ class AddUsersToTrip(generics.GenericAPIView):
             return Response(data=serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception:
-            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)  
-        
+            return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
+
+
 class LocationsAPI(generics.ListAPIView):
     """
     Handles the read of Location objects.
     """
+
     def list(self, request, *args, **kwargs):
         """
         Reads the locations.
@@ -694,19 +698,21 @@ class LocationsAPI(generics.ListAPIView):
             user_id = access_token_obj['user_id']
 
             try:
-               queryset = Location.objects.all()
-               serializer = LocationSerializer(queryset, many=True)
-               return Response(data = serializer.data, status=status.HTTP_200_OK)
+                queryset = Location.objects.all()
+                serializer = LocationSerializer(queryset, many=True)
+                return Response(data=serializer.data, status=status.HTTP_200_OK)
             except Exception:
                 return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
-        
+
+
 class TagAPI(generics.ListAPIView):
     """
     Handles the read of Tag objects.
     """
+
     def list(self, request, *args, **kwargs):
         """
         Reads the tags.
@@ -717,19 +723,21 @@ class TagAPI(generics.ListAPIView):
             user_id = access_token_obj['user_id']
 
             try:
-               queryset = Tag.objects.all()
-               serializer = TagSerializer(queryset, many=True)
-               return Response(data = serializer.data, status=status.HTTP_200_OK)
+                queryset = Tag.objects.all()
+                serializer = TagSerializer(queryset, many=True)
+                return Response(data=serializer.data, status=status.HTTP_200_OK)
             except Exception:
                 return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
-        
+
+
 class UsersAPI(generics.ListAPIView):
     """
     Handles the read of User objects.
     """
+
     def list(self, request, *args, **kwargs):
         """
         Reads the users.
@@ -740,9 +748,9 @@ class UsersAPI(generics.ListAPIView):
             user_id = access_token_obj['user_id']
 
             try:
-               queryset = CustomUser.objects.all()
-               serializer = CustomUserSerializer(queryset, many=True)
-               return Response(data = serializer.data, status=status.HTTP_200_OK)
+                queryset = CustomUser.objects.all()
+                serializer = CustomUserSerializer(queryset, many=True)
+                return Response(data=serializer.data, status=status.HTTP_200_OK)
             except Exception:
                 return Response(data={'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -808,8 +816,8 @@ class ExpenseAPI(generics.GenericAPIView):
             if len(members) != 0:
                 new_expense.users_to_split.set(members)
                 # send email notification
-                notification = EmailFactory.createNotification(emails, logged_in_user .username,
-                                                               logged_in_user .first_name + ' ' + logged_in_user.last_name,
+                notification = EmailFactory.createNotification(emails, logged_in_user.username,
+                                                               logged_in_user.first_name + ' ' + logged_in_user.last_name,
                                                                trip.name, data['amount'], tag.name, description)
                 self.emailer.sendEmail(notification)
             new_expense.save()
@@ -819,10 +827,10 @@ class ExpenseAPI(generics.GenericAPIView):
 
     # TODO Radu -- add delete/update expense
 
+
 class DeleteExpenseAPI(generics.GenericAPIView):
     def delete(self, request, expense_id):
         try:
-            print("DUPA TRY Expense ID-- ", expense_id)
             token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
             access_token_obj = AccessToken(token)
             user_id = access_token_obj['user_id']
@@ -848,37 +856,35 @@ class DeleteExpenseAPI(generics.GenericAPIView):
         except Exception as e:
             return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
 
+
 class UpdateExpenseAPI(generics.GenericAPIView):
     def patch(self, request, expense_id):
         if expense_id is None:
             return Response(data={'message': "Missing parameter expense_id"}, status=status.HTTP_400_BAD_REQUEST)
-            
+
         try:
             token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
             access_token_obj = AccessToken(token)
             user_id = access_token_obj['user_id']
             user = CustomUser.objects.get(id=user_id)
 
-            #Check for expense
+            # Check for expense
             try:
                 expense = Expense.objects.get(id=expense_id)
             except ObjectDoesNotExist:
                 return Response(data={'message': "Expense does not exist"}, status=status.HTTP_400_BAD_REQUEST)
 
-            #Check for expense in trip
+            # Check for expense in trip
             try:
                 Trip.objects.get(id=expense.trip_id)
             except ObjectDoesNotExist:
                 return Response(data={'message': "No such expense in trip"}, status=status.HTTP_400_BAD_REQUEST)
 
-            
-
-            print("Before Check 3")
-            #Update expense
+            # Update expense
             try:
                 expense = Expense.objects.get(id=expense_id)
-                serializer = ExpenseUpsertSerializer(expense, data=request.data, partial=True, context={'request': request})
-                print("Dupa Serializer")
+                serializer = ExpenseUpsertSerializer(expense, data=request.data, partial=True,
+                                                     context={'request': request})
                 if serializer.is_valid():
                     serializer.save()
                     details_serializer = ExpenseDetailsSerializer(expense)
@@ -890,7 +896,8 @@ class UpdateExpenseAPI(generics.GenericAPIView):
 
         except Exception as e:
             return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
-            
+
+
 class PaymentsAPI(generics.GenericAPIView):
     def get(self, request):
         try:
@@ -962,7 +969,8 @@ class PaymentsAPI(generics.GenericAPIView):
                 return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
 
         except Exception as e:
-            return Response(data={'message': f'Missing authorization header {str(e)}'}, status=status.HTTP_403_FORBIDDEN)
+            return Response(data={'message': f'Missing authorization header {str(e)}'},
+                            status=status.HTTP_403_FORBIDDEN)
 
     def patch(self, request):
         try:
@@ -990,4 +998,41 @@ class PaymentsAPI(generics.GenericAPIView):
                 return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
 
         except Exception as e:
-            return Response(data={'message': f'Missing authorization header {str(e)}'}, status=status.HTTP_403_FORBIDDEN)
+            return Response(data={'message': f'Missing authorization header {str(e)}'},
+                            status=status.HTTP_403_FORBIDDEN)
+
+
+class EmailerAPI(generics.GenericAPIView):
+    emailer = Emailer.get_instance()
+
+    def post(self, request):
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            if 'toId' not in request.data or \
+                    'amount' not in request.data or \
+                    'description' not in request.data or \
+                    'tripName' not in request.data:
+                return Response(data={'message': f'Missing body information'}, status=status.HTTP_400_BAD_REQUEST)
+
+            to_user_id = request.data['toId']
+            amount = request.data['amount']
+            description = request.data['description']
+            trip_name = request.data['tripName']
+
+            user_to_send = CustomUser.objects.get(id=to_user_id)
+            email = user_to_send.email
+
+            notification = EmailFactory.createNotification([email], user.username,
+                                                           user.first_name + ' ' + user.last_name,
+                                                           trip_name, amount, description)
+            self.emailer.sendEmail(notification)
+
+            return Response(data={'message': 'Email sent successfully'}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(data={'message': f'Missing authorization header {str(e)}'},
+                            status=status.HTTP_403_FORBIDDEN)

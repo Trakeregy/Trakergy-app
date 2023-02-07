@@ -8,6 +8,7 @@ import {
   MenuItem,
   MenuList,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { connect } from 'react-redux';
@@ -24,11 +25,15 @@ import {
   TripIcon,
 } from './icons';
 import { useTranslation } from 'react-i18next';
-import { completePayment as completePaymentAction } from '../../state/actions/payments';
+import {
+  completePayment as completePaymentAction,
+  sendReminderEmail as sendReminderEmailAction,
+} from '../../state/actions/payments';
 import COLORS from '../../theme/_colors.scss';
 
-function Debt({ debt, currentUser, completePayment }) {
+function Debt({ debt, currentUser, completePayment, sendReminderEmail }) {
   const { t } = useTranslation();
+  const toast = useToast();
   const { id: userId } = currentUser;
   const { expense, from, to, amount, trip, is_paid: isPaid } = debt;
   const { description, date, id: expenseId } = expense;
@@ -60,13 +65,39 @@ function Debt({ debt, currentUser, completePayment }) {
     completePayment({ expenseId, userId: userToPayId, isPaid: false });
   };
 
-  // TODO
   const handleNotify = () => {
-    console.log(
-      'payment to notify about, and user to notify:',
+    sendReminderEmail({
+      toId: userToPayId,
+      amount,
       description,
-      userToPayId
-    );
+      tripName,
+    })
+      .then((_) => {
+        toast({
+          title: t('user-notified'),
+          description: t('user-notified-subtitle'),
+          status: 'success',
+          duration: 5000,
+          variant: 'subtle',
+          isClosable: true,
+          containerStyle: {
+            marginBottom: 6,
+          },
+        });
+      })
+      .catch((_) => {
+        toast({
+          title: t('email-not-sent'),
+          description: t('something-went-wrong'),
+          status: 'error',
+          duration: 5000,
+          variant: 'subtle',
+          isClosable: true,
+          containerStyle: {
+            marginBottom: 6,
+          },
+        });
+      });
   };
 
   return (
@@ -181,6 +212,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     completePayment: (obj) => dispatch(completePaymentAction(obj)),
+    sendReminderEmail: (obj) => dispatch(sendReminderEmailAction(obj)),
   };
 };
 

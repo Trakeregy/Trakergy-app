@@ -137,5 +137,10 @@
   "list-view": "All expenses",
   "edit-expense": "Edit expense",
   "expense-edit-title": "Edit expense",
-  "expense-edit-subtitle": "You can always edit later."
+  "expense-edit-subtitle": "You can always edit later.",
+  "edit": "Edit",
+  "user-notified": "Email sent successfully",
+  "user-notified-subtitle": "The user will be reminded to pay their debts.",
+  "email-not-sent": "Could not send email",
+  "something-went-wrong": "Something went wrong, please try again later"
 }

@@ -34,7 +34,7 @@ const ExpenseView = ({ expense, trip }) => {
       direction='column'
       p='4'
       borderRadius='20'
-      bgColor='#ef8354'
+      bgColor='primary.500'
       color='white'
       w='260px'
     >
