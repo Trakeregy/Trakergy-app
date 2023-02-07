@@ -69,20 +69,28 @@ const ExpenseCreate = ({
         image_url: user.image_url,
       }))
     );
-  }, trip.members);
+  }, [trip.members]);
 
-  useEffect(
-    () =>
-      ({
-        if(isOpen) {
-          if (expenseData) {
-            setExpense({
-              ...expenseData,
-            });
-          }
-        },
-      }[isOpen])
-  );
+  useEffect(() => {
+    if (isOpen) {
+      if (expenseData) {
+        setExpense({
+          ...expenseData,
+          trip: trip.id,
+          tag: { value: expenseData.tag.id, label: expenseData.tag.name },
+          payer: {
+            value: expenseData.payer.id,
+            label: `${expenseData.payer.first_name} ${expenseData.payer.last_name}`,
+          },
+          users_to_split: expenseData.users_to_split.map((user) => ({
+            value: user.id,
+            label: `${user.first_name} ${user.last_name}`,
+            image_url: user.image_url,
+          })),
+        });
+      }
+    }
+  }, [isOpen]);
 
   const handleExpenseCreate = async () => {
     await addExpense({
@@ -112,8 +120,7 @@ const ExpenseCreate = ({
     await editExpense({
       ...expense,
       tag: expense.tag.value,
-      payer: expense.player.value,
-      amount: expense.amount.value,
+      payer: expense.payer.value,
       users_to_split: expense.users_to_split.map((_user) => _user.value),
     });
     handleClose();

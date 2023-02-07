@@ -48,6 +48,7 @@ const getAllTags = () => {
 
 const addExpense = (expense) => async (dispatch) => {
   const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+  const tripId = expense.trip;
 
   return axios
     .post(`${BASE_URL}/expenses/${expense.trip}`, expense, {
@@ -86,7 +87,7 @@ const editExpense = (expense) => async (dispatch) => {
     });
 };
 
-const deleteExpense = (expenseId) => async (dispatch) => {
+const deleteExpense = (expenseId, tripId) => async (dispatch) => {
   const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
 
   return axios
@@ -100,6 +101,7 @@ const deleteExpense = (expenseId) => async (dispatch) => {
         type: EXPENSES_ACTION_TYPES.DELETE_EXPENSE,
         payload: {
           expenseId,
+          tripId,
         },
       });
     });

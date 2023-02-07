@@ -133,5 +133,9 @@
   "analyze-expenses": "Analyze expenses",
   "analyze-expenses-desc": "Find out more about your expenses in the past by reading the statistics",
   "notify-expense-title": "Expense created.",
-  "notify-expense-subtitle": "Every user whom you split the bill with will be informed via mail."
+  "notify-expense-subtitle": "Every user whom you split the bill with will be informed via mail.",
+  "list-view": "All expenses",
+  "edit-expense": "Edit expense",
+  "expense-edit-title": "Edit expense",
+  "expense-edit-subtitle": "You can always edit later."
 }

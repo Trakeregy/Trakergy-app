@@ -20,6 +20,7 @@ import MoneyIcon from './MoneyIcon';
 import OptionsVerticalIcon from './OptionsVerticalIcon';
 import PlusIcon from './PlusIcon';
 import SettingsIcon from './SettingsIcon';
+import TagIcon from './TagIcon';
 import TrashIcon from './TrashIcon';
 import TripIcon from './TripIcon';
 import UserGroupIcon from './UserGroupIcon';
@@ -49,6 +50,7 @@ export {
   OptionsVerticalIcon,
   PlusIcon,
   SettingsIcon,
+  TagIcon,
   TrashIcon,
   TripIcon,
   UserGroupIcon,
