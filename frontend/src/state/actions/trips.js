@@ -1,7 +1,7 @@
-import axios from "axios";
-import { BASE_URL, LOCAL_STORAGE_KEYS } from "../../utils/constants";
-import { TRIPS_ACTION_TYPES } from "../types";
-import { UNSPLASH_CLIENT_SECRET } from "./secrets";
+import axios from 'axios';
+import { BASE_URL, LOCAL_STORAGE_KEYS } from '../../utils/constants';
+import { TRIPS_ACTION_TYPES } from '../types';
+import { UNSPLASH_CLIENT_SECRET } from './secrets';
 
 const getTripInfo = (tripId) => async (dispatch) => {
   const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
@@ -9,7 +9,7 @@ const getTripInfo = (tripId) => async (dispatch) => {
   axios
     .get(`${BASE_URL}/trips/get_all_info/${tripId}`, {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${authToken}`,
       },
     })
@@ -31,7 +31,7 @@ const getUserTrips = () => async (dispatch) => {
   axios
     .get(`${BASE_URL}/trips`, {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${authToken}`,
       },
     })
@@ -109,7 +109,7 @@ const getAllLocations = () => {
   return axios
     .get(`${BASE_URL}/locations`, {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${authToken}`,
       },
     })
@@ -128,7 +128,7 @@ const getRandomPhotoLocation = (locationName) => {
       `https://api.unsplash.com/search/photos?query=${name}&per_page=1&page=1&order_by=relevant`,
       {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Client-ID ${UNSPLASH_CLIENT_SECRET}`,
         },
       }

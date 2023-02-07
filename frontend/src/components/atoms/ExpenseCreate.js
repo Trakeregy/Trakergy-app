@@ -71,6 +71,19 @@ const ExpenseCreate = ({
     );
   }, trip.members);
 
+  useEffect(
+    () =>
+      ({
+        if(isOpen) {
+          if (expenseData) {
+            setExpense({
+              ...expenseData,
+            });
+          }
+        },
+      }[isOpen])
+  );
+
   const handleExpenseCreate = async () => {
     await addExpense({
       ...expense,
