@@ -17,7 +17,7 @@ class Email:
         return self
 
     def addRecipients(self, recipients: list[str]):
-        self.__recipients.extend(recipients)
+        self.__recipients = recipients
         return self
 
     def withTitle(self, title: str):
@@ -66,5 +66,5 @@ class EmailFactory:
         return NotificationEmail(dest, username, fullname, tripname, amount, tag, description)
 
     @staticmethod
-    def createNotification(dest, username, fullname, tripname, amount, description) -> Email:
+    def createReminder(dest, username, fullname, tripname, amount, description) -> Email:
         return ReminderEmail(dest, username, fullname, tripname, amount, description)
