@@ -39,6 +39,16 @@ class NotificationEmail(Email):
         self.withTitle('New expense added for your trip').withBody(message).addRecipients(dest)
 
 
+class ReminderEmail(Email):
+    def __init__(self, dest, username, fullname, tripname, amount, description):
+        message = f"{username} "
+        if len(fullname.strip()):
+            message += f"({fullname}) "
+        message += f"reminds you to pay your debt of {amount} in the trip: {tripname} for the expense '{description}'\n"
+
+        self.withTitle("Reminder to pay your debt").withBody(message).addRecipients(dest)
+
+
 class RegisterNotification(Email):
     def __init__(self, dest, username):
         message = f"Hello, {username}!\n Thank you for joining us! Now you can easily manage our trip expenses.\n" \
@@ -55,3 +65,6 @@ class EmailFactory:
     def createNotification(dest, username, fullname, tripname, amount, tag, description) -> Email:
         return NotificationEmail(dest, username, fullname, tripname, amount, tag, description)
 
+    @staticmethod
+    def createNotification(dest, username, fullname, tripname, amount, description) -> Email:
+        return ReminderEmail(dest, username, fullname, tripname, amount, description)

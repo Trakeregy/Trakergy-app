@@ -50,4 +50,16 @@ const completePayment =
       .catch((e) => console.error(e.message));
   };
 
-export { getUserDebts, completePayment };
+const sendReminderEmail = (body) => async (dispatch) => {
+  const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+  await axios.post(`${BASE_URL}/email/reminder`, body, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  dispatch({ type: PAYMENTS_ACTION_TYPES.SEND_REMINDER_EMAIL });
+};
+
+export { getUserDebts, completePayment, sendReminderEmail };
