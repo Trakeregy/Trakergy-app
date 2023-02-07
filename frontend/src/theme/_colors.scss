@@ -9,6 +9,9 @@ $grey: #f4f4f4;
 $greyMedium: #979797;
 $greyDark: #404040;
 $greyTransparent: #979797aa;
+$red: #e53e3e;
+$green: #48bb78;
+$yellow: #e6bc17;
 
 :export {
   primaryLight: $primaryLight;
@@ -22,4 +25,7 @@ $greyTransparent: #979797aa;
   greyMedium: $greyMedium;
   greyDark: $greyDark;
   greyTransparent: $greyTransparent;
+  red: $red;
+  green: $green;
+  yellow: $yellow;
 }

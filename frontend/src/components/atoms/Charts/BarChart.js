@@ -2,6 +2,8 @@ import { Flex, Text } from '@chakra-ui/react';
 import { ResponsiveBar } from '@nivo/bar';
 
 const BarChart = ({ data, title, keyName }) => {
+  if (!data || data.length === 0) return <></>;
+
   let keySet = new Set();
   for (let i = 0; i < data.length; i++) {
     let d = data[i];

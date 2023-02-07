@@ -9,12 +9,10 @@ function CustomButton({ text, onClick, ...otherProps }) {
       fontSize='md'
       fontWeight='normal'
       borderRadius='full'
-      bg={'secondary.500'}
-      color={'white'}
-      _hover={{
-        bg: 'secondary.300',
-      }}
+      colorScheme='secondary'
+      variant='solid'
       onClick={onClick}
+      _hover={{ cursor: 'pointer' }}
       {...otherProps}
     >
       {text}

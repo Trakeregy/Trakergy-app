@@ -48,19 +48,22 @@ const getAllTags = () => {
 
 const addExpense = (expense) => async (dispatch) => {
   const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+  const tripId = expense.trip;
 
   return axios
-    .post(`${BASE_URL}/expenses/${expense.trip}`, expense, {
+    .post(`${BASE_URL}/expenses/${tripId}`, expense, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
     })
     .then((res) => {
       if (res.status === 201 || res.status === 200) {
-        dispatch({
-          type: EXPENSES_ACTION_TYPES.ADD_EXPENSE,
-          payload: res.data,
-        });
+        Promise.resolve(
+          dispatch({
+            type: EXPENSES_ACTION_TYPES.ADD_EXPENSE,
+            payload: res.data,
+          })
+        ).then(() => dispatch(getExpensesSpecificTrips([tripId])));
       }
     });
 };

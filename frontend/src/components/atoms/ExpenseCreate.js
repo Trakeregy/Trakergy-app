@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   FormControl,
@@ -21,15 +21,16 @@ import {
   Flex,
   Textarea,
   Stack,
-} from "@chakra-ui/react";
-import Select from "react-select";
-import { connect } from "react-redux";
+  useToast,
+} from '@chakra-ui/react';
+import Select from 'react-select';
+import { connect } from 'react-redux';
 import {
   addExpense,
-  getAllTags,
   editExpense,
-} from "../../state/actions/expenses";
-import { CustomAvatar } from "./CustomBasicComponents";
+  getAllTags,
+} from '../../state/actions/expenses';
+import { CustomAvatar } from './CustomBasicComponents';
 
 const ExpenseCreate = ({
   isOpen,
@@ -45,6 +46,7 @@ const ExpenseCreate = ({
   const [expense, setExpense] = useState({});
   const [step, setStep] = useState(1);
   const [members, setMembers] = useState([]);
+  const toast = useToast();
 
   useEffect(() => {
     async function fetchTags() {
@@ -77,6 +79,17 @@ const ExpenseCreate = ({
       payer: expense.payer.value,
       users_to_split: expense.users_to_split.map((_user) => _user.value),
     });
+    toast({
+      title: t('notify-expense-title'),
+      description: t('notify-expense-subtitle'),
+      status: 'success',
+      duration: 9000,
+      variant: 'subtle',
+      isClosable: true,
+      containerStyle: {
+        marginBottom: 6,
+      },
+    });
     handleClose();
   };
 
@@ -94,7 +107,7 @@ const ExpenseCreate = ({
   };
 
   const format = (val) => `$` + val;
-  const parse = (val) => val.replace(/^\$/, "");
+  const parse = (val) => val.replace(/^\$/, '');
   const nextStep = () => setStep(2);
 
   const handleClose = () => {
@@ -104,37 +117,37 @@ const ExpenseCreate = ({
   };
 
   const memberOption = ({ value, label, image_url }) => (
-    <Flex direction="row" gap="2" alignItems="center">
-      <CustomAvatar size="sm" src={image_url} name={label} />
+    <Flex direction='row' gap='2' alignItems='center'>
+      <CustomAvatar size='sm' src={image_url} name={label} />
       <div>{label}</div>
     </Flex>
   );
 
   return (
     <>
-      <Modal size="xl" isOpen={isOpen} onClose={handleClose} isCentered={true}>
+      <Modal size='xl' isOpen={isOpen} onClose={handleClose} isCentered={true}>
         <ModalOverlay />
-        <ModalContent borderRadius="16" boxShadow="xl">
-          <ModalHeader mt="2" pb="0" fontSize="23">
-            {editMode ? t("expense-edit-title") : t("expense-create-title")}
+        <ModalContent borderRadius='16' boxShadow='xl'>
+          <ModalHeader mt='2' pb='0' fontSize='23'>
+            {editMode ? t('expense-edit-title') : t('expense-create-title')}
           </ModalHeader>
-          <ModalCloseButton borderRadius="full" size="md" />
+          <ModalCloseButton borderRadius='full' size='md' />
           <ModalBody>
-            <Text fontSize="md">
+            <Text fontSize='md'>
               {editMode
-                ? t("expense-edit-subtitle")
-                : t("expense-create-subtitle")}
+                ? t('expense-edit-subtitle')
+                : t('expense-create-subtitle')}
             </Text>
-            <Stack gap="6" mt="8">
+            <Stack gap='6' mt='8'>
               {step === 1 ? (
                 <>
-                  <FormControl id="amount" isRequired>
-                    <FormLabel fontSize={"md"} color="gray.600">
-                      {t("expense-amount-label")}
+                  <FormControl id='amount' isRequired>
+                    <FormLabel fontSize={'md'} color='gray.600'>
+                      {t('expense-amount-label')}
                     </FormLabel>
                     <NumberInput
                       min={1}
-                      borderRadius="xl"
+                      borderRadius='xl'
                       value={format(expense.amount ?? 0)}
                       onChange={(valueString) =>
                         setExpense({
@@ -150,16 +163,16 @@ const ExpenseCreate = ({
                       </NumberInputStepper>
                     </NumberInput>
                   </FormControl>
-                  <FormControl id="date" isRequired>
-                    <FormLabel fontSize={"md"} color="gray.600">
-                      {t("date-label")}
+                  <FormControl id='date' isRequired>
+                    <FormLabel fontSize={'md'} color='gray.600'>
+                      {t('date-label')}
                     </FormLabel>
                     <Input
-                      size="md"
-                      type="date"
+                      size='md'
+                      type='date'
                       min={trip.from_date}
                       max={trip.to_date}
-                      borderRadius="xl"
+                      borderRadius='xl'
                       value={expense.date}
                       onChange={(e) =>
                         setExpense({
@@ -169,14 +182,14 @@ const ExpenseCreate = ({
                       }
                     />
                   </FormControl>
-                  <FormControl id="tag" isRequired>
-                    <FormLabel fontSize={"md"} color="gray.600">
-                      {t("tag-label")}
+                  <FormControl id='tag' isRequired>
+                    <FormLabel fontSize={'md'} color='gray.600'>
+                      {t('tag-label')}
                     </FormLabel>
                     <Select
-                      aria-labelledby="aria-label"
-                      inputId="aria-tag-input"
-                      name="aria-tags"
+                      aria-labelledby='aria-label'
+                      inputId='aria-tag-input'
+                      name='aria-tags'
                       options={tags}
                       onChange={(newValue) =>
                         setExpense({ ...expense, tag: newValue })
@@ -184,34 +197,34 @@ const ExpenseCreate = ({
                       value={expense.tag}
                     />
                   </FormControl>
-                  <FormControl id="description" isRequired>
-                    <FormLabel fontSize={"md"} color="gray.600">
-                      {t("expense-description-label")}
+                  <FormControl id='description' isRequired>
+                    <FormLabel fontSize={'md'} color='gray.600'>
+                      {t('expense-description-label')}
                     </FormLabel>
                     <Textarea
                       value={expense.description}
-                      borderRadius="xl"
+                      borderRadius='xl'
                       onChange={(e) =>
                         setExpense({
                           ...expense,
                           description: e.target.value,
                         })
                       }
-                      size="md"
+                      size='md'
                     />
                   </FormControl>
                 </>
               ) : (
                 <>
-                  <FormControl id="payer" isRequired>
-                    <FormLabel fontSize={"md"} color="gray.600">
-                      {t("payer-label")}
+                  <FormControl id='payer' isRequired>
+                    <FormLabel fontSize={'md'} color='gray.600'>
+                      {t('payer-label')}
                     </FormLabel>
                     <Select
-                      placeholder="Select member"
-                      aria-labelledby="aria-label"
-                      inputId="aria-payer-input"
-                      name="aria-payer"
+                      placeholder='Select member'
+                      aria-labelledby='aria-label'
+                      inputId='aria-payer-input'
+                      name='aria-payer'
                       options={members}
                       formatOptionLabel={memberOption}
                       onChange={(newValue) =>
@@ -220,27 +233,23 @@ const ExpenseCreate = ({
                       value={expense.payer}
                     />
                   </FormControl>
-                  {!editMode && (
-                    <FormControl id="usersToSplit" isRequired>
-                      <FormLabel fontSize={"md"} color="gray.600">
-                        {t("users-to-split-label")}
-                      </FormLabel>
-                      <Select
-                        isMulti
-                        aria-labelledby="aria-label"
-                        inputId="aria-user-to-split-input"
-                        name="aria-user-to-split"
-                        options={members.filter(
-                          (_member) => _member.value !== expense.payer?.value
-                        )}
-                        formatOptionLabel={memberOption}
-                        onChange={(newValue) =>
-                          setExpense({ ...expense, users_to_split: newValue })
-                        }
-                        value={expense.users_to_split}
-                      />
-                    </FormControl>
-                  )}
+                  <FormControl id='usersToSplit' isRequired>
+                    <FormLabel fontSize={'md'} color='gray.600'>
+                      {t('users-to-split-label')}
+                    </FormLabel>
+                    <Select
+                      isMulti
+                      aria-labelledby='aria-label'
+                      inputId='aria-user-to-split-input'
+                      name='aria-user-to-split'
+                      options={members}
+                      formatOptionLabel={memberOption}
+                      onChange={(newValue) =>
+                        setExpense({ ...expense, users_to_split: newValue })
+                      }
+                      value={expense.users_to_split}
+                    />
+                  </FormControl>
                 </>
               )}
             </Stack>
@@ -248,26 +257,26 @@ const ExpenseCreate = ({
           <ModalFooter>
             {step !== 1 ? (
               <>
-                <Button variant="ghost" mr={3} onClick={handleClose}>
-                  {t("dismiss")}
+                <Button variant='ghost' mr={3} onClick={handleClose}>
+                  {t('dismiss')}
                 </Button>
 
                 <Button
-                  colorScheme="primary"
-                  borderRadius="lg"
+                  colorScheme='primary'
+                  borderRadius='lg'
                   onClick={editMode ? handleExpenseEdit : handleExpenseCreate}
                 >
-                  {editMode ? t("edit") : t("create")}
+                  {editMode ? t('edit') : t('create')}
                 </Button>
               </>
             ) : (
               <Button
                 isDisabled={!isDataValid}
-                colorScheme="primary"
-                borderRadius="lg"
+                colorScheme='primary'
+                borderRadius='lg'
                 onClick={nextStep}
               >
-                {t("next")}
+                {t('next')}
               </Button>
             )}
           </ModalFooter>
