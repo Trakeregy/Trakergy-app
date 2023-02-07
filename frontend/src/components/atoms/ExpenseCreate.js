@@ -191,7 +191,11 @@ const ExpenseCreate = ({
                       size='md'
                       type='date'
                       min={trip.from_date}
-                      max={trip.to_date}
+                      max={
+                        new Date(trip.to_date) < new Date()
+                          ? trip.to_date
+                          : new Date().toISOString().split('T')[0]
+                      }
                       borderRadius='xl'
                       value={expense.date}
                       onChange={(e) =>

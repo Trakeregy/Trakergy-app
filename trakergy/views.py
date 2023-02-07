@@ -822,7 +822,6 @@ class ExpenseAPI(generics.GenericAPIView):
 class DeleteExpenseAPI(generics.GenericAPIView):
     def delete(self, request, expense_id):
         try:
-            print("DUPA TRY Expense ID-- ", expense_id)
             token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
             access_token_obj = AccessToken(token)
             user_id = access_token_obj['user_id']
@@ -859,26 +858,22 @@ class UpdateExpenseAPI(generics.GenericAPIView):
             user_id = access_token_obj['user_id']
             user = CustomUser.objects.get(id=user_id)
 
-            #Check for expense
+            # Check for expense
             try:
                 expense = Expense.objects.get(id=expense_id)
             except ObjectDoesNotExist:
                 return Response(data={'message': "Expense does not exist"}, status=status.HTTP_400_BAD_REQUEST)
 
-            #Check for expense in trip
+            # Check for expense in trip
             try:
                 Trip.objects.get(id=expense.trip_id)
             except ObjectDoesNotExist:
                 return Response(data={'message': "No such expense in trip"}, status=status.HTTP_400_BAD_REQUEST)
 
-            
-
-            print("Before Check 3")
-            #Update expense
+            # Update expense
             try:
                 expense = Expense.objects.get(id=expense_id)
                 serializer = ExpenseUpsertSerializer(expense, data=request.data, partial=True, context={'request': request})
-                print("Dupa Serializer")
                 if serializer.is_valid():
                     serializer.save()
                     details_serializer = ExpenseDetailsSerializer(expense)
@@ -890,6 +885,7 @@ class UpdateExpenseAPI(generics.GenericAPIView):
 
         except Exception as e:
             return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
+            
             
 class PaymentsAPI(generics.GenericAPIView):
     def get(self, request):

@@ -137,5 +137,6 @@
   "list-view": "All expenses",
   "edit-expense": "Edit expense",
   "expense-edit-title": "Edit expense",
-  "expense-edit-subtitle": "You can always edit later."
+  "expense-edit-subtitle": "You can always edit later.",
+  "edit": "Edit"
 }

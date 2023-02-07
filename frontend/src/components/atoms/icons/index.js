@@ -11,6 +11,7 @@ import CancelIcon from './CancelIcon';
 import ChartIcon from './ChartIcon';
 import DoneIcon from './DoneIcon';
 import EditIcon from './EditIcon';
+import InfoIcon from './InfoIcon';
 import LanguageIcon from './LanguageIcon';
 import LockIcon from './LockIcon';
 import LogOutIcon from './LogOutIcon';
@@ -41,6 +42,7 @@ export {
   ChartIcon,
   DoneIcon,
   EditIcon,
+  InfoIcon,
   LanguageIcon,
   LockIcon,
   LogOutIcon,

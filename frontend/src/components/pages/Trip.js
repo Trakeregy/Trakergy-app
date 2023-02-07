@@ -43,6 +43,7 @@ import {
   UserGroupIcon,
   OptionsVerticalIcon,
   TrashIcon,
+  InfoIcon,
 } from '../atoms/icons';
 import TripCreate from '../atoms/TripCreate';
 import ExpenseCreate from '../atoms/ExpenseCreate';
@@ -107,14 +108,14 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
     expenses,
   } = tripData;
 
-  const canUpsertExpense = new Date(endDate) >= new Date();
+  const canUpsertExpense = new Date(startDate) <= new Date();
 
   const isAdmin = tripData?.admin?.id === userId;
 
   const tripPeriod = startDate
-    ? `${format(new Date(startDate), 'E, LLL d')} - ${format(
+    ? `${format(new Date(startDate), 'E, LLL d, yyyy')} - ${format(
         new Date(endDate),
-        'E, LLL d'
+        'E, LLL d, yyyy'
       )}`
     : '';
   const computeTotalByType = (exps) => {
@@ -415,13 +416,15 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
               <Box my='auto' mt='16'>
                 <Flex direction='row' align='center' mb='5' gap='2'>
                   <Heading fontSize='36px'>{tripName}</Heading>
-                  <IconButton
-                    size='sm'
-                    borderRadius='full'
-                    colorScheme='primary'
-                    icon={<PlusIcon size='18pt' />}
-                    onClick={() => setOpenExpenseCreate(true)}
-                  ></IconButton>
+                  {canUpsertExpense && (
+                    <IconButton
+                      size='sm'
+                      borderRadius='full'
+                      colorScheme='primary'
+                      icon={<PlusIcon size='18pt' />}
+                      onClick={() => setOpenExpenseCreate(true)}
+                    ></IconButton>
+                  )}
                   <Menu>
                     <MenuButton
                       size='sm'
@@ -469,9 +472,15 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                   <Text fontSize='md'>{tripPeriod}</Text>
                 </Flex>
                 {location && (
-                  <Flex direction='row' alignItems='center' gap='1'>
+                  <Flex direction='row' alignItems='center' gap='1' mb='2'>
                     <Icon size='18pt' as={MapIcon} />
                     <Text fontSize='md'>{location.country}</Text>
+                  </Flex>
+                )}
+                {description && (
+                  <Flex direction='row' alignItems='center' gap='1'>
+                    <Icon size='18pt' as={InfoIcon} />
+                    <Text fontSize='md'>{description}</Text>
                   </Flex>
                 )}
 
@@ -494,24 +503,10 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
               <Box overflowX='hidden' overflowY='auto'>
                 <Tabs variant='soft-rounded' colorScheme='primary'>
                   <TabList gap={5} my={5}>
-                    <Tab>{t('about')}</Tab>
                     <Tab>{t('expenses')}</Tab>
                     <Tab>{t('statistics')}</Tab>
                   </TabList>
                   <TabPanels m={0}>
-                    {/* about */}
-                    <TabPanel p={0} m={0}>
-                      <Flex
-                        bg='white'
-                        borderRadius={20}
-                        py='5'
-                        direction='column'
-                      >
-                        {/* <Heading fontSize='md'>{t('about')}</Heading> */}
-                        <Text fontSize='md'>{description}</Text>
-                      </Flex>
-                    </TabPanel>
-
                     {/* expenses */}
                     <TabPanel p={0} m={0}>
                       <Tabs variant='soft-rounded' colorScheme='primary'>
@@ -527,7 +522,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                             borderRadius={20}
                             overflow='hidden'
                           >
-                            {expenses && tripData && (
+                            {expenses && tripData ? (
                               <Flex direction='rpw' flexWrap='wrap' gap='2'>
                                 {formatExpenses(expenses).map(
                                   (_expense, id) => (
@@ -538,6 +533,10 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                                     ></ExpenseView>
                                   )
                                 )}
+                              </Flex>
+                            ) : (
+                              <Flex justifyContent='center' flex={1}>
+                                <NoData />
                               </Flex>
                             )}
                           </TabPanel>
