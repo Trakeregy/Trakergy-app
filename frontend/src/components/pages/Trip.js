@@ -47,6 +47,7 @@ import {
 import TripCreate from '../atoms/TripCreate';
 import ExpenseCreate from '../atoms/ExpenseCreate';
 import MemberAccess from '../atoms/MemberAccess';
+import ExpenseView from '../atoms/ExpenseView';
 
 function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
   const { tripId } = useParams();
@@ -106,7 +107,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
     expenses,
   } = tripData;
 
-  const canAddExpense = new Date(endDate) >= new Date();
+  const canUpsertExpense = new Date(endDate) >= new Date();
 
   const isAdmin = tripData?.admin?.id === userId;
 
@@ -278,21 +279,52 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
         description,
         payer: payerName,
         tag: tagName,
-        usersToPay: usersToPay,
+        usersToPay,
         payerId,
       };
     });
 
     const isPersonal = (exp) =>
-      exp.usersToPay.length === 1 && exp.usersToPay[0].id === userId;
+      exp.usersToPay.length === 1 && exp.usersToPay[0]?.id === userId;
     const isOthersPersonal = (exp) =>
-      exp.usersToPay.length === 1 && exp.usersToPay[0].id !== userId;
+      exp.usersToPay.length === 1 && exp.usersToPay[0]?.id !== userId;
 
     return {
       group: data.filter((exp) => !isPersonal(exp) && !isOthersPersonal(exp)),
       personal: data.filter(isPersonal),
     };
   };
+
+  const formatExpenses = (exps) =>
+    exps.map((e) => {
+      const {
+        id,
+        amount,
+        date,
+        description,
+        payer: payerId,
+        tag,
+        users_to_split: usersToSplit,
+      } = e;
+      const payer = members.find((m) => m.id === parseInt(payerId));
+
+      const usersToPay = usersToSplit
+        .map((id) => {
+          const user = members.find((m) => m.id === id);
+          return user;
+        })
+        .filter((_user) => _user !== undefined);
+
+      return {
+        id,
+        amount: parseFloat(amount),
+        date,
+        description,
+        tag,
+        users_to_split: usersToPay,
+        payer,
+      };
+    });
 
   // show trip data
   if (tripId) {
@@ -335,7 +367,7 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
             trip={tripData}
           />
         )}
-        {tripData.id && canAddExpense && (
+        {tripData.id && canUpsertExpense && (
           <ExpenseCreate
             isOpen={openExpenseCreate}
             close={onCloseExpenseCreate}
@@ -484,10 +516,31 @@ function Trip({ getTripInfo, tripInfo, trips, currentUser, deleteTrip }) {
                     <TabPanel p={0} m={0}>
                       <Tabs variant='soft-rounded' colorScheme='primary'>
                         <TabList gap={5} mb={5}>
+                          <Tab>{t('list-view')}</Tab>
                           <Tab>{t('group-expenses')}</Tab>
                           <Tab>{t('personal-expenses')}</Tab>
                         </TabList>
                         <TabPanels m={0}>
+                          <TabPanel
+                            p={0}
+                            m={0}
+                            borderRadius={20}
+                            overflow='hidden'
+                          >
+                            {expenses && tripData && (
+                              <Flex direction='rpw' flexWrap='wrap' gap='2'>
+                                {formatExpenses(expenses).map(
+                                  (_expense, id) => (
+                                    <ExpenseView
+                                      key={`expense-${id}`}
+                                      expense={_expense}
+                                      trip={tripData}
+                                    ></ExpenseView>
+                                  )
+                                )}
+                              </Flex>
+                            )}
+                          </TabPanel>
                           <TabPanel
                             p={0}
                             m={0}

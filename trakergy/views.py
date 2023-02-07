@@ -579,7 +579,6 @@ class ExpensesForSpecificTrips(generics.GenericAPIView):
         except Exception:
             return Response(data={'message': 'Missing authorization header'}, status=status.HTTP_403_FORBIDDEN)
 
-
 class CreateTripAPI(generics.GenericAPIView):
     def post(self, request):
         try:
@@ -820,7 +819,78 @@ class ExpenseAPI(generics.GenericAPIView):
 
     # TODO Radu -- add delete/update expense
 
+class DeleteExpenseAPI(generics.GenericAPIView):
+    def delete(self, request, expense_id):
+        try:
+            print("DUPA TRY Expense ID-- ", expense_id)
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
 
+            if expense_id is None:
+                return Response(data={'message': "Missing parameter expense_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                expense = Expense.objects.get(id=expense_id)
+                trip = Trip.objects.get(id=expense.trip.id)
+
+                if user == trip.admin:
+                    expense.delete()
+                    return Response(data={'message': 'Expense succesfully deleted'}, status=status.HTTP_200_OK)
+
+                return Response(data={'message': 'Insufficient permission'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+            except ObjectDoesNotExist:
+                return Response(data={'message': 'Expense does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
+
+class UpdateExpenseAPI(generics.GenericAPIView):
+    def patch(self, request, expense_id):
+        if expense_id is None:
+            return Response(data={'message': "Missing parameter expense_id"}, status=status.HTTP_400_BAD_REQUEST)
+            
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
+            access_token_obj = AccessToken(token)
+            user_id = access_token_obj['user_id']
+            user = CustomUser.objects.get(id=user_id)
+
+            #Check for expense
+            try:
+                expense = Expense.objects.get(id=expense_id)
+            except ObjectDoesNotExist:
+                return Response(data={'message': "Expense does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+            #Check for expense in trip
+            try:
+                Trip.objects.get(id=expense.trip_id)
+            except ObjectDoesNotExist:
+                return Response(data={'message': "No such expense in trip"}, status=status.HTTP_400_BAD_REQUEST)
+
+            
+
+            print("Before Check 3")
+            #Update expense
+            try:
+                expense = Expense.objects.get(id=expense_id)
+                serializer = ExpenseUpsertSerializer(expense, data=request.data, partial=True, context={'request': request})
+                print("Dupa Serializer")
+                if serializer.is_valid():
+                    serializer.save()
+                    details_serializer = ExpenseDetailsSerializer(expense)
+                    return Response(data=details_serializer.data, status=status.HTTP_200_OK)
+
+                return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except Exception:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(data={'message': str(e)}, status=status.HTTP_403_FORBIDDEN)
+            
 class PaymentsAPI(generics.GenericAPIView):
     def get(self, request):
         try:
@@ -828,7 +898,6 @@ class PaymentsAPI(generics.GenericAPIView):
             access_token_obj = AccessToken(token)
             user_id = access_token_obj['user_id']
             user = CustomUser.objects.get(id=user_id)
-
             res = []
 
             try:

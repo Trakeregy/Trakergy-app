@@ -51,7 +51,7 @@ const addExpense = (expense) => async (dispatch) => {
   const tripId = expense.trip;
 
   return axios
-    .post(`${BASE_URL}/expenses/${tripId}`, expense, {
+    .post(`${BASE_URL}/expenses/${expense.trip}`, expense, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -68,4 +68,49 @@ const addExpense = (expense) => async (dispatch) => {
     });
 };
 
-export { addExpense, getAllTags, getExpensesSpecificTrips };
+const editExpense = (expense) => async (dispatch) => {
+  const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+
+  return axios
+    .patch(`${BASE_URL}/expenses/update/${expense.id}`, expense, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+    .then((res) => {
+      if (res.status === 201 || res.status === 200) {
+        dispatch({
+          type: EXPENSES_ACTION_TYPES.EDIT_EXPENSE,
+          payload: res.data,
+        });
+      }
+    });
+};
+
+const deleteExpense = (expenseId, tripId) => async (dispatch) => {
+  const authToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+
+  return axios
+    .delete(`${BASE_URL}/expenses/delete/${expenseId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+    .then((res) => {
+      dispatch({
+        type: EXPENSES_ACTION_TYPES.DELETE_EXPENSE,
+        payload: {
+          expenseId,
+          tripId,
+        },
+      });
+    });
+};
+
+export {
+  addExpense,
+  getAllTags,
+  getExpensesSpecificTrips,
+  editExpense,
+  deleteExpense,
+};

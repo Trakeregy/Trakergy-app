@@ -25,10 +25,22 @@ import {
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import { connect } from 'react-redux';
-import { addExpense, getAllTags } from '../../state/actions/expenses';
+import {
+  addExpense,
+  editExpense,
+  getAllTags,
+} from '../../state/actions/expenses';
 import { CustomAvatar } from './CustomBasicComponents';
 
-const ExpenseCreate = ({ isOpen, close, trip, addExpense }) => {
+const ExpenseCreate = ({
+  isOpen,
+  close,
+  trip,
+  addExpense,
+  editExpense,
+  editMode,
+  expenseData,
+}) => {
   const { t } = useTranslation();
   const [tags, setTags] = useState([]);
   const [expense, setExpense] = useState({});
@@ -57,7 +69,28 @@ const ExpenseCreate = ({ isOpen, close, trip, addExpense }) => {
         image_url: user.image_url,
       }))
     );
-  }, trip.members);
+  }, [trip.members]);
+
+  useEffect(() => {
+    if (isOpen) {
+      if (expenseData) {
+        setExpense({
+          ...expenseData,
+          trip: trip.id,
+          tag: { value: expenseData.tag.id, label: expenseData.tag.name },
+          payer: {
+            value: expenseData.payer.id,
+            label: `${expenseData.payer.first_name} ${expenseData.payer.last_name}`,
+          },
+          users_to_split: expenseData.users_to_split.map((user) => ({
+            value: user.id,
+            label: `${user.first_name} ${user.last_name}`,
+            image_url: user.image_url,
+          })),
+        });
+      }
+    }
+  }, [isOpen]);
 
   const handleExpenseCreate = async () => {
     await addExpense({
@@ -83,6 +116,16 @@ const ExpenseCreate = ({ isOpen, close, trip, addExpense }) => {
 
   const isDataValid = expense.amount && expense.amount > 0;
 
+  const handleExpenseEdit = async () => {
+    await editExpense({
+      ...expense,
+      tag: expense.tag.value,
+      payer: expense.payer.value,
+      users_to_split: expense.users_to_split.map((_user) => _user.value),
+    });
+    handleClose();
+  };
+
   const format = (val) => `$` + val;
   const parse = (val) => val.replace(/^\$/, '');
   const nextStep = () => setStep(2);
@@ -106,11 +149,15 @@ const ExpenseCreate = ({ isOpen, close, trip, addExpense }) => {
         <ModalOverlay />
         <ModalContent borderRadius='16' boxShadow='xl'>
           <ModalHeader mt='2' pb='0' fontSize='23'>
-            {t('expense-create-title')}
+            {editMode ? t('expense-edit-title') : t('expense-create-title')}
           </ModalHeader>
           <ModalCloseButton borderRadius='full' size='md' />
           <ModalBody>
-            <Text fontSize='md'>{t('expense-create-subtitle')}</Text>
+            <Text fontSize='md'>
+              {editMode
+                ? t('expense-edit-subtitle')
+                : t('expense-create-subtitle')}
+            </Text>
             <Stack gap='6' mt='8'>
               {step === 1 ? (
                 <>
@@ -237,9 +284,9 @@ const ExpenseCreate = ({ isOpen, close, trip, addExpense }) => {
                 <Button
                   colorScheme='primary'
                   borderRadius='lg'
-                  onClick={handleExpenseCreate}
+                  onClick={editMode ? handleExpenseEdit : handleExpenseCreate}
                 >
-                  {t('create')}
+                  {editMode ? t('edit') : t('create')}
                 </Button>
               </>
             ) : (
@@ -267,6 +314,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
     addExpense: (expense) => dispatch(addExpense(expense)),
+    editExpense: (expense) => dispatch(editExpense(expense)),
   };
 };
 

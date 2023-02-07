@@ -1,4 +1,4 @@
-import { TRIPS_ACTION_TYPES } from '../types';
+import { TRIPS_ACTION_TYPES, EXPENSES_ACTION_TYPES } from '../types';
 
 export const TripsState = {
   tripInfo: {},
@@ -58,6 +58,50 @@ const tripsReducer = (state = TripsState, action) => {
         ...state.trips.slice(tripIndex + 1),
       ],
     };
+  } else if (action.type === EXPENSES_ACTION_TYPES.EDIT_EXPENSE) {
+    const expense = action.payload;
+    if (expense.trip.id === state.tripInfo.id) {
+      const expenseIndex = state.tripInfo.expenses?.findIndex(
+        (_expense) => _expense.id === expense.id
+      );
+      if (state.tripInfo.expenses && expenseIndex !== -1) {
+        return {
+          ...state,
+          tripInfo: {
+            ...state.tripInfo,
+            expenses: [
+              ...state.tripInfo.expenses.slice(0, expenseIndex),
+              {
+                ...expense,
+                payer: expense.payer.id,
+                users_to_split: expense.users_to_split?.map(
+                  (_user) => _user.id
+                ),
+              },
+              ...state.tripInfo.expenses.slice(expenseIndex + 1),
+            ],
+          },
+        };
+      }
+    }
+  } else if (action.type === EXPENSES_ACTION_TYPES.ADD_EXPENSE) {
+    const expense = action.payload;
+    if (expense.trip.id === state.tripInfo.id) {
+      return {
+        ...state,
+        tripInfo: {
+          ...state.tripInfo,
+          expenses: [
+            ...(state.tripInfo.expenses || []),
+            {
+              ...expense,
+              payer: expense.payer.id,
+              users_to_split: expense.users_to_split?.map((_user) => _user.id),
+            },
+          ],
+        },
+      };
+    }
   }
   return state;
 };
